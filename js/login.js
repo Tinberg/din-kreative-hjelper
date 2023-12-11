@@ -20,8 +20,10 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.message === 'Authentication successful') {
-                // Redirect or show a success message
-                window.location.href = '/profile';
+                // Display a success message
+                alert('Login successful!'); // Show a JavaScript alert
+
+                // Optionally, you can add additional logic here, such as updating the UI or performing other actions.
             } else {
                 // Display an error message
                 alert('Login failed. Please check your credentials.');
