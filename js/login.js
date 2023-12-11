@@ -1,39 +1,39 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const loginForm = document.getElementById('login-form');
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector(".login-form");
 
-    loginForm.addEventListener('submit', function (e) {
-        e.preventDefault();
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-        const formData = new FormData(loginForm);
+        const formData = new FormData(form);
+        const loginData = {
+            username_or_email: formData.get("username_or_email"),
+            password: formData.get("password"),
+        };
 
-        // Define the CORS proxy URL
         const corsAnywhereUrl = "https://noroffcors.onrender.com/";
+        const targetUrl = "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/login/";
 
-        // Specify your WordPress login endpoint URL
-        const loginEndpoint = "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/login/";
-
-        // Concatenate the CORS proxy URL and login endpoint URL
-        const fullUrl = corsAnywhereUrl + loginEndpoint;
-
-        // Send a POST request using the corrected URL
-        fetch(fullUrl, {
-            method: 'POST',
-            body: formData,
+        fetch(corsAnywhereUrl + targetUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest"
+            },
+            body: JSON.stringify(loginData),
         })
         .then(response => response.json())
         .then(data => {
             if (data.message === 'Authentication successful') {
-                // Display a success message
-                alert('Login successful!');
-
-                // Optionally, you can add additional logic here, such as updating the UI or performing other actions.
+                console.log("User logged in successfully", data);
+                // Handle login success (e.g., redirect to another page)
             } else {
-                // Display an error message
-                alert('Login failed. Please check your credentials.');
+                console.error("Login error", data);
+                // Handle login errors
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error("Error:", error);
         });
     });
 });
