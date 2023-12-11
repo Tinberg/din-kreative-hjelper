@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Handle login success (e.g., redirect to another page)
             } else {
                 console.error("Login error", data);
-                // Handle login errors
+                // Display login errors to the user
             }
         })
         .catch(error => {
