@@ -10,10 +10,14 @@ document.addEventListener("DOMContentLoaded", function () {
             password: formData.get("password"),
         };
 
-        // Modify the target URL to point to the login endpoint
+        // CORS Proxy URL
+        const corsAnywhereUrl = "https://noroffcors.onrender.com/";
+        
+        // Target URL for the login endpoint
         const targetUrl = "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/login/";
 
-        fetch(targetUrl, {
+        // Using CORS Proxy for the fetch request
+        fetch(corsAnywhereUrl + targetUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
