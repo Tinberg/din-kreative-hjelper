@@ -19,13 +19,13 @@ document.addEventListener("DOMContentLoaded", function () {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest" // Added header
+                "X-Requested-With": "XMLHttpRequest"
             },
             body: JSON.stringify(userData),
         })
         .then((response) => response.json())
         .then((data) => {
-            if (data.id) {
+            if (data.user_id) {
                 console.log("User created successfully", data);
                 // Handle success (e.g., redirect to login page or show success message)
             } else {
