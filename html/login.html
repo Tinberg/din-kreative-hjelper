@@ -10,19 +10,20 @@
         
     </header>
     <main>
-        <form action="/submit-your-login-form" method="post">
+        <form action="<?php echo esc_url(wp_login_url()); ?>" method="post">
             <div>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" class="form-input" required>
+                <label for="username">Username or Email:</label>
+                <input type="text" id="username" name="log" class="form-input" required>
             </div>
             <div>
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" class="form-input" required>
+                <input type="password" id="password" name="pwd" class="form-input" required>
             </div>
             <div>
-                <button type="submit" class="submit-button">Login</button>
+                <input type="submit" name="submit" value="Login" class="submit-button">
             </div>
         </form>
+        
     </main>
     <footer>
         
