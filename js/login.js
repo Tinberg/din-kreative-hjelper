@@ -10,10 +10,9 @@ document.addEventListener("DOMContentLoaded", function () {
             password: formData.get("password"),
         };
 
-        const corsAnywhereUrl = "https://noroffcors.onrender.com/";
         const targetUrl = "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/login/";
 
-        fetch(corsAnywhereUrl + targetUrl, {
+        fetch(targetUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
