@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             if (data.message === 'Authentication successful') {
                 // Redirect or show a success message
-                window.location.href = '/dashboard'; // Redirect to the dashboard
+                window.location.href = '/profile';
             } else {
                 // Display an error message
                 alert('Login failed. Please check your credentials.');
