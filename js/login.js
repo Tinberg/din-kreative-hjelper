@@ -12,8 +12,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // Specify your WordPress login endpoint URL
         const loginEndpoint = "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/login/";
 
-        // Send a POST request using the CORS proxy
-        fetch(corsAnywhereUrl + loginEndpoint, {
+        // Concatenate the CORS proxy URL and login endpoint URL
+        const fullUrl = corsAnywhereUrl + loginEndpoint;
+
+        // Send a POST request using the corrected URL
+        fetch(fullUrl, {
             method: 'POST',
             body: formData,
         })
@@ -21,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             if (data.message === 'Authentication successful') {
                 // Display a success message
-                alert('Login successful!'); // Show a JavaScript alert
+                alert('Login successful!');
 
                 // Optionally, you can add additional logic here, such as updating the UI or performing other actions.
             } else {
