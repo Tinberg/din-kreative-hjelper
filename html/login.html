@@ -12,10 +12,19 @@
     </header>
     <main>
         <form class="login-form">
-            <input type="text" name="username_or_email" placeholder="Username or Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Login</button>
+            <div>
+                <label for="username_or_email">Username or Email:</label>
+                <input type="text" id="username_or_email" name="username_or_email" class="form-input" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="form-input" required>
+            </div>
+            <div>
+                <button type="submit" class="submit-button">Login</button>
+            </div>
         </form>
+        
         
     </main>
     <footer>
