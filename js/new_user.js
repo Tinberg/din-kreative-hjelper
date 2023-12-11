@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         const corsAnywhereUrl = "https://noroffcors.onrender.com/";
-        const targetUrl = "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1', '/register/";
+        const targetUrl = "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/register/";
 
         fetch(corsAnywhereUrl + targetUrl, {
             method: "POST",
