@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
       username_or_email: formData.get("username_or_email").toLowerCase(),
       password: formData.get("password"),
     };
-
+    console.log("Login Data - username_or_email:", loginData.username_or_email);
     // CORS Proxy URL
     const corsAnywhereUrl = "https://noroffcors.onrender.com/";
 
