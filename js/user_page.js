@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            console.log('User profile data:', data);
             if (data.username) {
                 // Display username, email, and products
                 document.getElementById('username').textContent = data.username;
