@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
       .then(response => response.json())
       .then(data => {
         if (data.status !== 'authenticated') {
-          window.location.href = '/login-page.html';
+          window.location.href = '/html/login.html';
         }
         // User is authenticated, continue with page-specific logic
       })
