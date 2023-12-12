@@ -32,10 +32,14 @@ document.addEventListener("DOMContentLoaded", function () {
     })
         .then(response => response.json())
         .then(data => {
-            if (data.status !== 'authenticated') {
-               
+            if (data.status === 'authenticated') {
+                // User is authenticated, continue with page-specific logic
+                // You can place your logic here for authenticated users
+            } else {
+                // User is not authenticated, handle accordingly
+                // For example, you can redirect the user to the login page
+                window.location.href = '/html/login.html';
             }
-            // User is authenticated, continue with page-specific logic
         })
         .catch(error => {
             console.error('Error:', error);
