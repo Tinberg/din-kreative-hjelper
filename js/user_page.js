@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Fetch user profile data
-    fetch('/wp-json/myapp/v1/user-profile/')
+    fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/')
       .then(response => response.json())
       .then(data => {
         if (data.username) {
