@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "X-Requested-With": "XMLHttpRequest",
             },
             body: JSON.stringify(loginData),
-            credentials: 'same-origin' // Include credentials in the request
+            credentials: 'include' // Include credentials in the request
         })
         .then((response) => response.json())
         .then((data) => {
