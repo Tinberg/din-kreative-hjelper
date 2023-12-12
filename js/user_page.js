@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Fetch user profile data
-    fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/')
+    fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/', {
+        credentials: 'include'  // Include credentials in the request
+    })
       .then(response => response.json())
       .then(data => {
         if (data.username) {
@@ -25,7 +27,9 @@ document.addEventListener("DOMContentLoaded", function() {
   
 
   document.addEventListener("DOMContentLoaded", function() {
-    fetch('/wp-json/myapp/v1/check-session')
+    fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/check-session', {
+        credentials: 'include'
+    })
       .then(response => response.json())
       .then(data => {
         if (data.status !== 'authenticated') {
