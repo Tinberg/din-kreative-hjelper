@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 // User is not authenticated, handle accordingly
                 // For example, you can redirect the user to the login page
-                window.location.href = '/html/login.html';
+                window.location.href = '/html/user_page.html';
             }
         })
         .catch(error => {
