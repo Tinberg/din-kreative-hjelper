@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
             password: formData.get("password"),
         };
 
-        const targetUrl = "https://cms.kreativehjelpere.no//wp-json/myapp/v1/login/";
+        const targetUrl = "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/login/";
 
         fetch(targetUrl, {
             method: "POST",
