@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Fetch user profile data
-    fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/', {
+    fetch('https://cms.kreativehjelpere.no//wp-json/myapp/v1/user-profile/', {
         credentials: 'include' // Include credentials in the request
     })
         .then(response => response.json())
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/check-session', {
+    fetch('https://cms.kreativehjelpere.no//wp-json/myapp/v1/check-session', {
         credentials: 'include' // Include credentials in the request
     })
         .then(response => response.json())
