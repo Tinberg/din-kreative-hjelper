@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
             if (data.message === "Authentication successful") {
                 console.log("User logged in successfully", data);
-                window.location.href = '/html/user_page.html';
+                
             } else {
                 console.error("Login error", data);
             }
