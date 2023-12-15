@@ -2,9 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Retrieve the JWT token from localStorage
     const token = localStorage.getItem('jwt_token');
     
-    // Retrieve the user's location from localStorage or use an empty string if not found
-    const userLocation = localStorage.getItem('userLocation') || "";
-
     // Check if the JWT token exists (user is authenticated)
     if (!token) {
         redirectToLogin("Vennligst logg inn for å se din profil.");
@@ -26,23 +23,20 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
         })
         .then(data => {
-            if (data.username) {
-                // Display the user's username and email
-                document.getElementById('username').textContent = `${data.username}`;
-                document.getElementById('email').textContent = `${data.email}`;
+            // Display the user's username and email
+            document.getElementById('username').textContent = data.username;
+            document.getElementById('email').textContent = data.email;
                 
-                // Display the user's location
-                const locationElement = document.getElementById("userLocation");
-                if (locationElement) {
-                    locationElement.textContent = `${userLocation}`;
-                }
+            // Display the user's location
+            const locationElement = document.getElementById("userLocation");
+            locationElement.textContent = data.location || "Din posisjon er ikke angitt";
 
-                // Display the user's products for sale
-                const productsDiv = document.getElementById('products');
-                data.products_for_sale.forEach(product => {
-                    const productElement = document.createElement('div');
-                    productElement.textContent = `Product Name: ${product.name}`;
-                    productsDiv.appendChild(productElement);
+            // Event listener for updating location
+            const updateButton = document.getElementById('updateLocationButton');
+            if (updateButton) {
+                updateButton.addEventListener('click', function () {
+                    const newLocation = document.getElementById('newLocation').value;
+                    updateLocation(newLocation);
                 });
             }
         })
@@ -51,6 +45,34 @@ document.addEventListener("DOMContentLoaded", function () {
             redirectToLogin(error.message);
         });
 
+    // Function to update user location
+    function updateLocation(newLocation) {
+        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ location: newLocation })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update location.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Update the location on the page and clear the input field
+            const locationElement = document.getElementById("userLocation");
+            locationElement.textContent = newLocation;
+            document.getElementById('newLocation').value = '';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    // Function to redirect to the login page with a message
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
         window.location.href = '/html/logginn.html';
