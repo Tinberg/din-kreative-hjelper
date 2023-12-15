@@ -1,5 +1,3 @@
-
-const successMessage = querySelector
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector(".create-user-form form");
 
