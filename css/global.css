@@ -24,6 +24,7 @@
     box-sizing: border-box;
     border-style: none;
     list-style-type: none;
+    text-decoration: none;
   }
   html {
     font-size: 18px;
@@ -35,10 +36,7 @@
   html, body{
     scroll-behavior: smooth;
   }
-  a {
-    text-decoration: none;
-    cursor: pointer;
-  }
+  
   section {
     /**/
   }
