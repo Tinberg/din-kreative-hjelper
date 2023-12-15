@@ -1,20 +1,21 @@
 
+//-----Create user function
 document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector(".create-user-form form");
+    const registrationForm = document.querySelector("#registrationForm");
 
-    form.addEventListener("submit", function (event) {
+    registrationForm.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        const formData = new FormData(form);
+        const formData = new FormData(registrationForm);
         const userData = {
             username: formData.get("username"),
             email: formData.get("email"),
             password: formData.get("password"),
         };
 
-        const targetUrl = "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/register/";
+        const registrationUrl = "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/register/";
 
-        fetch(targetUrl, {
+        fetch(registrationUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -26,23 +27,32 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => {
             if (data.user_id) {
-                console.log("User created successfully", data);
-                // Display a success message and a button
-                displaySuccessMessageAndButton("User created successfully. Please log in.");
+                displaySuccessMessage("User created successfully. Please proceed to login.");
             } else {
-                console.error("Error creating user", data);
-                // Handle error
+                displayErrorMessage("Error creating user: " + data.message);
             }
         })
-        .catch(error => console.error("Error:", error));
+        .catch(error => displayErrorMessage("Network error: " + error.message));
     });
-
-    function displaySuccessMessageAndButton(message) {
-        const container = document.getElementById('successMessageContainer');
-        container.innerHTML = `
-            <p>${message}</p>
-            <button onclick="location.href='/html/login.html'">Go to Login</button>
-        `;
-        // Optionally, add styles to your message and button
-    }
 });
+
+function displaySuccessMessage(message) {
+    const messageContainer = document.getElementById("messageContainer");
+    messageContainer.innerHTML = `<p class="success-message">${message}</p>`;
+    const proceedButton = document.createElement("button");
+    proceedButton.textContent = "Proceed to Login";
+    proceedButton.onclick = function() {
+        window.location.href = '/html/login.html';
+    };
+    messageContainer.appendChild(proceedButton);
+}
+
+function displayErrorMessage(message) {
+    const messageContainer = document.getElementById("messageContainer");
+    messageContainer.innerHTML = `<p class="error-message">${message}</p>`;
+}
+
+
+
+
+//------Create a button and display the message from create user function
