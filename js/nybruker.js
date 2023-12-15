@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.user_id) {
           messageContainer.innerHTML = `<p class="success-message">Bruker er opprettet. Vennligst logg inn.</p>
                                                   <button onclick="location.href='/html/logginn.html'">Til innlogging</button>`;
+                                                  form.reset();
         } else {
           let errorMessage =
             "En feil oppstod. Vennligst prøv igjen eller kontakt support hvis problemet vedvarer.";
