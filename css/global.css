@@ -35,6 +35,10 @@
   html, body{
     scroll-behavior: smooth;
   }
+  a {
+    text-decoration: none;
+    cursor: pointer;
+  }
   section {
     /**/
   }
