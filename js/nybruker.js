@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             if (data.user_id) {
                 messageContainer.innerHTML = `<p class="success-message">Bruker er opprettet. Vennligst logg inn.</p>
-                                              <button onclick="location.href='/html/login.html'">Go to Login</button>`;
+                                              <button onclick="location.href='/html/logginn.html'">Til innlogging</button>`;
             } else {
                 let errorMessage = 'En feil oppstod. Vennligst prøv igjen eller kontakt support hvis problemet vedvarer.';
                 if (data.code === 'user_exists') {
