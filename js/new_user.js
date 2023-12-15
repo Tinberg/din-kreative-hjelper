@@ -1,5 +1,5 @@
 
-//-----Create user function
+const successMessage = querySelector
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector(".create-user-form form");
 
@@ -28,23 +28,11 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             if (data.user_id) {
                 console.log("User created successfully", data);
-                // Display a success message and a button
-                displaySuccessMessageAndButton("User created successfully. Please log in.");
+                // Redirect to login page or show success message
             } else {
                 console.error("Error creating user", data);
-                // Handle error
             }
         })
         .catch(error => console.error("Error:", error));
     });
-
-//------Create a button and display the message from create user function
-    function displaySuccessMessageAndButton(message) {
-        const container = document.getElementById('successMessageContainer');
-        container.innerHTML = `
-            <p>${message}</p>
-            <button onclick="location.href='/html/login.html'">Go to Login</button>
-        `;
-        
-    }
 });
