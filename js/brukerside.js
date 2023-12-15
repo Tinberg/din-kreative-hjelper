@@ -78,3 +78,16 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = '/html/logginn.html';
     }
 });
+
+//Function for GoogleMaps
+function initAutocomplete() {
+    // Create the autocomplete object, restricting the search predictions to geographical location types.
+    const autocomplete = new google.maps.places.Autocomplete(
+        document.getElementById('newLocation'), {types: ['geocode']});
+
+    // When the user selects an address from the dropdown, you can use the place details for something
+    autocomplete.addListener('place_changed', function() {
+        const place = autocomplete.getPlace();
+        // Place details like place.name, place.geometry, etc.
+    });
+  }
