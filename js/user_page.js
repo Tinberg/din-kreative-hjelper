@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     const token = localStorage.getItem('jwt_token');
     if (!token) {
         redirectToLogin("Vennligst logg inn for å se din profil.");
@@ -9,14 +9,15 @@ document.addEventListener("DOMContentLoaded", function () {
         "Authorization": `Bearer ${token}`
     });
 
-    fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
-    .then(response => {
+    try {
+        const response = await fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers });
+
         if (!response.ok) {
             throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
         }
-        return response.json();
-    })
-    .then(data => {
+
+        const data = await response.json();
+
         if (data.username) {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
@@ -27,11 +28,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 productsDiv.appendChild(productElement);
             });
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error('Error:', error);
         redirectToLogin(error.message);
-    });
+    }
 
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
