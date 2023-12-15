@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const data = await response.json();
             localStorage.setItem('jwt_token', data.token);
-            window.location.href = '/html/user_page.html';
+            window.location.href = '/html/brukerside.html';
         } catch (error) {
             console.error("Error:", error);
             errorMessageContainer.textContent = error.message;
