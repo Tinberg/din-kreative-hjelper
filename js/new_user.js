@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector(".create-user-form form");
+    const messageContainer = document.getElementById('successMessageContainer');
 
     form.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -25,12 +26,21 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => {
             if (data.user_id) {
-                console.log("User created successfully", data);
-                // Redirect to login page or show success message
+                // User created successfully
+                messageContainer.innerHTML = `<p>User created successfully. Please log in.</p>
+                                              <button onclick="location.href='/html/login.html'">Go to Login</button>`;
             } else {
-                console.error("Error creating user", data);
+                // Handle error
+                let errorMessage = 'An error occurred while creating the user.';
+                if (data.code === 'user_exists') {
+                    errorMessage = 'Username or email already exists.';
+                }
+                messageContainer.innerHTML = `<p class="error-message">${errorMessage}</p>`;
             }
         })
-        .catch(error => console.error("Error:", error));
+        .catch(error => {
+            console.error("Error:", error);
+            messageContainer.innerHTML = `<p class="error-message">An unexpected error occurred.</p>`;
+        });
     });
 });
