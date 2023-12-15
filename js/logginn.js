@@ -44,7 +44,3 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 });
-
-
-  
-
