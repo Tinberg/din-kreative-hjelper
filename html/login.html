@@ -1,34 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="/js/login.js" defer></script> 
-</head>
-<body>
-    <header>
-        
-    </header>
+    <script src="/js/login.js" defer></script>
+  </head>
+  <body>
+    <header></header>
     <main>
-        <form class="login-form">
-            <div>
-                <label for="username_or_email">Username or Email:</label>
-                <input type="text" id="username_or_email" name="username_or_email" class="form-input" required>
-            </div>
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" class="form-input" required>
-            </div>
-            <div>
-                <button type="submit" class="submit-button">Login</button>
-            </div>
-        </form>
-        
-        
+      <form class="login-form">
+        <label for="username_or_email">Brukernavn eller Epost:</label>
+        <input
+          type="text"
+          id="username_or_email"
+          name="username_or_email"
+          class="form-input"
+          required
+        />
+
+        <label for="password">Passord:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-input"
+          required
+        />
+
+        <button type="submit" class="submit-button">Logg inn</button>
+        <div id="errorMessage"><a href="/html/new_user.html">Ny bruker</a></div>
+      </form>
     </main>
-    <footer>
-        
-    </footer>
-</body>
+    <footer></footer>
+  </body>
 </html>
