@@ -35,6 +35,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
-        window.location.href = '/html/login.html';
+        window.location.href = '/html/logginn.html';
     }
 });
