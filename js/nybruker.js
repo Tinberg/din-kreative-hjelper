@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
       username: formData.get("username"),
       email: formData.get("email"),
       password: formData.get("password"),
+      location: formData.get("location"),
     };
 
     const targetUrl =
@@ -30,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
           messageContainer.innerHTML = `<p class="success-message">Bruker er opprettet. Vennligst logg inn.</p>
                                                   <button onclick="location.href='/html/logginn.html'">Til innlogging</button>`;
                                                   form.reset();
+                                                  localStorage.setItem('userLocation', userData.location);
         } else {
           let errorMessage =
             "En feil oppstod. Vennligst prøv igjen eller kontakt support hvis problemet vedvarer.";
