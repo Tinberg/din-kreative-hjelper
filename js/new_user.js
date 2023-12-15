@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             if (data.user_id) {
                 // User created successfully
-                messageContainer.innerHTML = `<p>Bruker er opprettet. Vennligst logg inn.</p>
+                messageContainer.innerHTML = `<p class"success-message">Bruker er opprettet. Vennligst logg inn.</p>
                                               <button onclick="location.href='/html/login.html'">Go to Login</button>`;
             } else {
                 // Handle error
