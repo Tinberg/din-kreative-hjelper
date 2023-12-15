@@ -28,13 +28,13 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             if (data.username) {
                 // Display the user's username and email
-                document.getElementById('username').textContent = `Username: ${data.username}`;
-                document.getElementById('email').textContent = `Email: ${data.email}`;
+                document.getElementById('username').textContent = `${data.username}`;
+                document.getElementById('email').textContent = `${data.email}`;
                 
                 // Display the user's location
                 const locationElement = document.getElementById("userLocation");
                 if (locationElement) {
-                    locationElement.textContent = `Your Location: ${userLocation}`;
+                    locationElement.textContent = `${userLocation}`;
                 }
 
                 // Display the user's products for sale
