@@ -28,8 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((data) => {
         if (data.user_id) {
+            console.log('Navigating to login page');
           messageContainer.innerHTML = `<p class="success-message">Bruker er opprettet. Vennligst logg inn.</p>
-                                                  <button onclick="location.href='/html/logginn.html'"> Til innlogging</button>`;
+                                                  console.log('Navigating to login page');<button onclick="location.href='/html/logginn.html'"> Til innlogging</button>`;
                                                   form.reset();
                                                   localStorage.setItem('userLocation', userData.location);
         } else {
