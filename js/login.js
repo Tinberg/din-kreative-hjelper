@@ -1,7 +1,12 @@
-
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector(".login-form");
     const errorMessageContainer = document.getElementById('errorMessage');
+    const redirectMessage = localStorage.getItem('redirectMessage');
+
+    if (redirectMessage) {
+        errorMessageContainer.textContent = redirectMessage;
+        localStorage.removeItem('redirectMessage'); // Remove the message after displaying
+    }
 
     form.addEventListener("submit", function (event) {
         event.preventDefault();

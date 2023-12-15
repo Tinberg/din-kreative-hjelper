@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem('jwt_token');
     if (!token) {
-        window.location.href = '/html/login.html'; // Redirect to login if no token
-        return;
+        redirectToLogin("Vennligst logg inn for å se din profil.");
     }
 
     const headers = new Headers({
@@ -10,36 +9,32 @@ document.addEventListener("DOMContentLoaded", function () {
         "Authorization": `Bearer ${token}`
     });
 
-    // Fetch user profile data
     fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-            if (data.username) {
-                // Display username, email, and products
-                document.getElementById('username').textContent = data.username;
-                document.getElementById('email').textContent = data.email;
-                // Assuming you have a div for products
-                const productsDiv = document.getElementById('products');
-                data.products_for_sale.forEach(product => {
-                    // Create and append elements for each product
-                    // Modify this according to how you want to display products
-                    const productElement = document.createElement('div');
-                    productElement.textContent = product.name; // Adjust based on your product structure
-                    productsDiv.appendChild(productElement);
-                });
-            }
-    })
-    .catch(error => console.error('Error:', error));
-
-    // Check session
-    fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/check-session', { headers })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status !== 'authenticated') {
-            window.location.href = '/html/login.html';
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
         }
-        // User is authenticated, continue with page-specific logic
+        return response.json();
     })
-    .catch(error => console.error('Error:', error));
+    .then(data => {
+        if (data.username) {
+            document.getElementById('username').textContent = data.username;
+            document.getElementById('email').textContent = data.email;
+            const productsDiv = document.getElementById('products');
+            data.products_for_sale.forEach(product => {
+                const productElement = document.createElement('div');
+                productElement.textContent = product.name;
+                productsDiv.appendChild(productElement);
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        redirectToLogin(error.message);
+    });
+
+    function redirectToLogin(message) {
+        localStorage.setItem('redirectMessage', message);
+        window.location.href = '/html/login.html';
+    }
 });

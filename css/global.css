@@ -30,7 +30,22 @@
     
   }
   body {
-   scroll-behavior: smooth;
+   /**/
+  }
+  html, body{
+    scroll-behavior: smooth;
+  }
+  section {
+    /**/
+  }
+  h1 {
+    /**/
+  }
+  h2{
+    /**/
+  }
+  h3{
+    /**/
   }
 
 
