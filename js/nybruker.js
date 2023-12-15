@@ -29,9 +29,9 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         if (data.user_id) {
           messageContainer.innerHTML = `<p class="success-message">Bruker er opprettet. Vennligst logg inn.</p>
-                                                  <button onclick="location.href=/html/logginn.html"> Til innlogging</button>`;
-                                                  form.reset();
-                                                  localStorage.setItem('userLocation', userData.location);
+          <button onclick="location.href='/html/logginn.html'">Til innlogging</button>`;
+          form.reset();
+          localStorage.setItem("userLocation", userData.location);
         } else {
           let errorMessage =
             "En feil oppstod. Vennligst prøv igjen eller kontakt support hvis problemet vedvarer.";
