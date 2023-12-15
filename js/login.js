@@ -1,9 +1,11 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector(".login-form");
+    const errorMessageContainer = document.getElementById('errorMessage');
 
     form.addEventListener("submit", function (event) {
         event.preventDefault();
+        errorMessageContainer.textContent = ''; // Tømmer eventuelle eksisterende feilmeldinger
 
         const formData = new FormData(form);
         const loginData = {
@@ -21,16 +23,22 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: JSON.stringify(loginData),
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Feil brukernavn, e-post eller passord. Vennligst prøv igjen.');
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.token) {
                 console.log("User logged in successfully", data);
-                localStorage.setItem('jwt_token', data.token); // Store the JWT token
+                localStorage.setItem('jwt_token', data.token); // Lagrer JWT token
                 window.location.href = '/html/user_page.html';
-            } else {
-                console.error("Login error", data);
             }
         })
-        .catch(error => console.error("Error:", error));
+        .catch(error => {
+            console.error("Error:", error);
+            errorMessageContainer.textContent = error.message; // Viser feilmelding til brukeren
+        });
     });
 });
