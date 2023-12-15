@@ -27,20 +27,20 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             if (data.user_id) {
                 // User created successfully
-                messageContainer.innerHTML = `<p>User created successfully. Please log in.</p>
+                messageContainer.innerHTML = `<p>Bruker er opprettet. Vennligst logg inn.</p>
                                               <button onclick="location.href='/html/login.html'">Go to Login</button>`;
             } else {
                 // Handle error
-                let errorMessage = 'An error occurred while creating the user.';
+                let errorMessage = 'En feil oppstod. Vennligst prøv igjen eller kontakt support hvis problemet vedvarer.';
                 if (data.code === 'user_exists') {
-                    errorMessage = 'Username or email already exists.';
+                    errorMessage = 'Brukernavn eller e-post eksisterer allerede. Vennligst prøv en annen.';
                 }
                 messageContainer.innerHTML = `<p class="error-message">${errorMessage}</p>`;
             }
         })
         .catch(error => {
             console.error("Error:", error);
-            messageContainer.innerHTML = `<p class="error-message">An unexpected error occurred.</p>`;
+            messageContainer.innerHTML = `<p class="error-message">Vi opplever tekniske problemer. Vennligst prøv igjen senere eller kontakt support.</p>`;
         });
     });
 });
