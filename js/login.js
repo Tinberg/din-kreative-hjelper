@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     form.addEventListener("submit", function (event) {
         event.preventDefault();
-        errorMessageContainer.textContent = ''; // Tømmer eventuelle eksisterende feilmeldinger
+        errorMessageContainer.textContent = ''; 
 
         const formData = new FormData(form);
         const loginData = {
@@ -32,13 +32,13 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             if (data.token) {
                 console.log("User logged in successfully", data);
-                localStorage.setItem('jwt_token', data.token); // Lagrer JWT token
+                localStorage.setItem('jwt_token', data.token); 
                 window.location.href = '/html/user_page.html';
             }
         })
         .catch(error => {
             console.error("Error:", error);
-            errorMessageContainer.textContent = error.message; // Viser feilmelding til brukeren
+            errorMessageContainer.textContent = error.message; 
         });
     });
 });
