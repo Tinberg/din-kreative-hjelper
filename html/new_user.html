@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="/js/new_user.js" defer></script>
-</head>
-<body>
-    <header>
-        
-    </header>
+  </head>
+  <body>
+    <header></header>
     <main>
-        <div class="create-user-form">
-            <form method="post">
-                <div>
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" class="form-input" required>
-                </div>
-                <div>
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" class="form-input" required>
-                </div>
-                <div>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" class="form-input" required>
-                </div>
-                <div>
-                    <button type="submit" class="submit-button">Create User</button>
-                </div>
-            </form>
-            
-        </div>
+      <div class="create-user-form">
+        <form method="post">
+          <label for="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="form-input"
+            required
+          />
+
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-input"
+            required
+          />
+
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-input"
+            required
+          />
+
+          <button type="submit" class="submit-button">Create User</button>
+          <p id="successMessageContainer"></p>
+        </form>
+      </div>
     </main>
-    <footer>
-        
-    </footer>
-</body>
+    <footer></footer>
+  </body>
 </html>
