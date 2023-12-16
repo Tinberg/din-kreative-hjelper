@@ -138,12 +138,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const geocoder = new google.maps.Geocoder();
         const latlng = new google.maps.LatLng(lat, lng);
         geocoder.geocode({ 'location': latlng }, function(results, status) {
-            if (status === 'OK' && results[0]) {
-                callback(results[0].formatted_address);
+            if (status === 'OK') {
+                if (results[0]) {
+                    callback(results[0].formatted_address);
+                } else {
+                    // Use a less specific part of the address, if available
+                    callback(results[1] ? results[1].formatted_address : "Broad Location");
+                }
             } else {
                 console.error('Geocoder failed due to: ' + status);
                 callback("Unknown Address");
             }
         });
     }
-});
+    
