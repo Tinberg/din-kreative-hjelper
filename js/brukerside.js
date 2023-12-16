@@ -80,37 +80,51 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 //Function for GoogleMaps
-function initAutocomplete() {
-    // Create the autocomplete object, restricting the search predictions to geographical location types.
-    const autocomplete = new google.maps.places.Autocomplete(
-        document.getElementById('newLocation'), {types: ['geocode']});
+document.addEventListener("DOMContentLoaded", function () {
+    // Function to initialize the Google Map
+    function initMap(latitude, longitude) {
+        var userLocation = { lat: latitude, lng: longitude };
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: userLocation
+        });
+        new google.maps.Marker({
+            position: userLocation,
+            map: map
+        });
+    }
 
-    // When the user selects an address from the dropdown, you can use the place details for something
-    autocomplete.addListener('place_changed', function() {
-        const place = autocomplete.getPlace();
-        // Place details like place.name, place.geometry, etc.
-    });
-  }
+    // Function to display the user's location on the map
+    function displayUserLocation(userLocation) {
+        if (userLocation) {
+            const locationParts = userLocation.split(', ');
+            const latitude = parseFloat(locationParts[0]);
+            const longitude = parseFloat(locationParts[1]);
+            initMap(latitude, longitude);
+        }
+    }
 
+    // Initialize the Autocomplete feature for the address input
+    function initAutocomplete() {
+        const autocomplete = new google.maps.places.Autocomplete(
+            document.getElementById('newLocation'), {types: ['geocode']});
 
-  function initMap() {
-    // The location you want to center your map on
-    var centerLocation = { lat: -34.397, lng: 150.644 };
+        autocomplete.addListener('place_changed', function() {
+            const place = autocomplete.getPlace();
+            if (!place.geometry) {
+                console.log("No details available for input: '" + place.name + "'");
+                return;
+            }
+            // Update location in the input field
+            document.getElementById('newLocation').value = 
+                place.geometry.location.lat() + ', ' + place.geometry.location.lng();
+        });
+    }
 
-    // Map options
-    var mapOptions = {
-        zoom: 8, // Set the zoom level
-        center: centerLocation, // Center the map on your location
-        // You can add additional map options here
-    };
+    // Assuming you have user's location in a format "latitude, longitude"
+    // For example, you can fetch it from your server or local storage
+    const userLocation = '40.7128, -74.0060'; // Replace with actual data
+    displayUserLocation(userLocation);
 
-    // Create a new map instance
-    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-    // If you want to add markers, info windows, or other features,
-    // you can add them here using the 'map' variable
-}
-
-// Load the map when the Google Maps API library is loaded
-// This assumes you've included the Google Maps script tag in your HTML
-// with a 'callback=initMap' parameter.
+    initAutocomplete(); // Initialize the autocomplete feature
+});
