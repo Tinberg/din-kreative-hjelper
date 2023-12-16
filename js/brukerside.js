@@ -49,6 +49,12 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentCoordinates;
 
     function updateLocation(formattedAddress) {
+        // Validate the format of currentCoordinates
+        if (typeof currentCoordinates !== 'string' || currentCoordinates.split(', ').length !== 2) {
+            console.error('Invalid currentCoordinates format:', currentCoordinates);
+            return;
+        }
+
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
             method: 'POST',
             headers: {
@@ -79,7 +85,6 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error('Error:', error);
         });
     }
-    
 
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
@@ -116,7 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
             map: map
         });
     }
-    
 
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
@@ -129,12 +133,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            currentCoordinates = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
+            // Ensure that lat and lng are numbers
+            const lat = place.geometry.location.lat();
+            const lng = place.geometry.location.lng();
+            if (isNaN(lat) || isNaN(lng)) {
+                console.error('Invalid place geometry:', lat, lng);
+                return;
+            }
+
+            currentCoordinates = lat + ', ' + lng;
             updateLocation(place.formatted_address);
         });
     }
 
     function convertCoordsToAddress(lat, lng, callback) {
+        // Validate lat and lng
+        if (isNaN(lat) || isNaN(lng)) {
+            console.error('Invalid coordinates for geocoding:', lat, lng);
+            callback("Unknown Address");
+            return;
+        }
+    
         const geocoder = new google.maps.Geocoder();
         const latlng = new google.maps.LatLng(lat, lng);
         console.log("Converting coordinates:", lat, lng); // Debugging line
