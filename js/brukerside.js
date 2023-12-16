@@ -132,7 +132,7 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem('jwt_token');
-    
+
     if (!token) {
         redirectToLogin("Vennligst logg inn for å se din profil.");
         return;
@@ -154,15 +154,19 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('username').textContent = data.username;
         document.getElementById('email').textContent = data.email;
 
-        if (data.location) {
-            const locationParts = data.location.split(', ');
+        // Check if user location is available in localStorage
+        const userLocation = localStorage.getItem("userLocation");
+        if (userLocation) {
+            const locationParts = userLocation.split(', ');
             const latitude = parseFloat(locationParts[0]);
             const longitude = parseFloat(locationParts[1]);
-            initMap(latitude, longitude);
 
+            // Call convertCoordsToAddress to get the address
             convertCoordsToAddress(latitude, longitude, function(address) {
                 const locationElement = document.getElementById("userLocation");
-                locationElement.textContent = address; 
+                locationElement.textContent = address;
+
+                // Initialize the map with the retrieved coordinates
                 initMap(latitude, longitude);
             });
         }
@@ -235,7 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
             document.getElementById('newLocation'), { types: ['geocode'] });
-    
+
         autocomplete.addListener('place_changed', function() {
             const place = autocomplete.getPlace();
             if (!place.geometry) {
@@ -247,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
             updateLocation(place.formatted_address);
         });
     }
-    console.log("Coordinates for geocoding:", latitude, longitude);
+
     function convertCoordsToAddress(lat, lng, callback) {
         var geocoder = new google.maps.Geocoder();
         var latlng = new google.maps.LatLng(lat, lng);
@@ -261,4 +265,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-
