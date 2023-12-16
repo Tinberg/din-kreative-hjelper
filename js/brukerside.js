@@ -80,18 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function displayLocation(locationString) {
         const locationElement = document.getElementById("userLocation");
         locationElement.textContent = locationString;
-
-        // Parse the locationString to get latitude and longitude
-        const locationParts = locationString.split(', ');
-        if (locationParts.length === 2) {
-            const latitude = parseFloat(locationParts[0]);
-            const longitude = parseFloat(locationParts[1]);
-
-            // Initialize the map with these coordinates
-            initMap(latitude, longitude);
-        } else {
-            console.error('Invalid location format');
-        }
+        // Further code to handle the display of location can be added here
     }
 
     function initMap(latitude, longitude) {
