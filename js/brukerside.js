@@ -73,13 +73,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function displayLocation(address, coordinates) {
-        document.getElementById("userLocation").textContent = address;
         const coords = parseCoordinates(coordinates);
-
         if (coords) {
             initMap(coords.latitude, coords.longitude);
+            convertCoordsToAddress(coords.latitude, coords.longitude, function(convertedAddress) {
+                document.getElementById("userLocation").textContent = convertedAddress;
+            });
         } else {
             console.error('Invalid location format');
+            document.getElementById("userLocation").textContent = "Unknown Location";
         }
     }
 
@@ -135,10 +137,22 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    function convertCoordsToAddress(lat, lng, callback) {
+        const geocoder = new google.maps.Geocoder();
+        const latlng = new google.maps.LatLng(lat, lng);
+        geocoder.geocode({ 'location': latlng }, function(results, status) {
+            if (status === 'OK' && results[0]) {
+                callback(results[0].formatted_address);
+            } else {
+                console.error('Geocoder failed due to:', status);
+                callback("Unknown Address");
+            }
+        });
+    }
+
     // Load the saved location if available
     const savedLocation = localStorage.getItem("userLocation");
     if (savedLocation) {
         displayLocation("Loading...", savedLocation);
     }
-
 });
