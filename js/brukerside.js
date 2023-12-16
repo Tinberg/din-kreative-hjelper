@@ -185,38 +185,45 @@ document.addEventListener("DOMContentLoaded", function () {
             redirectToLogin(error.message);
         });
 
-    // Function to update user location
-    function updateLocation(newLocation) {
-        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({ location: newLocation })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to update location.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Update the location on the page and clear the input field
-            const locationElement = document.getElementById("userLocation");
-            locationElement.textContent = newLocation;
-            document.getElementById('newLocation').value = '';
+        let currentCoordinates; // Variable to store the current coordinates
 
-            // Update the map with the new location
-            const locationParts = newLocation.split(', ');
-            const latitude = parseFloat(locationParts[0]);
-            const longitude = parseFloat(locationParts[1]);
-            initMap(latitude, longitude);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
+        // Function to update user location
+        function updateLocation(formattedAddress) {
+            // Use currentCoordinates for map and backend updates
+            // Use formattedAddress for frontend display
+        
+            fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ location: currentCoordinates })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update location.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update the location on the page with the formatted address
+                const locationElement = document.getElementById("userLocation");
+                locationElement.textContent = formattedAddress;
+        
+                // Update the map with the new coordinates
+                if (currentCoordinates) {
+                    const locationParts = currentCoordinates.split(', ');
+                    const latitude = parseFloat(locationParts[0]);
+                    const longitude = parseFloat(locationParts[1]);
+                    initMap(latitude, longitude);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        
 
     // Function to redirect to the login page with a message
     function redirectToLogin(message) {
@@ -249,18 +256,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
     
-            // Store the coordinates in a separate variable or hidden field
-            const coords = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
-            // Use this 'coords' variable to update the map and user profile
+            // Store the coordinates
+            currentCoordinates = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
     
-            // Update the visible input field with the formatted address
-            document.getElementById('newLocation').value = place.formatted_address;
-    
-            // Example: Call a function to update the map with new coordinates
-            updateMapWithNewLocation(coords);
+            // Call updateLocation with the formatted address
+            updateLocation(place.formatted_address);
         });
     }
     
     initAutocomplete();
+    
     
 });
