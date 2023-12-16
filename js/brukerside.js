@@ -80,21 +80,28 @@ document.addEventListener("DOMContentLoaded", function () {
     function displayLocation(locationString) {
         const locationElement = document.getElementById("userLocation");
         locationElement.textContent = locationString;
-
-        // Parse the locationString to get latitude and longitude
+    
+        // Try to parse the locationString to get latitude and longitude
         const locationParts = locationString.split(', ');
+        
         if (locationParts.length === 2) {
             const latitude = parseFloat(locationParts[0]);
             const longitude = parseFloat(locationParts[1]);
-            
-            convertCoordsToAddress(latitude, longitude, function(address) {
-                document.getElementById("userLocation").textContent = address;
-            });
-            initMap(latitude, longitude);
+    
+            if (!isNaN(latitude) && !isNaN(longitude)) {
+                // If latitude and longitude are valid, proceed with map initialization
+                convertCoordsToAddress(latitude, longitude, function(address) {
+                    document.getElementById("userLocation").textContent = address;
+                });
+                initMap(latitude, longitude);
+            } else {
+                console.error('Invalid latitude or longitude');
+            }
         } else {
             console.error('Invalid location format');
         }
     }
+    
 
     function initMap(latitude, longitude) {
         const userLocation = { lat: latitude, lng: longitude };
