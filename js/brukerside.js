@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             convertCoordsToAddress(latitude, longitude, function(address) {
                 const locationElement = document.getElementById("userLocation");
-                locationElement.textContent = address; // Use .value if it's an input field
+                locationElement.textContent = address.value; // Use .value if it's an input field
             });
         }
 
