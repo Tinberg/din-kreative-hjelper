@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(data => {
             localStorage.setItem("userLocation", currentCoordinates);
-            displayLocation(formattedAddress); // This should include calling initMap
+            displayLocation(formattedAddress);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -96,33 +96,54 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-  // Define map and marker as global variables
-  let map;
-  let marker;
-  
-  function initMap(latitude, longitude) {
-      const userLocation = { lat: latitude, lng: longitude };
-  
-      // Check if the map and marker are already initialized
-      if (!map) {
-          map = new google.maps.Map(document.getElementById('map'), {
-              zoom: 12,
-              center: userLocation
-          });
-      }
-  
-      if (!marker) {
-          marker = new google.maps.Marker({
-              position: userLocation,
-              map: map
-          });
-      } else {
-          // Update marker position
-          marker.setPosition(userLocation);
-      }
-  }
-  
+    let map;
+    let marker;
+    
+    function initMap(latitude, longitude) {
+        const userLocation = { lat: latitude, lng: longitude };
+    
+        // Initialize the map if it's not already initialized
+        if (!map) {
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: userLocation
+            });
+        }
+    
+        // Initialize the marker if it's not already initialized
+        if (!marker) {
+            marker = new google.maps.Marker({
+                position: userLocation,
+                map: map
+            });
+        } else {
+            // Update marker position
+            marker.setPosition(userLocation);
+        }
+    }
+    // Call this function whenever the location changes
+function updateLocationOnMap(latitude, longitude) {
+    const userLocation = { lat: latitude, lng: longitude };
 
+    // Initialize the map if it's not already initialized
+    if (!map) {
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: userLocation
+        });
+    }
+
+    // Initialize the marker if it's not already initialized
+    if (!marker) {
+        marker = new google.maps.Marker({
+            position: userLocation,
+            map: map
+        });
+    } else {
+        // Update marker position
+        marker.setPosition(userLocation);
+    }
+}
 
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
