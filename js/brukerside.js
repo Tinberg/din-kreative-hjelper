@@ -137,17 +137,18 @@ document.addEventListener("DOMContentLoaded", function () {
     function convertCoordsToAddress(lat, lng, callback) {
         const geocoder = new google.maps.Geocoder();
         const latlng = new google.maps.LatLng(lat, lng);
+        console.log("Converting coordinates:", lat, lng); // Debugging line
+    
         geocoder.geocode({ 'location': latlng }, function(results, status) {
-            console.log(results); // Debugging line to see the results
             if (status === 'OK') {
                 if (results[0]) {
+                    console.log("Geocoder results:", results); // Debugging line
                     callback(results[0].formatted_address);
                 } else {
-                    // Use a less specific part of the address, if available
-                    callback(results[1] ? results[1].formatted_address : "Broad Location");
+                    callback("Broad Location"); // Fallback if detailed address isn't available
                 }
             } else {
-                console.error('Geocoder failed due to: ' + status);
+                console.error('Geocoder failed due to:', status);
                 callback("Unknown Address");
             }
         });
