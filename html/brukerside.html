@@ -4,8 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByQXsRYGrQB39OCHvKt_WMdNkp1WUtgtg&libraries=places" defer></script>
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByQXsRYGrQB39OCHvKt_WMdNkp1WUtgtg&libraries=places"
+      defer
+    ></script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByQXsRYGrQB39OCHvKt_WMdNkp1WUtgtg&callback=initMap"
+    ></script>
     <script src="/js/brukerside.js" defer></script>
   </head>
   <body>
@@ -17,13 +25,10 @@
         <p>Epost: <span id="email"></span></p>
         <p>Din posisjon: <span id="userLocation"></span></p>
         <div>
-          <input
-            type="text"
-            id="newLocation"
-            placeholder="Legg til posisjon"
-          />
+          <input type="text" id="newLocation" placeholder="Legg til posisjon" />
           <button id="updateLocationButton">Oppdater posisjon</button>
         </div>
+        <div id="map" style="height:400px; width:100%;"></div>
         <div id="products">
           <!-- Products will be loaded here -->
         </div>

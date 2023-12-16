@@ -91,3 +91,26 @@ function initAutocomplete() {
         // Place details like place.name, place.geometry, etc.
     });
   }
+
+
+  function initMap() {
+    // The location you want to center your map on
+    var centerLocation = { lat: -34.397, lng: 150.644 };
+
+    // Map options
+    var mapOptions = {
+        zoom: 8, // Set the zoom level
+        center: centerLocation, // Center the map on your location
+        // You can add additional map options here
+    };
+
+    // Create a new map instance
+    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+    // If you want to add markers, info windows, or other features,
+    // you can add them here using the 'map' variable
+}
+
+// Load the map when the Google Maps API library is loaded
+// This assumes you've included the Google Maps script tag in your HTML
+// with a 'callback=initMap' parameter.
