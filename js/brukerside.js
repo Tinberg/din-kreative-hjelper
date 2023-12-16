@@ -20,11 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json();
     })
     .then(data => {
-        // Display username and email
         document.getElementById('username').textContent = data.username;
         document.getElementById('email').textContent = data.email;
 
-        // Handle and display location
         if (data.location) {
             localStorage.setItem("userLocation", data.location);
             displayLocation(data.location);
@@ -49,9 +47,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentCoordinates;
 
     function updateLocation(formattedAddress) {
-        // Validate the format of currentCoordinates
-        if (typeof currentCoordinates !== 'string' || currentCoordinates.split(', ').length !== 2) {
-            console.error('Invalid currentCoordinates format:', currentCoordinates);
+        if (!currentCoordinates) {
+            console.error("currentCoordinates is undefined");
             return;
         }
 
@@ -72,14 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             localStorage.setItem("userLocation", currentCoordinates);
             displayLocation(formattedAddress);
-    
-            // Parse the currentCoordinates to get latitude and longitude
-            const coords = currentCoordinates.split(', ');
-            if (coords.length === 2) {
-                const latitude = parseFloat(coords[0]);
-                const longitude = parseFloat(coords[1]);
-                initMap(latitude, longitude); // Update the map
-            }
         })
         .catch(error => {
             console.error('Error:', error);
@@ -95,12 +84,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const locationElement = document.getElementById("userLocation");
         locationElement.textContent = locationString;
 
-        // Parse the locationString to get latitude and longitude
         const locationParts = locationString.split(', ');
         if (locationParts.length === 2) {
             const latitude = parseFloat(locationParts[0]);
             const longitude = parseFloat(locationParts[1]);
-            
+
             convertCoordsToAddress(latitude, longitude, function(address) {
                 document.getElementById("userLocation").textContent = address;
             });
@@ -133,38 +121,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Ensure that lat and lng are numbers
-            const lat = place.geometry.location.lat();
-            const lng = place.geometry.location.lng();
-            if (isNaN(lat) || isNaN(lng)) {
-                console.error('Invalid place geometry:', lat, lng);
-                return;
-            }
-
-            currentCoordinates = lat + ', ' + lng;
-            updateLocation(place.formatted_address);
+            currentCoordinates = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
+            updateLocation(place.formatted_address || "Broad Location");
         });
     }
 
     function convertCoordsToAddress(lat, lng, callback) {
-        // Validate lat and lng
-        if (isNaN(lat) || isNaN(lng)) {
-            console.error('Invalid coordinates for geocoding:', lat, lng);
-            callback("Unknown Address");
-            return;
-        }
-    
         const geocoder = new google.maps.Geocoder();
         const latlng = new google.maps.LatLng(lat, lng);
-        console.log("Converting coordinates:", lat, lng); // Debugging line
-    
+
         geocoder.geocode({ 'location': latlng }, function(results, status) {
             if (status === 'OK') {
                 if (results[0]) {
-                    console.log("Geocoder results:", results); // Debugging line
                     callback(results[0].formatted_address);
                 } else {
-                    callback("Broad Location"); // Fallback if detailed address isn't available
+                    callback("Broad Location");
                 }
             } else {
                 console.error('Geocoder failed due to:', status);
@@ -172,5 +143,4 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-    
 });
