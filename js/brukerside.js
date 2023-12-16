@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "Authorization": `Bearer ${token}`
     });
 
-    // Fetch user profile data from the server
     fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
     .then(response => {
         if (!response.ok) {
@@ -41,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
         redirectToLogin(error.message);
     });
 
-    // Initialize Google Maps Autocomplete
     initAutocomplete();
 
     let currentCoordinates;
@@ -85,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
         locationElement.textContent = locationString;
 
         const locationParts = locationString.split(', ');
-        if (locationParts.length === 2) {
+        if (locationParts.length === 2 && !isNaN(locationParts[0]) && !isNaN(locationParts[1])) {
             const latitude = parseFloat(locationParts[0]);
             const longitude = parseFloat(locationParts[1]);
 
@@ -95,11 +93,12 @@ document.addEventListener("DOMContentLoaded", function () {
             initMap(latitude, longitude);
         } else {
             console.error('Invalid location format');
+            // Consider providing a default location or handling this case more gracefully
         }
     }
 
     function initMap(latitude, longitude) {
-        if (!latitude || !longitude) {
+        if (isNaN(latitude) || isNaN(longitude)) {
             console.error("Invalid coordinates for map initialization");
             return;
         }
@@ -128,6 +127,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const lat = place.geometry.location.lat();
             const lng = place.geometry.location.lng();
+            if (isNaN(lat) || isNaN(lng)) {
+                console.error("Invalid place geometry");
+                return;
+            }
+
             currentCoordinates = lat + ', ' + lng;
             updateLocation(place.formatted_address || place.name);
         });
