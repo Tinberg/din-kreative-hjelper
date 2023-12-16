@@ -73,16 +73,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function displayLocation(address, coordinates) {
-        document.getElementById("userLocation").textContent = address;
         const coords = parseCoordinates(coordinates);
-
         if (coords) {
-            initMap(coords.latitude, coords.longitude);
+            document.getElementById("userLocation").textContent = address;
+            convertCoordsToAddress(coords.latitude, coords.longitude, function(convertedAddress) {
+                document.getElementById("userLocation").textContent = convertedAddress;
+            });
         } else {
             console.error('Invalid location format');
         }
     }
-
     function parseCoordinates(coordString) {
         const parts = coordString.split(', ');
         if (parts.length === 2) {
@@ -141,6 +141,14 @@ document.addEventListener("DOMContentLoaded", function () {
         displayLocation("Loading...", savedLocation);
     }
 
-    // Add any other functions or event listeners you need
-    // ...
 });
+const savedLocation = localStorage.getItem("userLocation");
+if (savedLocation) {
+    const coords = parseCoordinates(savedLocation);
+    if (coords) {
+        displayLocation("Loading...", savedLocation);
+        initMap(coords.latitude, coords.longitude);
+    } else {
+        console.error("Invalid saved coordinates");
+    }
+}
