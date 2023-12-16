@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             localStorage.setItem("userLocation", currentCoordinates);
             displayLocation(formattedAddress);
+            updateLocationOnMap(latitude, longitude); // Call the function here
         })
         .catch(error => {
             console.error('Error:', error);
