@@ -37,14 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 updateLocation(newLocation);
             });
         }
-        // Extract latitude and longitude from the address provided during registration
-        const address = data.location; // Use the user's location data
-        convertAddressToCoords(address, function(coords) {
-            if (coords) {
-                const [latitude, longitude] = coords.split(', ');
-                initMap(parseFloat(latitude), parseFloat(longitude)); // Initialize and display the map
-            }
-        });
     })
     .catch(error => {
         console.error('Error:', error);
@@ -88,26 +80,21 @@ document.addEventListener("DOMContentLoaded", function () {
     function displayLocation(locationString) {
         const locationElement = document.getElementById("userLocation");
         locationElement.textContent = locationString;
-    
-        // Attempt to parse latitude and longitude from the locationString
+
+        // Parse the locationString to get latitude and longitude
         const locationParts = locationString.split(', ');
-    
         if (locationParts.length === 2) {
             const latitude = parseFloat(locationParts[0]);
             const longitude = parseFloat(locationParts[1]);
-    
-            if (!isNaN(latitude) && !isNaN(longitude)) {
-                convertCoordsToAddress(latitude, longitude, function(address) {
-                    document.getElementById("userLocation").textContent = address;
-                });
-                initMap(latitude, longitude);
-                return; // Successfully parsed and initialized
-            }
+            
+            convertCoordsToAddress(latitude, longitude, function(address) {
+                document.getElementById("userLocation").textContent = address;
+            });
+            initMap(latitude, longitude);
+        } else {
+            console.error('Invalid location format');
         }
-    
-        console.error('Invalid location format');
     }
-    
 
     function initMap(latitude, longitude) {
         const userLocation = { lat: latitude, lng: longitude };
