@@ -88,21 +88,26 @@ document.addEventListener("DOMContentLoaded", function () {
     function displayLocation(locationString) {
         const locationElement = document.getElementById("userLocation");
         locationElement.textContent = locationString;
-
-        // Parse the locationString to get latitude and longitude
+    
+        // Attempt to parse latitude and longitude from the locationString
         const locationParts = locationString.split(', ');
+    
         if (locationParts.length === 2) {
             const latitude = parseFloat(locationParts[0]);
             const longitude = parseFloat(locationParts[1]);
-            
-            convertCoordsToAddress(latitude, longitude, function(address) {
-                document.getElementById("userLocation").textContent = address;
-            });
-            initMap(latitude, longitude);
-        } else {
-            console.error('Invalid location format');
+    
+            if (!isNaN(latitude) && !isNaN(longitude)) {
+                convertCoordsToAddress(latitude, longitude, function(address) {
+                    document.getElementById("userLocation").textContent = address;
+                });
+                initMap(latitude, longitude);
+                return; // Successfully parsed and initialized
+            }
         }
+    
+        console.error('Invalid location format');
     }
+    
 
     function initMap(latitude, longitude) {
         const userLocation = { lat: latitude, lng: longitude };
