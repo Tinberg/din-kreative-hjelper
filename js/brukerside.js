@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             localStorage.setItem("userLocation", currentCoordinates);
             displayLocation(formattedAddress);
+            initMap(parseFloat(currentCoordinates.split(',')[0]), parseFloat(currentCoordinates.split(',')[1]));
         })
         .catch(error => {
             console.error('Error:', error);
