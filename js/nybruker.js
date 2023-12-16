@@ -61,14 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 messageContainer.appendChild(loginButton);
 
                 form.reset();
-                 // Extract latitude and longitude from the address provided during registration
-        const address = formData.get("location"); // Get the address from the form
-        convertAddressToCoords(address, function(coords) {
-            if (coords) {
-                const [latitude, longitude] = coords.split(', ');
-                initMap(parseFloat(latitude), parseFloat(longitude)); // Initialize and display the map
-            }
-        });
             } else {
                 let errorMessage = "En feil oppstod. Vennligst prøv igjen eller kontakt support hvis problemet vedvarer.";
                 if (data.code === "user_exists") {

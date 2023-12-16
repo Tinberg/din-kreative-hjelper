@@ -37,6 +37,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 updateLocation(newLocation);
             });
         }
+        // Extract latitude and longitude from the address provided during registration
+        const address = data.location; // Use the user's location data
+        convertAddressToCoords(address, function(coords) {
+            if (coords) {
+                const [latitude, longitude] = coords.split(', ');
+                initMap(parseFloat(latitude), parseFloat(longitude)); // Initialize and display the map
+            }
+        });
     })
     .catch(error => {
         console.error('Error:', error);
