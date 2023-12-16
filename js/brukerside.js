@@ -86,10 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (locationParts.length === 2) {
             const latitude = parseFloat(locationParts[0]);
             const longitude = parseFloat(locationParts[1]);
-            
-             convertCoordsToAddress(latitude, longitude, function(address) {
-            document.getElementById("userLocation").textContent = address;
-        });
+
+            // Initialize the map with these coordinates
             initMap(latitude, longitude);
         } else {
             console.error('Invalid location format');
