@@ -65,7 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(data => {
             localStorage.setItem("userLocation", currentCoordinates);
-            // Update both the display and the map
             displayLocation(formattedAddress);
         })
         .catch(error => {
@@ -79,23 +78,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function displayLocation(locationString) {
-        // Assuming that the locationString format is 'latitude, longitude'
+        const locationElement = document.getElementById("userLocation");
+        locationElement.textContent = locationString;
+
+        // Parse the locationString to get latitude and longitude
         const locationParts = locationString.split(', ');
         if (locationParts.length === 2) {
             const latitude = parseFloat(locationParts[0]);
             const longitude = parseFloat(locationParts[1]);
-    
-            // Convert coordinates to formatted address and update 'Din posisjon'
+            
             convertCoordsToAddress(latitude, longitude, function(address) {
                 document.getElementById("userLocation").textContent = address;
             });
-    
-            // Initialize the map with the new coordinates
             initMap(latitude, longitude);
         } else {
-            // Handle non-coordinate format (direct formatted address)
-            document.getElementById("userLocation").textContent = locationString;
-            // Additional logic to update the map if needed
+            console.error('Invalid location format');
         }
     }
 
@@ -115,15 +112,15 @@ document.addEventListener("DOMContentLoaded", function () {
         const autocomplete = new google.maps.places.Autocomplete(
             document.getElementById('newLocation'), { types: ['geocode'] });
 
-            autocomplete.addListener('place_changed', function() {
-                const place = autocomplete.getPlace();
-                if (!place.geometry) {
-                    console.log("No details available for input: '" + place.name + "'");
-                    return;
-                }
+        autocomplete.addListener('place_changed', function() {
+            const place = autocomplete.getPlace();
+            if (!place.geometry) {
+                console.log("No details available for input: '" + place.name + "'");
+                return;
+            }
 
-                currentCoordinates = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
-                updateLocation(place.formatted_address); // Call updateLocation with the formatted address
+            currentCoordinates = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
+            updateLocation(place.formatted_address);
         });
     }
 
