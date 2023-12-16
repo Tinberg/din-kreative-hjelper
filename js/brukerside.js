@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function () {
             updateLocation(place.formatted_address);
         });
     }
-
+    console.log("Coordinates for geocoding:", latitude, longitude);
     function convertCoordsToAddress(lat, lng, callback) {
         var geocoder = new google.maps.Geocoder();
         var latlng = new google.maps.LatLng(lat, lng);
