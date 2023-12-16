@@ -80,20 +80,20 @@ document.addEventListener("DOMContentLoaded", function () {
     function displayLocation(locationString) {
         const locationElement = document.getElementById("userLocation");
         locationElement.textContent = locationString;
-    
+
         // Parse the locationString to get latitude and longitude
         const locationParts = locationString.split(', ');
         if (locationParts.length === 2) {
             const latitude = parseFloat(locationParts[0]);
             const longitude = parseFloat(locationParts[1]);
-    
+
             // Initialize the map with these coordinates
             initMap(latitude, longitude);
         } else {
             console.error('Invalid location format');
         }
     }
-    
+
     function initMap(latitude, longitude) {
         var userLocation = { lat: latitude, lng: longitude };
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
             map: map
         });
     }
-    
+
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
             document.getElementById('newLocation'), { types: ['geocode'] });
