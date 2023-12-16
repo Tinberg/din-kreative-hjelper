@@ -86,15 +86,29 @@ document.addEventListener("DOMContentLoaded", function () {
         if (locationParts.length === 2) {
             const latitude = parseFloat(locationParts[0]);
             const longitude = parseFloat(locationParts[1]);
-            
-            convertCoordsToAddress(latitude, longitude, function(address) {
-                document.getElementById("userLocation").textContent = address;
-            });
-            initMap(latitude, longitude);
+
+            // Check if the location is too broad (like a city)
+            if (isBroadLocation(latitude, longitude)) {
+                // Handle broad location differently, e.g., using city center
+                document.getElementById("userLocation").textContent = "Default City Center Address";
+                initMap(latitude, longitude); // Initialize map using city center coordinates
+            } else {
+                convertCoordsToAddress(latitude, longitude, function(address) {
+                    document.getElementById("userLocation").textContent = address;
+                });
+                initMap(latitude, longitude);
+            }
         } else {
             console.error('Invalid location format');
         }
     }
+
+    function isBroadLocation(lat, lng) {
+        // Add logic to determine if the coordinates are too broad
+        // This could be based on certain criteria or predefined broad locations
+        return false; // Replace with actual logic
+    }
+
 
     function initMap(latitude, longitude) {
         const userLocation = { lat: latitude, lng: longitude };
@@ -128,37 +142,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const geocoder = new google.maps.Geocoder();
         const latlng = new google.maps.LatLng(lat, lng);
         geocoder.geocode({ 'location': latlng }, function(results, status) {
-            if (status === 'OK') {
-                if (results[0]) {
-                    const locationType = getLocationType(results[0]);
-
-                    if (locationType === 'broad') {
-                        // Fallback for broad locations like cities
-                        // Using city center coordinates or a default broad location address
-                        callback("Default Address for Broad Location"); // Replace with appropriate fallback
-                    } else {
-                        // Specific address found
-                        callback(results[0].formatted_address);
-                    }
-                } else {
-                    console.error('No results found');
-                    callback("Unknown Address");
-                }
+            if (status === 'OK' && results[0]) {
+                callback(results[0].formatted_address);
             } else {
                 console.error('Geocoder failed due to: ' + status);
                 callback("Unknown Address");
             }
         });
     }
-
-    function getLocationType(result) {
-        // Check the types array in the result for a broad location indicator
-        // For example, if the type includes 'locality', it's a broad location like a city
-        if (result.types.includes('locality')) {
-            return 'broad';
-        }
-        return 'specific';
-    }
-
-    // ... [rest of your existing code] ...
 });
