@@ -61,9 +61,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector(".create-user-form form");
     const messageContainer = document.getElementById("successMessageContainer");
 
-    // Initialize the Autocomplete feature for the location input
     function initAutocomplete() {
-        const locationInput = document.getElementById('location'); // Adjust this ID to match your form's location input field
+        const locationInput = document.getElementById('location');
         const autocomplete = new google.maps.places.Autocomplete(locationInput, {types: ['geocode']});
 
         autocomplete.addListener('place_changed', function() {
@@ -73,9 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Update the location field with the formatted address
             locationInput.value = place.formatted_address;
-            // Optionally, store the coordinates in a hidden field or a JavaScript variable
             const coords = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
             localStorage.setItem("userLocation", coords);
         });
@@ -91,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
             username: formData.get("username"),
             email: formData.get("email"),
             password: formData.get("password"),
-            location: formData.get("location"), // This will now be a formatted address
+            location: formData.get("location"),
         };
 
         const targetUrl = "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/register/";
