@@ -131,22 +131,18 @@
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Retrieve the JWT token from localStorage
     const token = localStorage.getItem('jwt_token');
     
-    // Check if the JWT token exists (user is authenticated)
     if (!token) {
         redirectToLogin("Vennligst logg inn for å se din profil.");
         return;
     }
 
-    // Set headers for the fetch request, including the JWT token
     const headers = new Headers({
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
     });
 
-    // Fetch the user profile data from the server
     fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
     .then(response => {
         if (!response.ok) {
@@ -155,25 +151,21 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json();
     })
     .then(data => {
-        // Display the user's username and email
         document.getElementById('username').textContent = data.username;
         document.getElementById('email').textContent = data.email;
-            
-        // Display the user's location on the map
+
         if (data.location) {
             const locationParts = data.location.split(', ');
             const latitude = parseFloat(locationParts[0]);
             const longitude = parseFloat(locationParts[1]);
             initMap(latitude, longitude);
 
-            // Convert coordinates to a readable address and display
             convertCoordsToAddress(latitude, longitude, function(address) {
-                const locationElement = document.getElementById("userLocation"); // Adjust this ID to match your location input field
-                locationElement.value = address;
+                const locationElement = document.getElementById("userLocation");
+                locationElement.textContent = address; // Use .value if it's an input field
             });
         }
 
-        // Event listener for updating location
         const updateButton = document.getElementById('updateLocationButton');
         if (updateButton) {
             updateButton.addEventListener('click', function () {
@@ -187,67 +179,46 @@ document.addEventListener("DOMContentLoaded", function () {
         redirectToLogin(error.message);
     });
 
-    // Function to convert coordinates to a readable address
-function convertCoordsToAddress(lat, lng, callback) {
-    var geocoder = new google.maps.Geocoder();
-    var latlng = new google.maps.LatLng(lat, lng);
-    geocoder.geocode({ 'location': latlng }, function(results, status) {
-        if (status === 'OK' && results[0]) {
-            callback(results[0].formatted_address);
-        } else {
-            console.error('Geocoder failed due to: ' + status);
-            callback("Unknown Address");
-        }
-    });
-}
+    initAutocomplete();
 
-        let currentCoordinates; // Variable to store the current coordinates
+    let currentCoordinates;
 
-        // Function to update user location
-        function updateLocation(formattedAddress) {
-            // Use currentCoordinates for map and backend updates
-            // Use formattedAddress for frontend display
-        
-            fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({ location: currentCoordinates })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to update location.');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Update the location on the page with the formatted address
-                const locationElement = document.getElementById("userLocation");
-                locationElement.textContent = formattedAddress;
-        
-                // Update the map with the new coordinates
-                if (currentCoordinates) {
-                    const locationParts = currentCoordinates.split(', ');
-                    const latitude = parseFloat(locationParts[0]);
-                    const longitude = parseFloat(locationParts[1]);
-                    initMap(latitude, longitude);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-        
+    function updateLocation(formattedAddress) {
+        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ location: currentCoordinates })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update location.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const locationElement = document.getElementById("userLocation");
+            locationElement.textContent = formattedAddress;
 
-    // Function to redirect to the login page with a message
+            if (currentCoordinates) {
+                const locationParts = currentCoordinates.split(', ');
+                const latitude = parseFloat(locationParts[0]);
+                const longitude = parseFloat(locationParts[1]);
+                initMap(latitude, longitude);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
         window.location.href = '/html/logginn.html';
     }
 
-    // Function to initialize the Google Map
     function initMap(latitude, longitude) {
         var userLocation = { lat: latitude, lng: longitude };
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -260,7 +231,6 @@ function convertCoordsToAddress(lat, lng, callback) {
         });
     }
 
-    // Initialize the Autocomplete feature for the address input
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
             document.getElementById('newLocation'), { types: ['geocode'] });
@@ -271,16 +241,22 @@ function convertCoordsToAddress(lat, lng, callback) {
                 console.log("No details available for input: '" + place.name + "'");
                 return;
             }
-    
-            // Store the coordinates
+
             currentCoordinates = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
-    
-            // Call updateLocation with the formatted address
             updateLocation(place.formatted_address);
         });
     }
-    
-    initAutocomplete();
-    
-    
+
+    function convertCoordsToAddress(lat, lng, callback) {
+        var geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(lat, lng);
+        geocoder.geocode({ 'location': latlng }, function(results, status) {
+            if (status === 'OK' && results[0]) {
+                callback(results[0].formatted_address);
+            } else {
+                console.error('Geocoder failed due to: ' + status);
+                callback("Unknown Address");
+            }
+        });
+    }
 });
