@@ -127,16 +127,15 @@ document.addEventListener("DOMContentLoaded", function () {
     function convertCoordsToAddress(lat, lng, callback) {
         const geocoder = new google.maps.Geocoder();
         const latlng = new google.maps.LatLng(lat, lng);
-    
         geocoder.geocode({ 'location': latlng }, function(results, status) {
             if (status === 'OK') {
                 if (results[0]) {
                     const locationType = getLocationType(results[0]);
-    
+
                     if (locationType === 'broad') {
                         // Fallback for broad locations like cities
-                        // You can use a default address or city center coordinates here
-                        callback("Default Address for Broad Location");
+                        // Using city center coordinates or a default broad location address
+                        callback("Default Address for Broad Location"); // Replace with appropriate fallback
                     } else {
                         // Specific address found
                         callback(results[0].formatted_address);
@@ -151,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-    
+
     function getLocationType(result) {
         // Check the types array in the result for a broad location indicator
         // For example, if the type includes 'locality', it's a broad location like a city
@@ -160,5 +159,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         return 'specific';
     }
-    
+
+    // ... [rest of your existing code] ...
 });
