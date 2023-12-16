@@ -63,18 +63,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function initAutocomplete() {
         const locationInput = document.getElementById('location');
-        const autocomplete = new google.maps.places.Autocomplete(locationInput, {types: ['geocode']});
+        const autocomplete = new google.maps.places.Autocomplete(locationInput, { types: ['geocode'] });
 
-        autocomplete.addListener('place_changed', function() {
+        autocomplete.addListener('place_changed', function () {
             const place = autocomplete.getPlace();
             if (!place.geometry) {
                 console.log("No details available for input: '" + place.name + "'");
                 return;
             }
 
-            locationInput.value = place.formatted_address;
-            const coords = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
-            localStorage.setItem("userLocation", coords);
+            // Get the coordinates and formatted address
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
+            const formattedAddress = place.formatted_address;
+
+            // Call convertCoordsToAddress to get the address and update the input field
+            convertCoordsToAddress(latitude, longitude, function (address) {
+                locationInput.value = address;
+
+                // Update the userLocation in localStorage
+                const coords = latitude + ', ' + longitude;
+                localStorage.setItem("userLocation", coords);
+            });
         });
     }
 
@@ -102,33 +112,46 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: JSON.stringify(userData),
         })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.user_id) {
-                messageContainer.innerHTML = `<p class="success-message">Bruker er opprettet. Vennligst logg inn.</p>`;
-                
-                // Create a new button element
-                const loginButton = document.createElement("button");
-                loginButton.textContent = "Til innlogging";
-                loginButton.addEventListener("click", function() {
-                    window.location.href = '/html/logginn.html';
-                });
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.user_id) {
+                    messageContainer.innerHTML = `<p class="success-message">Bruker er opprettet. Vennligst logg inn.</p>`;
 
-                // Append the button to the message container
-                messageContainer.appendChild(loginButton);
+                    // Create a new button element
+                    const loginButton = document.createElement("button");
+                    loginButton.textContent = "Til innlogging";
+                    loginButton.addEventListener("click", function () {
+                        window.location.href = '/html/logginn.html';
+                    });
 
-                form.reset();
-            } else {
-                let errorMessage = "En feil oppstod. Vennligst prøv igjen eller kontakt support hvis problemet vedvarer.";
-                if (data.code === "user_exists") {
-                    errorMessage = "Brukernavn eller e-post eksisterer allerede. Vennligst prøv en annen.";
+                    // Append the button to the message container
+                    messageContainer.appendChild(loginButton);
+
+                    form.reset();
+                } else {
+                    let errorMessage = "En feil oppstod. Vennligst prøv igjen eller kontakt support hvis problemet vedvarer.";
+                    if (data.code === "user_exists") {
+                        errorMessage = "Brukernavn eller e-post eksisterer allerede. Vennligst prøv en annen.";
+                    }
+                    messageContainer.innerHTML = `<p class="error-message">${errorMessage}</p>`;
                 }
-                messageContainer.innerHTML = `<p class="error-message">${errorMessage}</p>`;
-            }
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-            messageContainer.innerHTML = `<p class="error-message">Vi opplever tekniske problemer. Vennligst prøv igjen senere eller kontakt support.</p>`;
-        });
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                messageContainer.innerHTML = `<p class="error-message">Vi opplever tekniske problemer. Vennligst prøv igjen senere eller kontakt support.</p>`;
+            });
     });
+
+    function convertCoordsToAddress(lat, lng, callback) {
+        var geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(lat, lng);
+        geocoder.geocode({ 'location': latlng }, function (results, status) {
+            if (status === 'OK' && results[0]) {
+                callback(results[0].formatted_address);
+            } else {
+                console.error('Geocoder failed due to: ' + status);
+                callback("Unknown Address");
+            }
+        });
+    }
 });
