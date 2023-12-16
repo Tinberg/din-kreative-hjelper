@@ -148,42 +148,58 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fetch the user profile data from the server
     fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display the user's username and email
-            document.getElementById('username').textContent = data.username;
-            document.getElementById('email').textContent = data.email;
-                
-            // Display the user's location
-            const locationElement = document.getElementById("userLocation");
-            locationElement.textContent = data.location || "Din posisjon er ikke angitt";
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Display the user's username and email
+        document.getElementById('username').textContent = data.username;
+        document.getElementById('email').textContent = data.email;
+            
+        // Display the user's location on the map
+        if (data.location) {
+            const locationParts = data.location.split(', ');
+            const latitude = parseFloat(locationParts[0]);
+            const longitude = parseFloat(locationParts[1]);
+            initMap(latitude, longitude);
 
-            // Display the user's location on the map
-            if (data.location) {
-                const locationParts = data.location.split(', ');
-                const latitude = parseFloat(locationParts[0]);
-                const longitude = parseFloat(locationParts[1]);
-                initMap(latitude, longitude);
-            }
+            // Convert coordinates to a readable address and display
+            convertCoordsToAddress(latitude, longitude, function(address) {
+                const locationElement = document.getElementById("userLocation"); // Adjust this ID to match your location input field
+                locationElement.value = address;
+            });
+        }
 
-            // Event listener for updating location
-            const updateButton = document.getElementById('updateLocationButton');
-            if (updateButton) {
-                updateButton.addEventListener('click', function () {
-                    const newLocation = document.getElementById('newLocation').value;
-                    updateLocation(newLocation);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            redirectToLogin(error.message);
-        });
+        // Event listener for updating location
+        const updateButton = document.getElementById('updateLocationButton');
+        if (updateButton) {
+            updateButton.addEventListener('click', function () {
+                const newLocation = document.getElementById('newLocation').value;
+                updateLocation(newLocation);
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        redirectToLogin(error.message);
+    });
+
+    // Function to convert coordinates to a readable address
+function convertCoordsToAddress(lat, lng, callback) {
+    var geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode({ 'location': latlng }, function(results, status) {
+        if (status === 'OK' && results[0]) {
+            callback(results[0].formatted_address);
+        } else {
+            console.error('Geocoder failed due to: ' + status);
+            callback("Unknown Address");
+        }
+    });
+}
 
         let currentCoordinates; // Variable to store the current coordinates
 
