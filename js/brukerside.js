@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(data => {
             localStorage.setItem("userLocation", currentCoordinates);
-            displayLocation(formattedAddress);
+            displayLocation(formattedAddress); // This should include calling initMap
         })
         .catch(error => {
             console.error('Error:', error);
@@ -96,17 +96,33 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function initMap(latitude, longitude) {
-        var userLocation = { lat: latitude, lng: longitude };
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 12,
-            center: userLocation
-        });
-        new google.maps.Marker({
-            position: userLocation,
-            map: map
-        });
-    }
+  // Define map and marker as global variables
+  let map;
+  let marker;
+  
+  function initMap(latitude, longitude) {
+      const userLocation = { lat: latitude, lng: longitude };
+  
+      // Check if the map and marker are already initialized
+      if (!map) {
+          map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 12,
+              center: userLocation
+          });
+      }
+  
+      if (!marker) {
+          marker = new google.maps.Marker({
+              position: userLocation,
+              map: map
+          });
+      } else {
+          // Update marker position
+          marker.setPosition(userLocation);
+      }
+  }
+  
+
 
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
