@@ -240,19 +240,27 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize the Autocomplete feature for the address input
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById('newLocation'), {types: ['geocode']});
-
+            document.getElementById('newLocation'), { types: ['geocode'] });
+    
         autocomplete.addListener('place_changed', function() {
             const place = autocomplete.getPlace();
             if (!place.geometry) {
                 console.log("No details available for input: '" + place.name + "'");
                 return;
             }
-            // Update location in the input field
-            document.getElementById('newLocation').value = 
-                place.geometry.location.lat() + ', ' + place.geometry.location.lng();
+    
+            // Store the coordinates in a separate variable or hidden field
+            const coords = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
+            // Use this 'coords' variable to update the map and user profile
+    
+            // Update the visible input field with the formatted address
+            document.getElementById('newLocation').value = place.formatted_address;
+    
+            // Example: Call a function to update the map with new coordinates
+            updateMapWithNewLocation(coords);
         });
     }
-
-    initAutocomplete(); // Initialize the autocomplete feature
+    
+    initAutocomplete();
+    
 });
