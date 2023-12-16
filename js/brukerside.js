@@ -66,11 +66,20 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             localStorage.setItem("userLocation", currentCoordinates);
             displayLocation(formattedAddress);
+    
+            // Parse the currentCoordinates to get latitude and longitude
+            const coords = currentCoordinates.split(', ');
+            if (coords.length === 2) {
+                const latitude = parseFloat(coords[0]);
+                const longitude = parseFloat(coords[1]);
+                initMap(latitude, longitude); // Update the map
+            }
         })
         .catch(error => {
             console.error('Error:', error);
         });
     }
+    
 
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
@@ -86,29 +95,15 @@ document.addEventListener("DOMContentLoaded", function () {
         if (locationParts.length === 2) {
             const latitude = parseFloat(locationParts[0]);
             const longitude = parseFloat(locationParts[1]);
-
-            // Check if the location is too broad (like a city)
-            if (isBroadLocation(latitude, longitude)) {
-                // Handle broad location differently, e.g., using city center
-                document.getElementById("userLocation").textContent = "Default City Center Address";
-                initMap(latitude, longitude); // Initialize map using city center coordinates
-            } else {
-                convertCoordsToAddress(latitude, longitude, function(address) {
-                    document.getElementById("userLocation").textContent = address;
-                });
-                initMap(latitude, longitude);
-            }
+            
+            convertCoordsToAddress(latitude, longitude, function(address) {
+                document.getElementById("userLocation").textContent = address;
+            });
+            initMap(latitude, longitude);
         } else {
             console.error('Invalid location format');
         }
     }
-
-    function isBroadLocation(lat, lng) {
-        // Add logic to determine if the coordinates are too broad
-        // This could be based on certain criteria or predefined broad locations
-        return false; // Replace with actual logic
-    }
-
 
     function initMap(latitude, longitude) {
         const userLocation = { lat: latitude, lng: longitude };
@@ -121,6 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
             map: map
         });
     }
+    
 
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
