@@ -138,6 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const geocoder = new google.maps.Geocoder();
         const latlng = new google.maps.LatLng(lat, lng);
         geocoder.geocode({ 'location': latlng }, function(results, status) {
+            console.log(results); // Debugging line to see the results
             if (status === 'OK') {
                 if (results[0]) {
                     callback(results[0].formatted_address);
