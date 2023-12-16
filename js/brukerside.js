@@ -34,9 +34,15 @@ document.addEventListener("DOMContentLoaded", function () {
         if (updateButton) {
             updateButton.addEventListener('click', function () {
                 const newLocation = document.getElementById('newLocation').value;
+                
+                // Call the updateLocation function to update the location data and map
                 updateLocation(newLocation);
+        
+                // Call the updateLocationOnMap function to update the map
+                updateLocationOnMap(latitude, longitude); // Pass the new latitude and longitude
             });
         }
+        
     })
     .catch(error => {
         console.error('Error:', error);
