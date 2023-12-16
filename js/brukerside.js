@@ -93,7 +93,6 @@ document.addEventListener("DOMContentLoaded", function () {
             initMap(latitude, longitude);
         } else {
             console.error('Invalid location format');
-            // Consider providing a default location or handling this case more gracefully
         }
     }
 
