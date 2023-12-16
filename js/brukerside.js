@@ -20,9 +20,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json();
     })
     .then(data => {
+        // Display username and email
         document.getElementById('username').textContent = data.username;
         document.getElementById('email').textContent = data.email;
 
+        // Handle and display location
         if (data.location) {
             localStorage.setItem("userLocation", data.location);
             displayLocation(data.location);
@@ -47,11 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentCoordinates;
 
     function updateLocation(formattedAddress) {
-        if (!currentCoordinates) {
-            console.error("currentCoordinates is undefined");
-            return;
-        }
-
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
             method: 'POST',
             headers: {
@@ -69,11 +66,20 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             localStorage.setItem("userLocation", currentCoordinates);
             displayLocation(formattedAddress);
+    
+            // Parse the currentCoordinates to get latitude and longitude
+            const coords = currentCoordinates.split(', ');
+            if (coords.length === 2) {
+                const latitude = parseFloat(coords[0]);
+                const longitude = parseFloat(coords[1]);
+                initMap(latitude, longitude); // Update the map
+            }
         })
         .catch(error => {
             console.error('Error:', error);
         });
     }
+    
 
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
@@ -84,11 +90,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const locationElement = document.getElementById("userLocation");
         locationElement.textContent = locationString;
 
+        // Parse the locationString to get latitude and longitude
         const locationParts = locationString.split(', ');
         if (locationParts.length === 2) {
             const latitude = parseFloat(locationParts[0]);
             const longitude = parseFloat(locationParts[1]);
-
+            
             convertCoordsToAddress(latitude, longitude, function(address) {
                 document.getElementById("userLocation").textContent = address;
             });
@@ -109,6 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
             map: map
         });
     }
+    
 
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
@@ -122,23 +130,18 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             currentCoordinates = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
-            updateLocation(place.formatted_address || "Broad Location");
+            updateLocation(place.formatted_address);
         });
     }
 
     function convertCoordsToAddress(lat, lng, callback) {
         const geocoder = new google.maps.Geocoder();
         const latlng = new google.maps.LatLng(lat, lng);
-
         geocoder.geocode({ 'location': latlng }, function(results, status) {
-            if (status === 'OK') {
-                if (results[0]) {
-                    callback(results[0].formatted_address);
-                } else {
-                    callback("Broad Location");
-                }
+            if (status === 'OK' && results[0]) {
+                callback(results[0].formatted_address);
             } else {
-                console.error('Geocoder failed due to:', status);
+                console.error('Geocoder failed due to: ' + status);
                 callback("Unknown Address");
             }
         });
