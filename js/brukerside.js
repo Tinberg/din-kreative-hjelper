@@ -127,13 +127,38 @@ document.addEventListener("DOMContentLoaded", function () {
     function convertCoordsToAddress(lat, lng, callback) {
         const geocoder = new google.maps.Geocoder();
         const latlng = new google.maps.LatLng(lat, lng);
+    
         geocoder.geocode({ 'location': latlng }, function(results, status) {
-            if (status === 'OK' && results[0]) {
-                callback(results[0].formatted_address);
+            if (status === 'OK') {
+                if (results[0]) {
+                    const locationType = getLocationType(results[0]);
+    
+                    if (locationType === 'broad') {
+                        // Fallback for broad locations like cities
+                        // You can use a default address or city center coordinates here
+                        callback("Default Address for Broad Location");
+                    } else {
+                        // Specific address found
+                        callback(results[0].formatted_address);
+                    }
+                } else {
+                    console.error('No results found');
+                    callback("Unknown Address");
+                }
             } else {
                 console.error('Geocoder failed due to: ' + status);
                 callback("Unknown Address");
             }
         });
     }
+    
+    function getLocationType(result) {
+        // Check the types array in the result for a broad location indicator
+        // For example, if the type includes 'locality', it's a broad location like a city
+        if (result.types.includes('locality')) {
+            return 'broad';
+        }
+        return 'specific';
+    }
+    
 });
