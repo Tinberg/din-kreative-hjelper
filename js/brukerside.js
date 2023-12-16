@@ -97,8 +97,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function initMap(latitude, longitude) {
-        var userLocation = { lat: latitude, lng: longitude };
-        var map = new google.maps.Map(document.getElementById('map'), {
+        const userLocation = { lat: latitude, lng: longitude };
+        const map = new google.maps.Map(document.getElementById('map'), {
             zoom: 12,
             center: userLocation
         });
@@ -125,8 +125,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function convertCoordsToAddress(lat, lng, callback) {
-        var geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(lat, lng);
+        const geocoder = new google.maps.Geocoder();
+        const latlng = new google.maps.LatLng(lat, lng);
         geocoder.geocode({ 'location': latlng }, function(results, status) {
             if (status === 'OK' && results[0]) {
                 callback(results[0].formatted_address);
