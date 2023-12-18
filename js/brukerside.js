@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (userSelectedAddress) {
                     displayLocation(userSelectedAddress, data.location);
                 } else {
-                    // Fallback: Prompt for address or use reverse geocoding
+                    // Fallback to reverse geocoding or prompt user for address
                     reverseGeocodeAndDisplay(coords.latitude, coords.longitude);
                 }
             }
