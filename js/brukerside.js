@@ -264,41 +264,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function reverseGeocode(lat, lng) {
     return new Promise((resolve, reject) => {
-      const geocoder = new google.maps.Geocoder();
-      geocoder.geocode({ location: { lat, lng } }, function (results, status) {
-        if (status === "OK") {
-          if (results[0]) {
-            console.log(results[0]); // Log the result for inspection
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ 'location': { lat, lng } }, function (results, status) {
+            if (status === 'OK') {
+                if (results[0]) {
+                    let detailedAddress = results.find(result => 
+                        result.types.includes('street_address') || 
+                        result.types.includes('premise'));
 
-            let city = "";
-            let country = "";
+                    if (!detailedAddress) {
+                        detailedAddress = results[0]; // fallback to the first result
+                    }
 
-            results[0].address_components.forEach((component) => {
-              if (
-                component.types.includes("locality") ||
-                component.types.includes("administrative_area_level_1")
-              ) {
-                city = component.long_name;
-              }
-              if (component.types.includes("country")) {
-                country = component.long_name;
-              }
-            });
-
-            if (city && country) {
-              resolve(`${city}, ${country}`);
+                    const address = detailedAddress.formatted_address;
+                    resolve(address);
+                } else {
+                    reject('No results found');
+                }
             } else {
-              reject("City or country not found");
+                reject('Geocoder failed due to: ' + status);
             }
-          } else {
-            reject("No results found");
-          }
-        } else {
-          reject("Geocoder failed due to: " + status);
-        }
-      });
+        });
     });
-  }
+}
+
 
   function reverseGeocodeAndDisplay(lat, lng) {
     reverseGeocode(lat, lng)
