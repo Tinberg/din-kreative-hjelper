@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         displayLocation(userSelectedAddress, data.location);
                     } else {
                         // Use a default location when userSelectedAddress is not available
-                        displayLocation("ingen spesifikk adresse lagt til, se området på kart.", data.location);
+                        displayLocation("Ingen spesifikk adresse er oppgitt. Vennligst bruk kartet for å finne personens omtrentlige beliggenhet", data.location);
                     }
                 }
     
