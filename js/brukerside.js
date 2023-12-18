@@ -200,17 +200,20 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
 
-            if (data.location) {
-                const coords = parseCoordinates(data.location);
-                if (coords) {
-                    userSelectedAddress = localStorage.getItem("user_selected_address");
-                    if (userSelectedAddress) {
-                        displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
-                    } else {
-                        reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
-                    }
+            // Fetch user-selected address from the CMS
+            fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/get-user-selected-address', { headers })
+            .then(response => response.json())
+            .then(userSelectedAddressData => {
+                const userSelectedAddress = userSelectedAddressData.userSelectedAddress;
+                if (userSelectedAddress) {
+                    displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
+                } else {
+                    reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
                 }
-            }
+            })
+            .catch(error => {
+                console.error('Error fetching user-selected address:', error);
+            });
 
             const updateButton = document.getElementById('updateLocationButton');
             if (updateButton) {
@@ -233,8 +236,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Update the server with the new location
         const newLocationData = {
-            location: tempCoordinates
+            location: tempCoordinates,
+            userSelectedAddress: formattedAddress // Include user-selected address
         };
+
+        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/save-user-selected-address', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(newLocationData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update location on server');
+            }
+            // Location and user-selected address updated successfully on the server
+        })
+        .catch(error => {
+            console.error('Error updating location on server:', error);
+        });
 
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
             method: 'POST',
