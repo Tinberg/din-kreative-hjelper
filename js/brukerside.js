@@ -201,25 +201,17 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
-
+    
             if (data.location) {
                 const coords = parseCoordinates(data.location);
                 if (coords) {
+                    userSelectedAddress = localStorage.getItem('user_selected_address'); // Re-fetch in case it was set elsewhere
                     if (userSelectedAddress) {
                         displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
                     } else {
-                        reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
+                        reverseGeocodeAndDisplay(coords.latitude, coords.longitude);
                     }
                 }
-            }
-
-            const updateButton = document.getElementById('updateLocationButton');
-            if (updateButton) {
-                updateButton.addEventListener('click', function () {
-                    if (tempCoordinates && tempFormattedAddress) {
-                        updateLocation(tempFormattedAddress);
-                    }
-                });
             }
         })
         .catch(error => {
@@ -227,6 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
             redirectToLogin(error.message);
         });
     }
+    
 
     function updateLocation(formattedAddress) {
         displayLocation(formattedAddress, tempCoordinates);
@@ -293,15 +286,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
 
-    function reverseGeocodeAndDisplay(lat, lng, location) {
+    function reverseGeocodeAndDisplay(lat, lng) {
         reverseGeocode(lat, lng)
             .then(address => {
-                displayLocation(address, location);
+                displayLocation(address, {latitude: lat, longitude: lng});
             })
             .catch(error => {
                 console.error('Error fetching address:', error);
             });
     }
+    
 
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
