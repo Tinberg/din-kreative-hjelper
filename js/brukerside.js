@@ -103,36 +103,35 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function reverseGeocodeAndDisplay(lat, lng, location) {
-        reverseGeocode(lat, lng)
-            .then(results => {
-                let displayAddress;
+        if (userSelectedAddress) {
+            // Use the user-selected address directly
+            displayLocation(userSelectedAddress, location);
+        } else {
+            // Perform reverse geocoding to get the address
+            reverseGeocode(lat, lng)
+                .then(address => {
+                    let formattedAddress = formatAddressFromResults(address);
+                    displayLocation(formattedAddress, location);
+                })
+                .catch(error => {
+                    console.error('Error fetching address:', error);
+                });
+        }
+    }
+    function formatAddressFromResults(address) {
+        // Assuming 'address' is the full address string from reverse geocoding results
+        // You need to parse this string to extract the city and country
+        // This is a placeholder implementation; adjust it based on how your address string is structured
     
-                if (userSelectedAddress) {
-                    // If user has selected a specific address, use that
-                    displayAddress = userSelectedAddress;
-                } else {
-                    // Else, display the general format with postal code and city
-                    let postalCode = '';
-                    let city = '';
-                    for (const component of results.address_components) {
-                        if (component.types.includes('postal_code')) {
-                            postalCode = component.long_name;
-                        }
-                        if (component.types.includes('locality')) {
-                            city = component.long_name;
-                        }
-                    }
-                    displayAddress = `${postalCode}, ${city}, Norge`;
-                }
+        // Example: "123 Main St, Springfield, IL, USA" -> "Springfield, USA"
+        let parts = address.split(', ');
+        let city = parts.slice(-3, -2)[0]; // second to last element for the city
+        let country = parts.slice(-1)[0]; // last element for the country
     
-                displayLocation(displayAddress, location);
-            })
-            .catch(error => {
-                console.error('Error fetching address:', error);
-            });
+        return `${city}, ${country}`;
     }
     
-
+    
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
         window.location.href = '/html/logginn.html';
