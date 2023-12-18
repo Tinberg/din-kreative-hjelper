@@ -193,42 +193,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function fetchUserProfile() {
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('username').textContent = data.username;
-                document.getElementById('email').textContent = data.email;
-    
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('username').textContent = data.username;
+            document.getElementById('email').textContent = data.email;
+
+            if (data.location) {
                 const coords = parseCoordinates(data.location);
-    
                 if (coords) {
                     if (userSelectedAddress) {
-                        displayLocation(userSelectedAddress, data.location);
+                        displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
                     } else {
-                        // Use a default location when userSelectedAddress is not available
-                        displayLocation("Ingen spesifikk adresse er oppgitt. Vennligst bruk kartet for å finne personens omtrentlige beliggenhet", data.location);
+                        reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
                     }
                 }
-    
-                const updateButton = document.getElementById('updateLocationButton');
-                if (updateButton) {
-                    updateButton.addEventListener('click', function () {
-                        if (tempCoordinates && tempFormattedAddress) {
-                            updateLocation(tempFormattedAddress);
-                        }
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                redirectToLogin(error.message);
-            });
+            }
+
+            const updateButton = document.getElementById('updateLocationButton');
+            if (updateButton) {
+                updateButton.addEventListener('click', function () {
+                    if (tempCoordinates && tempFormattedAddress) {
+                        updateLocation(tempFormattedAddress);
+                    }
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            redirectToLogin(error.message);
+        });
     }
-    
 
     function updateLocation(formattedAddress) {
         displayLocation(formattedAddress, tempCoordinates);
@@ -291,10 +290,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function displayLocation(address, coordinates) {
-        document.getElementById("userLocation").textContent = address;
-        const coords = parseCoordinates(coordinates);
-        if (coords) {
-            initMap(coords.latitude, coords.longitude);
+        const userLocationElement = document.getElementById("userLocation");
+    
+        if (!address || address.trim() === '') {
+            userLocationElement.textContent = "Ingen spesifikk adresse er oppgitt. Vennligst bruk kartet for å finne personens omtrentlige beliggenhet.";
+        } else {
+            userLocationElement.textContent = address;
+            const coords = parseCoordinates(coordinates);
+            if (coords) {
+                initMap(coords.latitude, coords.longitude);
+            }
         }
     }
 
