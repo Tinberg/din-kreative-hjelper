@@ -291,56 +291,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function displayLocation(address, coordinates) {
         const userLocationElement = document.getElementById("userLocation");
-        userLocationElement.innerHTML = ""; // Clear the content
-    
-        // Split the address into parts
-        const addressParts = address.split(', ');
-    
-        // Create variables for each part of the address
-        let streetAddress = '';
-        let streetNumber = '';
-        let city = '';
-        let postalCode = '';
-        let country = '';
-    
-        // Assign parts of the address based on their availability
-        if (addressParts.length >= 1) {
-            streetAddress = addressParts[0];
-        }
-        if (addressParts.length >= 2) {
-            streetNumber = addressParts[1];
-        }
-        if (addressParts.length >= 3) {
-            city = addressParts[2];
-        }
-        if (addressParts.length >= 4) {
-            postalCode = addressParts[3];
-        }
-        if (addressParts.length >= 5) {
-            country = addressParts[4];
-        }
-    
-        // Display the address parts on the page
-        if (streetAddress) {
-            userLocationElement.innerHTML += `<div>Street Address: ${streetAddress}</div>`;
-        }
-        if (streetNumber) {
-            userLocationElement.innerHTML += `<div>Street Number: ${streetNumber}</div>`;
-        }
-        if (city) {
-            // Check if the address contains only city and country
-            if (addressParts.length === 2) {
-                userLocationElement.innerHTML += `<div>${city}, ${country}</div>`;
-            } else {
-                userLocationElement.innerHTML += `<div>City: ${city}</div>`;
-            }
-        }
-        if (postalCode) {
-            userLocationElement.innerHTML += `<div>Postal Code: ${postalCode}</div>`;
-        }
-        if (country && addressParts.length > 2) {
-            userLocationElement.innerHTML += `<div>Country: ${country}</div>`;
-        }
+        userLocationElement.textContent = address;
     
         // Continue with map initialization as needed
         const coords = parseCoordinates(coordinates);
@@ -348,7 +299,6 @@ document.addEventListener("DOMContentLoaded", function () {
             initMap(coords.latitude, coords.longitude);
         }
     }
-    
 
     function parseCoordinates(coordString) {
         const parts = coordString.split(', ');
