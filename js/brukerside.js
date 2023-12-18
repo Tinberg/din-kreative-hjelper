@@ -228,7 +228,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if (savedLocation) {
             const coords = parseCoordinates(savedLocation);
             if (coords) {
-                displayLocation("Din lagrede posisjon", savedLocation);
+                reverseGeocode(coords.latitude, coords.longitude)
+                    .then(address => {
+                        displayLocation(address, savedLocation);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching address:', error);
+                    });
             }
         }
     }
@@ -237,6 +243,23 @@ document.addEventListener("DOMContentLoaded", function () {
         currentCoordinates = tempCoordinates; // Update with the selected location
         localStorage.setItem("userLocation", currentCoordinates);
         displayLocation(formattedAddress, currentCoordinates);
+    }
+
+    function reverseGeocode(lat, lng) {
+        return new Promise((resolve, reject) => {
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'location': { lat, lng } }, function (results, status) {
+                if (status === 'OK') {
+                    if (results[0]) {
+                        resolve(results[0].formatted_address);
+                    } else {
+                        reject('No results found');
+                    }
+                } else {
+                    reject('Geocoder failed due to: ' + status);
+                }
+            });
+        });
     }
 
     function redirectToLogin(message) {
