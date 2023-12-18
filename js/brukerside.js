@@ -268,15 +268,23 @@ document.addEventListener("DOMContentLoaded", function () {
         geocoder.geocode({ 'location': { lat, lng } }, function (results, status) {
             if (status === 'OK') {
                 if (results[0]) {
-                    let detailedAddress = results.find(result => 
-                        result.types.includes('street_address') || 
-                        result.types.includes('premise'));
+                    console.log(results[0]); // Log the result for inspection
 
-                    if (!detailedAddress) {
-                        detailedAddress = results[0]; // fallback to the first result
+                    // Construct the address from the most specific to the most general component
+                    let addressParts = [];
+                    const addressComponents = results[0].address_components;
+                    
+                    for (let component of addressComponents) {
+                        if (component.types.includes('street_address') || 
+                            component.types.includes('route') || 
+                            component.types.includes('locality') ||
+                            component.types.includes('administrative_area_level_1') || 
+                            component.types.includes('country')) {
+                            addressParts.push(component.long_name);
+                        }
                     }
 
-                    const address = detailedAddress.formatted_address;
+                    const address = addressParts.join(', ');
                     resolve(address);
                 } else {
                     reject('No results found');
