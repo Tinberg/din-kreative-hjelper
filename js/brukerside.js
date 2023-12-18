@@ -277,21 +277,10 @@ document.addEventListener("DOMContentLoaded", function () {
     function reverseGeocodeAndDisplay(lat, lng, location) {
         reverseGeocode(lat, lng)
             .then(address => {
-                let city, country;
+                // Create the formatted address as "city, country"
+                const formattedAddress = `${location.city}, ${location.country}`;
     
-                // Iterate through the address components and extract city and country
-                address.forEach(component => {
-                    if (component.types.includes('locality')) {
-                        city = component.long_name;
-                    } else if (component.types.includes('country')) {
-                        country = component.long_name;
-                    }
-                });
-    
-                // Create the formatted address based on the extracted city and country
-                const formattedAddress = (city && country) ? `${city}, ${country}` : '';
-    
-                displayLocation(formattedAddress, location);
+                displayLocation(formattedAddress, { lat, lng });
             })
             .catch(error => {
                 console.error('Error fetching address:', error);
