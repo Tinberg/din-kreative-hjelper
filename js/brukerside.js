@@ -44,13 +44,14 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentCoordinates;
 
     function updateLocation(formattedAddress) {
+        const locationData = formattedAddress + '|' + currentCoordinates;
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             },
-            body: JSON.stringify({ location: currentCoordinates })
+            body: JSON.stringify({ location: locationData })
         })
         .then(response => {
             if (!response.ok) {
@@ -59,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
         })
         .then(data => {
-            localStorage.setItem("userLocation", currentCoordinates);
+            localStorage.setItem("userLocation", locationData);
             displayLocation(formattedAddress, currentCoordinates);
         })
         .catch(error => {
@@ -135,12 +136,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Load the saved location if available
-    const savedLocation = localStorage.getItem("userLocation");
-    if (savedLocation) {
-        displayLocation("Loading...", savedLocation);
+    // Function to display saved location
+    function displaySavedLocation() {
+        const savedLocation = localStorage.getItem("userLocation");
+        if (savedLocation) {
+            const [address, coordinates] = savedLocation.split('|');
+            displayLocation(address, coordinates);
+        } else {
+            document.getElementById("userLocation").textContent = 'No location set';
+        }
     }
 
-    // Add any other functions or event listeners you need
-    // ...
+    // Call displaySavedLocation to show the saved location on page load
+    displaySavedLocation();
+
+    // ... any other functions or event listeners ...
 });
