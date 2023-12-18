@@ -190,67 +190,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function fetchUserProfile() {
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('username').textContent = data.username;
-                document.getElementById('email').textContent = data.email;
-    
-                if (data.location) {
-                    const coords = parseCoordinates(data.location);
-                    if (coords) {
-                        if (userSelectedAddress) {
-                            // Display the userSelectedAddress if available
-                            displayLocation(userSelectedAddress, data.location);
-    
-                            // Update the user's location in the user profile
-                            data.location = userSelectedAddress;
-                            updateProfile(data);
-                        } else {
-                            // Display the data.location (previously used reverseGeocodeAndDisplay)
-                            displayLocation(data.location, data.location);
-                        }
-                    }
-                }
-    
-                const updateButton = document.getElementById('updateLocationButton');
-                if (updateButton) {
-                    updateButton.addEventListener('click', function () {
-                        if (tempCoordinates && tempFormattedAddress) {
-                            updateLocation(tempFormattedAddress);
-                        }
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                redirectToLogin(error.message);
-            });
-    }
-    
-    function updateProfile(profileData) {
-        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-profile', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(profileData)
-        })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Failed to update profile on server');
+                throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
             }
-            // Profile updated successfully on the server
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('username').textContent = data.username;
+            document.getElementById('email').textContent = data.email;
+
+            if (data.location) {
+                const coords = parseCoordinates(data.location);
+                if (coords) {
+                    if (userSelectedAddress) {
+                        displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
+                    } else {
+                        reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
+                    }
+                }
+            }
+
+            const updateButton = document.getElementById('updateLocationButton');
+            if (updateButton) {
+                updateButton.addEventListener('click', function () {
+                    if (tempCoordinates && tempFormattedAddress) {
+                        updateLocation(tempFormattedAddress);
+                    }
+                });
+            }
         })
         .catch(error => {
-            console.error('Error updating profile on server:', error);
+            console.error('Error:', error);
+            redirectToLogin(error.message);
         });
     }
+
     function updateLocation(formattedAddress) {
         displayLocation(formattedAddress, tempCoordinates);
         localStorage.setItem('user_selected_address', formattedAddress); // Save the user-selected address
