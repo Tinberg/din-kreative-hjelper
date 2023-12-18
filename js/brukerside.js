@@ -214,15 +214,24 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 console.log('No location data found in user profile');
             }
-            
-            // ... rest of the function ...
+
+            // Fetch and display stored location
+            fetchStoredLocation();
+
+            const updateButton = document.getElementById('updateLocationButton');
+            if (updateButton) {
+                updateButton.addEventListener('click', function () {
+                    if (tempCoordinates && tempFormattedAddress) {
+                        updateLocation(tempFormattedAddress);
+                    }
+                });
+            }
         })
         .catch(error => {
             console.error('Error:', error);
             redirectToLogin(error.message);
         });
     }
-    
 
     //Retrieves the stored location from localStorage and if available,
 
