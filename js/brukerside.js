@@ -290,6 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function displayLocation(address, coordinates) {
+        console.log("Received address:", address); // Log the received address
         const userLocationElement = document.getElementById("userLocation");
         userLocationElement.textContent = address;
     
@@ -299,6 +300,7 @@ document.addEventListener("DOMContentLoaded", function () {
             initMap(coords.latitude, coords.longitude);
         }
     }
+    
 
     function parseCoordinates(coordString) {
         const parts = coordString.split(', ');
