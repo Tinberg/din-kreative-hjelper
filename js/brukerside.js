@@ -313,23 +313,24 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function initAutocomplete() {
-        const autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById('newLocation'), { types: ['geocode'] });
-
-        autocomplete.addListener('place_changed', function() {
-            const place = autocomplete.getPlace();
-            if (!place.geometry) {
-                console.log("No details available for input: '" + place.name + "'");
-                return;
-            }
-
-            const lat = place.geometry.location.lat();
-            const lng = place.geometry.location.lng();
-
-            tempCoordinates = lat + ', ' + lng;
-            tempFormattedAddress = place.formatted_address || place.name;
-        });
-    }
+   
 });
 
+function initAutocomplete() {
+    const autocomplete = new google.maps.places.Autocomplete(
+        document.getElementById('newLocation'), { types: ['geocode'] });
+
+    autocomplete.addListener('place_changed', function() {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) {
+            console.log("No details available for input: '" + place.name + "'");
+            return;
+        }
+
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+
+        tempCoordinates = lat + ', ' + lng;
+        tempFormattedAddress = place.formatted_address || place.name;
+    });
+}
