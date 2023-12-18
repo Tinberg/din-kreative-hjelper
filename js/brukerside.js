@@ -169,6 +169,7 @@
 
 
 
+
 document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem('jwt_token');
 
@@ -202,7 +203,16 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
 
-            reverseGeocodeAndDisplay(data);
+            if (data.location) {
+                const coords = parseCoordinates(data.location);
+                if (coords) {
+                    if (userSelectedAddress) {
+                        displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
+                    } else {
+                        reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
+                    }
+                }
+            }
 
             const updateButton = document.getElementById('updateLocationButton');
             if (updateButton) {
@@ -264,29 +274,43 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function reverseGeocodeAndDisplay(data) {
-        let lat, lng;
-
-        if (data.location) {
-            const coords = parseCoordinates(data.location);
-            if (coords) {
-                lat = coords.latitude;
-                lng = coords.longitude;
+    function reverseGeocodeAndDisplay(lat, lng, location) {
+        reverseGeocode(lat, lng)
+            .then(results => {
+                // Customize the formatted address as per your needs
+                const city = getAddressComponent(results, 'locality'); // Extract the city
+                const country = getAddressComponent(results, 'country'); // Extract the country
+                const customAddress = `${city}, ${country}`; // Create a custom address
+    
+                displayLocation(customAddress, location);
+            })
+            .catch(error => {
+                console.error('Error fetching address:', error);
+            });
+    }
+    
+    // Helper function to extract an address component from Geocoder results
+    function getAddressComponent(results, componentType) {
+        for (let i = 0; i < results.length; i++) {
+            const addressComponents = results[i].address_components;
+            for (let j = 0; j < addressComponents.length; j++) {
+                const types = addressComponents[j].types;
+                if (types.includes(componentType)) {
+                    return addressComponents[j].long_name;
+                }
             }
         }
-
-        const formattedAddress = data.location || "Oslo, Norge";
-
-        displayLocation(formattedAddress, { lat, lng });
+        return '';
     }
+    
 
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
         window.location.href = '/html/logginn.html';
     }
 
-    function displayLocation(formattedAddress, coordinates) {
-        document.getElementById("userLocation").textContent = formattedAddress;
+    function displayLocation(address, coordinates) {
+        document.getElementById("userLocation").textContent = address;
         const coords = parseCoordinates(coordinates);
         if (coords) {
             initMap(coords.latitude, coords.longitude);
@@ -334,3 +358,5 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+
