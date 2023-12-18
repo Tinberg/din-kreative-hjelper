@@ -275,39 +275,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function reverseGeocodeAndDisplay(lat, lng, location) {
-        if (tempCoordinates && tempFormattedAddress) {
-            displayLocation(tempFormattedAddress, location);
-        } else {
-            reverseGeocode(lat, lng)
-                .then(results => {
-                    // Customize the formatted address as per your needs
-                    const city = getAddressComponent(results, 'locality'); // Extract the city
-                    const country = getAddressComponent(results, 'country'); // Extract the country
-                    const customAddress = `${city}, ${country}`; // Create a custom address
-    
-                    displayLocation(customAddress, location);
-                })
-                .catch(error => {
-                    console.error('Error fetching address:', error);
-                });
-        }
+        reverseGeocode(lat, lng)
+            .then(address => {
+                displayLocation(address, location);
+            })
+            .catch(error => {
+                console.error('Error fetching address:', error);
+            });
     }
-    
-    
-    // Helper function to extract an address component from Geocoder results
-    function getAddressComponent(results, componentType) {
-        for (let i = 0; i < results.length; i++) {
-            const addressComponents = results[i].address_components;
-            for (let j = 0; j < addressComponents.length; j++) {
-                const types = addressComponents[j].types;
-                if (types.includes(componentType)) {
-                    return addressComponents[j].long_name;
-                }
-            }
-        }
-        return '';
-    }
-    
 
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
@@ -363,5 +338,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
 
 
