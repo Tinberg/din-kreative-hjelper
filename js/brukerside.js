@@ -200,20 +200,16 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
 
-            // Fetch user-selected address from the CMS
-            fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/get-user-selected-address', { headers })
-            .then(response => response.json())
-            .then(userSelectedAddressData => {
-                const userSelectedAddress = userSelectedAddressData.userSelectedAddress;
-                if (userSelectedAddress) {
-                    displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
-                } else {
-                    reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
+            if (data.location) {
+                const coords = parseCoordinates(data.location);
+                if (coords) {
+                    if (userSelectedAddress) {
+                        displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
+                    } else {
+                        displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
+                    }
                 }
-            })
-            .catch(error => {
-                console.error('Error fetching user-selected address:', error);
-            });
+            }
 
             const updateButton = document.getElementById('updateLocationButton');
             if (updateButton) {
@@ -236,27 +232,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Update the server with the new location
         const newLocationData = {
-            location: tempCoordinates,
-            userSelectedAddress: formattedAddress // Include user-selected address
+            location: tempCoordinates
         };
-
-        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/save-user-selected-address', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(newLocationData)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to update location on server');
-            }
-            // Location and user-selected address updated successfully on the server
-        })
-        .catch(error => {
-            console.error('Error updating location on server:', error);
-        });
 
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
             method: 'POST',
