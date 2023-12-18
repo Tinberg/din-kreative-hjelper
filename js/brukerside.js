@@ -209,9 +209,26 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
-
-            if (data.location) {
-                // Convert coordinates to a human-readable address and update map
+    
+            // Check if the user already has a location set in the profile
+            if (!data.location) {
+                // If not, then use the location from localStorage if it exists
+                const userLocation = getLocationFromLocalStorage();
+                if (userLocation) {
+                    // Convert coordinates to a human-readable address and update map
+                    const coords = parseCoordinates(userLocation);
+                    if (coords) {
+                        reverseGeocode(coords.latitude, coords.longitude)
+                            .then(address => {
+                                displayLocation(address, userLocation);
+                            })
+                            .catch(error => {
+                                console.error('Error fetching address:', error);
+                            });
+                    }
+                }
+            } else {
+                // If the user has a location in the profile, use that location
                 const coords = parseCoordinates(data.location);
                 if (coords) {
                     reverseGeocode(coords.latitude, coords.longitude)
@@ -223,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
                 }
             }
-
+    
             const updateButton = document.getElementById('updateLocationButton');
             if (updateButton) {
                 updateButton.addEventListener('click', function () {
@@ -238,6 +255,7 @@ document.addEventListener("DOMContentLoaded", function () {
             redirectToLogin(error.message);
         });
     }
+    
 
     function updateLocation(formattedAddress) {
         localStorage.setItem("userLocation", tempCoordinates);
