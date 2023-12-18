@@ -270,11 +270,25 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
-
     function reverseGeocodeAndDisplay(lat, lng, location) {
         reverseGeocode(lat, lng)
             .then(address => {
-                displayLocation(address, location);
+                const addressComponents = address.split(', ');
+    
+                // Check if the address contains a locality (city) and country
+                let city, country;
+                addressComponents.forEach(component => {
+                    if (component.includes('locality')) {
+                        city = component.split(' ')[0]; // Extract the city
+                    } else if (component.includes('country')) {
+                        country = component.split(' ')[0]; // Extract the country
+                    }
+                });
+    
+                // Create the formatted address based on available components
+                const formattedAddress = (city && country) ? `${city}, ${country}` : address;
+    
+                displayLocation(formattedAddress, location);
             })
             .catch(error => {
                 console.error('Error fetching address:', error);
