@@ -285,19 +285,21 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    function formatAddress(addressComponents) {
-        let city = '';
-        let postcode = '';
-        for (let i = 0; i < addressComponents.length; i++) {
-            if (addressComponents[i].types.includes("postal_code")) {
-                postcode = addressComponents[i].long_name;
-            }
-            if (addressComponents[i].types.includes("locality") || addressComponents[i].types.includes("administrative_area_level_1")) {
-                city = addressComponents[i].long_name;
-            }
+
+function formatAddress(addressComponents) {
+    let city = '';
+    let postcode = '';
+    for (let component of addressComponents) {
+        if (component.types.includes("postal_code")) {
+            postcode = component.long_name;
         }
-        return postcode ? `${postcode}, ${city}` : city;
+        if (component.types.includes("locality") || component.types.includes("administrative_area_level_1")) {
+            city = component.long_name;
+        }
     }
+    return [postcode, city].filter(Boolean).join(', ');
+}
+
 
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
