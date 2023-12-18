@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (userSelectedAddress) {
                         displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
                     } else {
-                        reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
+                        displayLocation(data.location, data.location);
                     }
                 }
             }
@@ -302,6 +302,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     }
+    
 
     function parseCoordinates(coordString) {
         const parts = coordString.split(', ');
