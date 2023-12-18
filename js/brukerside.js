@@ -91,7 +91,8 @@ document.addEventListener("DOMContentLoaded", function () {
             geocoder.geocode({ 'location': { lat, lng } }, function (results, status) {
                 if (status === 'OK') {
                     if (results[0]) {
-                        resolve(results[0].formatted_address);
+                        // Resolve with detailed address components
+                        resolve(results[0].address_components);
                     } else {
                         reject('No results found');
                     }
@@ -104,13 +105,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function reverseGeocodeAndDisplay(lat, lng, location) {
         if (userSelectedAddress) {
-            // Use the user-selected address directly
             displayLocation(userSelectedAddress, location);
         } else {
-            // Perform reverse geocoding to get the address
             reverseGeocode(lat, lng)
-                .then(address => {
-                    let formattedAddress = formatAddressFromResults(address);
+                .then(addressComponents => {
+                    let formattedAddress = formatAddressFromResults(addressComponents);
                     displayLocation(formattedAddress, location);
                 })
                 .catch(error => {
@@ -118,20 +117,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         }
     }
-    function formatAddressFromResults(fullAddress) {
-        // Assuming 'fullAddress' is a string containing the full address
-        // You need to parse this string to extract the postal code, city, and country
-        // This implementation is a placeholder; adjust it based on your address format
     
-        // Example: "Torget 5, 3181 Horten, Norway" -> "3181, Horten, Norway"
-        let addressParts = fullAddress.split(', ');
-        let postalCode = addressParts[0].split(' ')[1]; // Assuming postal code follows the street name
-        let city = addressParts[1].trim(); // City
-        let country = addressParts[2].trim(); // Country
+
+    function formatAddressFromResults(addressComponents) {
+        let postalCode = '';
+        let city = '';
+        let country = '';
+    
+        addressComponents.forEach(component => {
+            if (component.types.includes('postal_code')) {
+                postalCode = component.long_name;
+            } else if (component.types.includes('locality')) {
+                city = component.long_name;
+            } else if (component.types.includes('country')) {
+                country = component.long_name;
+            }
+        });
     
         return `${postalCode}, ${city}, ${country}`;
     }
-    
     
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
