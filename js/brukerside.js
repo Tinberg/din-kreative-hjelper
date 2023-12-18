@@ -242,9 +242,32 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateLocation(formattedAddress) {
         localStorage.setItem("userLocation", tempCoordinates);
         displayLocation(formattedAddress, tempCoordinates);
+    
         // Update the server with the new location
-        // Add your server update logic here
+        const newLocationData = {
+            location: tempCoordinates
+        };
+    
+        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(newLocationData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update location on server');
+            }
+            // Location updated successfully on the server
+        })
+        .catch(error => {
+            console.error('Error updating location on server:', error);
+            // Handle the error here
+        });
     }
+    
 
     function reverseGeocode(lat, lng) {
         return new Promise((resolve, reject) => {
