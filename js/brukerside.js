@@ -103,30 +103,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function reverseGeocodeAndDisplay(lat, lng, userProvidedAddress) {
-        reverseGeocode(lat, lng)
-            .then(addressComponents => {
-                let formattedAddress;
-                if (isSpecificStreetAddress(userProvidedAddress)) {
-                    // Use the specific street address
-                    formattedAddress = userProvidedAddress;
-                } else {
-                    // Format the address to show postal code, city, and country
-                    formattedAddress = formatAddressFromResults(addressComponents);
-                }
-                displayLocation(formattedAddress, { lat, lng });
-            })
-            .catch(error => {
-                console.error('Error fetching address:', error);
-            });
-    }
-    
-    
-    function isSpecificStreetAddress(address) {
-        // Implement logic to determine if the provided address is a specific street address
-        // This might be a simple check for a street number or a more complex analysis
-        // Example check: return address.split(',').length > 2;
-        return /\d/.test(address);
+    function reverseGeocodeAndDisplay(lat, lng, location) {
+        if (userSelectedAddress) {
+            displayLocation(userSelectedAddress, location);
+        } else {
+            reverseGeocode(lat, lng)
+                .then(addressComponents => {
+                    let formattedAddress = formatAddressFromResults(addressComponents);
+                    displayLocation(formattedAddress, location);
+                })
+                .catch(error => {
+                    console.error('Error fetching address:', error);
+                });
+        }
     }
     
 
@@ -139,6 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (component.types.includes('postal_code')) {
                 postalCode = component.long_name;
             } else if (component.types.includes('locality') || component.types.includes('administrative_area_level_2')) {
+                // Checking for both 'locality' and 'administrative_area_level_2' to cover different cases
                 city = component.long_name;
             } else if (component.types.includes('country')) {
                 country = component.long_name;
