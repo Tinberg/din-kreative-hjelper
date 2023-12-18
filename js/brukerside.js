@@ -276,9 +276,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function reverseGeocodeAndDisplay(lat, lng, location) {
         reverseGeocode(lat, lng)
-            .then(addressComponents => {
-                let formattedAddress = formatAddress(addressComponents);
-                displayLocation(formattedAddress, location);
+            .then(results => {
+                if (results[0]) {
+                    let addressComponents = results[0].address_components;
+                    let formattedAddress = formatAddressBasedOnInput(addressComponents);
+                    displayLocation(formattedAddress, location);
+                } else {
+                    console.error('No results found');
+                }
             })
             .catch(error => {
                 console.error('Error fetching address:', error);
@@ -286,19 +291,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-function formatAddress(addressComponents) {
-    let city = '';
-    let postcode = '';
-    for (let component of addressComponents) {
-        if (component.types.includes("postal_code")) {
-            postcode = component.long_name;
+    function formatAddressBasedOnInput(addressComponents) {
+        let city = '', postcode = '', street = '';
+        for (let component of addressComponents) {
+            if (component.types.includes("postal_code")) {
+                postcode = component.long_name;
+            }
+            if (component.types.includes("locality")) {
+                city = component.long_name;
+            }
+            if (component.types.includes("route")) {
+                street = component.long_name;
+            }
         }
-        if (component.types.includes("locality") || component.types.includes("administrative_area_level_1")) {
-            city = component.long_name;
-        }
+    
+        // Format address based on what components are present
+        let components = [street, city, postcode].filter(Boolean);
+        return components.join(', ');
     }
-    return [postcode, city].filter(Boolean).join(', ');
-}
 
 
     function redirectToLogin(message) {
@@ -351,7 +361,7 @@ function formatAddress(addressComponents) {
             const lng = place.geometry.location.lng();
     
             tempCoordinates = lat + ', ' + lng;
-            tempFormattedAddress = formatAddress(place.address_components);
+            tempFormattedAddress = formatAddressBasedOnInput(place.address_components);
         });
     }
 });
