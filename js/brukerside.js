@@ -208,8 +208,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         return response.json();
       })
-      .then(data => {
-        // ... existing code ...
+      .then((data) => {
+        document.getElementById("username").textContent = data.username;
+        document.getElementById("email").textContent = data.email;
 
         if (data.location) {
             const coords = parseCoordinates(data.location);
@@ -218,7 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (userSelectedAddress) {
                     displayLocation(userSelectedAddress, data.location);
                 } else {
-                    // Fallback to reverse geocoding or prompt user for address
+                    // Fallback: Prompt for address or use reverse geocoding
                     reverseGeocodeAndDisplay(coords.latitude, coords.longitude);
                 }
             }
