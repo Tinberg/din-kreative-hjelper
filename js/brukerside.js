@@ -193,41 +193,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function fetchUserProfile() {
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('username').textContent = data.username;
-            document.getElementById('email').textContent = data.email;
-
-            if (data.location) {
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('username').textContent = data.username;
+                document.getElementById('email').textContent = data.email;
+    
                 const coords = parseCoordinates(data.location);
+    
                 if (coords) {
                     if (userSelectedAddress) {
-                        displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
+                        displayLocation(userSelectedAddress, data.location);
                     } else {
-                        reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
+                        // Use a default location when userSelectedAddress is not available
+                        displayLocation("Default Location", data.location);
                     }
                 }
-            }
-
-            const updateButton = document.getElementById('updateLocationButton');
-            if (updateButton) {
-                updateButton.addEventListener('click', function () {
-                    if (tempCoordinates && tempFormattedAddress) {
-                        updateLocation(tempFormattedAddress);
-                    }
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            redirectToLogin(error.message);
-        });
+    
+                const updateButton = document.getElementById('updateLocationButton');
+                if (updateButton) {
+                    updateButton.addEventListener('click', function () {
+                        if (tempCoordinates && tempFormattedAddress) {
+                            updateLocation(tempFormattedAddress);
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                redirectToLogin(error.message);
+            });
     }
+    
 
     function updateLocation(formattedAddress) {
         displayLocation(formattedAddress, tempCoordinates);
