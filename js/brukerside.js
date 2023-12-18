@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById('newLocation'), { types: ['(cities)'] });
+            document.getElementById('newLocation'), { types: ['(cities)', 'geocode'] });
     
         autocomplete.addListener('place_changed', function() {
             const place = autocomplete.getPlace();
@@ -338,8 +338,5 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     
-});
-
-
 
 
