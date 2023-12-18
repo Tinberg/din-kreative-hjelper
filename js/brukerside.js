@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Load the saved location if available
     const savedLocation = localStorage.getItem("userLocation");
     if (savedLocation) {
-        displayLocation("Loading...", savedLocation);
+        displayLocation(savedLocation);
     }
 
     // Add any other functions or event listeners you need
