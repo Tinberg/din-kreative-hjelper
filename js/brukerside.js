@@ -328,12 +328,17 @@ document.addEventListener("DOMContentLoaded", function () {
             userLocationElement.innerHTML += `<div>Street Number: ${streetNumber}</div>`;
         }
         if (city) {
-            userLocationElement.innerHTML += `<div>City: ${city}</div>`;
+            // Check if the address contains only city and country
+            if (addressParts.length === 2) {
+                userLocationElement.innerHTML += `<div>${city}, ${country}</div>`;
+            } else {
+                userLocationElement.innerHTML += `<div>City: ${city}</div>`;
+            }
         }
         if (postalCode) {
             userLocationElement.innerHTML += `<div>Postal Code: ${postalCode}</div>`;
         }
-        if (country) {
+        if (country && addressParts.length > 2) {
             userLocationElement.innerHTML += `<div>Country: ${country}</div>`;
         }
     
