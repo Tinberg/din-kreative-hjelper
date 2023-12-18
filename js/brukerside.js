@@ -181,11 +181,13 @@ document.addEventListener("DOMContentLoaded", function () {
         "Authorization": `Bearer ${token}`
     });
 
-    // Fetch user profile information, including the address, on page load
-    fetchUserProfile();  
+    let userSelectedAddress = localStorage.getItem('user_selected_address'); // Store user-selected address
+
+    fetchUserProfile();
     initAutocomplete();
 
-   
+    let tempCoordinates;
+    let tempFormattedAddress;
 
     function fetchUserProfile() {
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
@@ -199,11 +201,14 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
 
-            // Use the address from the user profile, if available
             if (data.location) {
                 const coords = parseCoordinates(data.location);
                 if (coords) {
-                    displayLocation(data.address, data.location);  // Use the address from the user profile
+                    if (userSelectedAddress) {
+                        displayLocation(userSelectedAddress, data.location, false); // Use userSelectedAddress directly
+                    } else {
+                        reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
+                    }
                 }
             }
 
@@ -211,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (updateButton) {
                 updateButton.addEventListener('click', function () {
                     if (tempCoordinates && tempFormattedAddress) {
-                        updateLocation(tempFormattedAddress, tempCoordinates);
+                        updateLocation(tempFormattedAddress);
                     }
                 });
             }
@@ -222,13 +227,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function updateLocation(formattedAddress, coordinates) {
-        displayLocation(formattedAddress, coordinates);
+    function updateLocation(formattedAddress) {
+        displayLocation(formattedAddress, tempCoordinates);
+        localStorage.setItem('user_selected_address', formattedAddress); // Save the user-selected address
 
         // Update the server with the new location
         const newLocationData = {
-            address: formattedAddress,
-            location: coordinates
+            location: tempCoordinates
         };
     
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
@@ -282,13 +287,38 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = '/html/logginn.html';
     }
 
-    function displayLocation(address, coordinates) {
-        document.getElementById("userLocation").textContent = address;
+    function displayLocation(address, coordinates, useDetailedAddress = true) {
+        if (useDetailedAddress) {
+            // If useDetailedAddress is true, display the full address
+            document.getElementById("userLocation").textContent = address;
+        } else {
+            // If useDetailedAddress is false, extract and display only the city/country part
+            const cityCountry = extractCityCountry(address);
+            document.getElementById("userLocation").textContent = cityCountry;
+        }
+    
         const coords = parseCoordinates(coordinates);
         if (coords) {
             initMap(coords.latitude, coords.longitude);
         }
     }
+
+    function extractCityCountry(fullAddress) {
+        // Split the address by commas
+        var addressParts = fullAddress.split(',');
+    
+        // Trim whitespace from each part
+        addressParts = addressParts.map(part => part.trim());
+    
+        // Extract the city and country
+        // Assuming city is second-to-last and country is last
+        var city = addressParts.length > 1 ? addressParts[addressParts.length - 2] : '';
+        var country = addressParts.length > 0 ? addressParts[addressParts.length - 1] : '';
+    
+        // Combine and return the city and country
+        return city + ', ' + country;
+    }
+    
 
     function parseCoordinates(coordString) {
         const parts = coordString.split(', ');
@@ -312,27 +342,24 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-   
+    function initAutocomplete() {
+        const autocomplete = new google.maps.places.Autocomplete(
+            document.getElementById('newLocation'), { types: ['geocode'] });
+
+        autocomplete.addListener('place_changed', function() {
+            const place = autocomplete.getPlace();
+            if (!place.geometry) {
+                console.log("No details available for input: '" + place.name + "'");
+                return;
+            }
+
+            const lat = place.geometry.location.lat();
+            const lng = place.geometry.location.lng();
+
+            tempCoordinates = lat + ', ' + lng;
+            tempFormattedAddress = place.formatted_address || place.name;
+        });
+    }
 });
 
-function initAutocomplete() {
-    const autocomplete = new google.maps.places.Autocomplete(
-        document.getElementById('newLocation'), { types: ['geocode'] });
 
-    autocomplete.addListener('place_changed', function() {
-        const place = autocomplete.getPlace();
-        if (!place.geometry) {
-            console.log("No details available for input: '" + place.name + "'");
-            return;
-        }
-
-        const lat = place.geometry.location.lat();
-        const lng = place.geometry.location.lng();
-
-        tempCoordinates = lat + ', ' + lng;
-        tempFormattedAddress = place.formatted_address || place.name;
-    });
-}
-
-let tempCoordinates;
-let tempFormattedAddress;
