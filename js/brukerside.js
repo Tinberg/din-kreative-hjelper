@@ -206,20 +206,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
-    
-            // Check if the server returned a location and handle it
-            if (data.location) {
-                localStorage.setItem("userLocation", data.location);
-                const coords = parseCoordinates(data.location);
-                if (coords) {
-                    displayLocation("Din lagrede posisjon", data.location);
-                } else {
-                    console.error('Invalid location format from server');
-                }
-            } else {
-                console.log('No location data found in user profile');
-            }
-    
+
+            // Fetch and display stored location
+            fetchStoredLocation();
+
             const updateButton = document.getElementById('updateLocationButton');
             if (updateButton) {
                 updateButton.addEventListener('click', function () {
@@ -234,7 +224,6 @@ document.addEventListener("DOMContentLoaded", function () {
             redirectToLogin(error.message);
         });
     }
-    
 
     //Retrieves the stored location from localStorage and if available,
 
