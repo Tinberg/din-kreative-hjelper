@@ -149,53 +149,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById('newLocation'), { types: ['address', 'geocode'] });
-    
+            document.getElementById('newLocation'), { types: ['geocode'] });
+
         autocomplete.addListener('place_changed', function() {
             const place = autocomplete.getPlace();
             if (!place.geometry) {
                 console.log("No details available for input: '" + place.name + "'");
                 return;
             }
-    
-            let addressComponents = {
-                street_number: '',
-                route: '', // street name
-                locality: '', // city
-                country: ''
-            };
-    
-            place.address_components.forEach(component => {
-                const componentType = component.types[0];
-                if (addressComponents.hasOwnProperty(componentType)) {
-                    addressComponents[componentType] = component.long_name;
-                }
-            });
-    
+
             const lat = place.geometry.location.lat();
             const lng = place.geometry.location.lng();
-    
+
             tempCoordinates = lat + ', ' + lng;
-            // Create a formatted address based on what components are available
-            tempFormattedAddress = formatAddress(addressComponents);
-    
-            // Update the address input field so the user can edit it
-            document.getElementById('newLocation').value = tempFormattedAddress;
+            tempFormattedAddress = place.formatted_address || place.name;
         });
     }
-    
-    function formatAddress(components) {
-        let formattedAddress = '';
-        if (components.street_number && components.route) {
-            formattedAddress += components.street_number + ' ' + components.route + ', ';
-        }
-        if (components.locality) {
-            formattedAddress += components.locality + ', ';
-        }
-        formattedAddress += components.country;
-    
-        return formattedAddress;
-    }
-    
 });
 
