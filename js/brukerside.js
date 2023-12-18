@@ -91,7 +91,8 @@ document.addEventListener("DOMContentLoaded", function () {
             geocoder.geocode({ 'location': { lat, lng } }, function (results, status) {
                 if (status === 'OK') {
                     if (results[0]) {
-                        resolve(results[0].formatted_address);
+                        // Resolve with detailed address components
+                        resolve(results[0].address_components);
                     } else {
                         reject('No results found');
                     }
@@ -103,15 +104,41 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function reverseGeocodeAndDisplay(lat, lng, location) {
-        reverseGeocode(lat, lng)
-            .then(address => {
-                displayLocation(address, location);
-            })
-            .catch(error => {
-                console.error('Error fetching address:', error);
-            });
+        if (userSelectedAddress) {
+            displayLocation(userSelectedAddress, location);
+        } else {
+            reverseGeocode(lat, lng)
+                .then(addressComponents => {
+                    let formattedAddress = formatAddressFromResults(addressComponents);
+                    displayLocation(formattedAddress, location);
+                })
+                .catch(error => {
+                    console.error('Error fetching address:', error);
+                });
+        }
     }
+    
 
+    function formatAddressFromResults(addressComponents) {
+        let postalCode = '';
+        let city = '';
+        let country = '';
+    
+        addressComponents.forEach(component => {
+            if (component.types.includes('postal_code')) {
+                postalCode = component.long_name;
+            } else if (component.types.includes('locality') || component.types.includes('administrative_area_level_2')) {
+                // Checking for both 'locality' and 'administrative_area_level_2' to cover different cases
+                city = component.long_name;
+            } else if (component.types.includes('country')) {
+                country = component.long_name;
+            }
+        });
+    
+        return `${postalCode}, ${city}, ${country}`;
+    }
+    
+    
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
         window.location.href = '/html/logginn.html';
