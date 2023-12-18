@@ -277,20 +277,19 @@ document.addEventListener("DOMContentLoaded", function () {
     function reverseGeocodeAndDisplay(lat, lng, location) {
         reverseGeocode(lat, lng)
             .then(address => {
-                const addressComponents = address.split(', ');
-    
-                // Check if the address contains a locality (city) and country
                 let city, country;
-                addressComponents.forEach(component => {
-                    if (component.includes('locality')) {
-                        city = component.split(' ')[0]; // Extract the city
-                    } else if (component.includes('country')) {
-                        country = component.split(' ')[0]; // Extract the country
+    
+                // Iterate through the address components and extract city and country
+                address.forEach(component => {
+                    if (component.types.includes('locality')) {
+                        city = component.long_name;
+                    } else if (component.types.includes('country')) {
+                        country = component.long_name;
                     }
                 });
     
-                // Create the formatted address based on available components
-                const formattedAddress = (city && country) ? `${city}, ${country}` : address;
+                // Create the formatted address based on the extracted city and country
+                const formattedAddress = (city && country) ? `${city}, ${country}` : '';
     
                 displayLocation(formattedAddress, location);
             })
@@ -298,6 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error('Error fetching address:', error);
             });
     }
+    
 
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
