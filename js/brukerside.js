@@ -172,10 +172,11 @@
 // });
 
 
-
+//Profil page for logged in user. 
 document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem('jwt_token');
 
+    //If no Token, redirect to login page. 
     if (!token) {
         redirectToLogin("Vennligst logg inn for å se din profil.");
         return;
@@ -193,6 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let tempFormattedAddress;
     let currentCoordinates;
 
+    //Fetches the profile of the currently logged-in user from the server
     function fetchUserProfile() {
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
         .then(response => {
@@ -204,10 +206,14 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
-
-            // Fetch and display stored location
-            fetchStoredLocation();
-
+    
+            // Check if location data is available and handle it
+            if (data.location) {
+                // Assuming data.location is in the format "latitude, longitude"
+                localStorage.setItem("userLocation", data.location);
+                displayLocation("Your location", data.location);
+            }
+    
             const updateButton = document.getElementById('updateLocationButton');
             if (updateButton) {
                 updateButton.addEventListener('click', function () {
@@ -222,6 +228,9 @@ document.addEventListener("DOMContentLoaded", function () {
             redirectToLogin(error.message);
         });
     }
+    
+
+    //Retrieves the stored location from localStorage and if available,
 
     function fetchStoredLocation() {
         const savedLocation = localStorage.getItem("userLocation");
@@ -239,11 +248,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    //Updates the user's location on the server.
+
     function updateLocation(formattedAddress) {
         currentCoordinates = tempCoordinates; // Update with the selected location
         localStorage.setItem("userLocation", currentCoordinates);
         displayLocation(formattedAddress, currentCoordinates);
     }
+
+    //Converts geographic coordinates into a human-readable address using Google Maps Geocoding API
 
     function reverseGeocode(lat, lng) {
         return new Promise((resolve, reject) => {
@@ -262,11 +275,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    //Redirect message
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
         window.location.href = '/html/logginn.html';
     }
 
+    //Displays the user's location on the page and initializes a map centered at the location.
     function displayLocation(address, coordinates) {
         document.getElementById("userLocation").textContent = address;
         const coords = parseCoordinates(coordinates);
@@ -277,6 +292,8 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error('Invalid location format');
         }
     }
+
+    // Parses a string containing latitude and longitude into a coordinates object. Returns a coordinates object if the string format is valid.
 
     function parseCoordinates(coordString) {
         const parts = coordString.split(', ');
@@ -290,6 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return null;
     }
 
+    //Show map based on userLocation
     function initMap(latitude, longitude) {
         if (isNaN(latitude) || isNaN(longitude)) {
             console.error("Invalid coordinates for map initialization");
@@ -306,6 +324,8 @@ document.addEventListener("DOMContentLoaded", function () {
             map: map
         });
     }
+
+    //Initializes Google Maps Places Autocomplete on an input field.
 
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(

@@ -1,10 +1,10 @@
-
-
+//Register page
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector(".create-user-form form");
     const messageContainer = document.getElementById("successMessageContainer");
     const locationInput = document.getElementById('location');
 
+    //Initializes the Google Maps Places Autocomplete functionality on the location input field.
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(locationInput, { types: ['geocode'] });
 
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Prevent form submission with Enter key on the autocomplete field
+    // Prevents form submission when the Enter key is pressed while focusing on the autocomplete input field.
     locationInput.addEventListener('keydown', function(event) {
         if (event.key === "Enter") {
             event.preventDefault();
@@ -29,7 +29,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     initAutocomplete();
-
+    
+    //Handles the submission of the user registration form.
+    //It collects user data from the form, sends it to a server endpoint
     form.addEventListener("submit", function (event) {
         event.preventDefault();
 
