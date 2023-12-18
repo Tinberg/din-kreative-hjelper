@@ -105,11 +105,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function reverseGeocodeAndDisplay(lat, lng, location) {
         if (userSelectedAddress) {
+            // Use the user-selected address directly
             displayLocation(userSelectedAddress, location);
         } else {
+            // Perform reverse geocoding to get the address
             reverseGeocode(lat, lng)
-                .then(addressComponents => {
-                    let formattedAddress = formatAddressFromResults(addressComponents);
+                .then(fullAddress => {
+                    // If the full address is too specific (indicating a street number), format it
+                    let formattedAddress = fullAddress;
+                    if (!isSpecificStreetAddress(fullAddress)) {
+                        formattedAddress = formatAddressFromResults(fullAddress);
+                    }
                     displayLocation(formattedAddress, location);
                 })
                 .catch(error => {
@@ -118,23 +124,23 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
     
+    
+    
+    function isSpecificStreetAddress(address) {
+        // Implement logic to determine if the provided address is a specific street address
+        // This might be a simple check for a street number or a more complex analysis
+        // Example check: return address.split(',').length > 2;
+        return /\d/.test(address);
+    }
+    
 
-    function formatAddressFromResults(addressComponents) {
-        let postalCode = '';
-        let city = '';
-        let country = '';
-    
-        addressComponents.forEach(component => {
-            if (component.types.includes('postal_code')) {
-                postalCode = component.long_name;
-            } else if (component.types.includes('locality') || component.types.includes('administrative_area_level_2')) {
-                // Checking for both 'locality' and 'administrative_area_level_2' to cover different cases
-                city = component.long_name;
-            } else if (component.types.includes('country')) {
-                country = component.long_name;
-            }
-        });
-    
+    function formatAddressFromResults(fullAddress) {
+        // Implement this function to format the address to show only postal code, city, and country
+        // Example logic (adjust as needed):
+        let parts = fullAddress.split(', ');
+        let postalCode = parts[1].trim(); // Assuming the postal code is the second element
+        let city = parts[2].trim(); // Assuming the city is the third element
+        let country = parts[3].trim(); // Assuming the country is the fourth element
         return `${postalCode}, ${city}, ${country}`;
     }
     
