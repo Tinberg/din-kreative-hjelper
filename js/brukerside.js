@@ -185,8 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchUserProfile();  
     initAutocomplete();
 
-    let tempCoordinates;
-    let tempFormattedAddress;
+   
 
     function fetchUserProfile() {
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
@@ -334,3 +333,6 @@ function initAutocomplete() {
         tempFormattedAddress = place.formatted_address || place.name;
     });
 }
+
+let tempCoordinates;
+let tempFormattedAddress;
