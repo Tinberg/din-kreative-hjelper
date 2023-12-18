@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateLocation(formattedAddress) {
-        localStorage.setItem("userLocation", tempCoordinates);
+       
         displayLocation(formattedAddress, tempCoordinates);
     
         // Update the server with the new location
