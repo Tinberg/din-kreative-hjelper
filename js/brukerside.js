@@ -167,6 +167,9 @@
 //     }
 // });
 
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem('jwt_token');
 
@@ -270,6 +273,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+
     function reverseGeocodeAndDisplay(lat, lng, location) {
         reverseGeocode(lat, lng)
             .then(address => {
