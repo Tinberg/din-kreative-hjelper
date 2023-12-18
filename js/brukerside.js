@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem('jwt_token');
 
@@ -11,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
     });
+
+    let userSelectedAddress = localStorage.getItem('user_selected_address'); // Store user-selected address
 
     fetchUserProfile();
     initAutocomplete();
@@ -31,16 +32,13 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('email').textContent = data.email;
 
             if (data.location) {
-                // Convert coordinates to a human-readable address and update map
                 const coords = parseCoordinates(data.location);
                 if (coords) {
-                    reverseGeocode(coords.latitude, coords.longitude)
-                        .then(address => {
-                            displayLocation(address, data.location);
-                        })
-                        .catch(error => {
-                            console.error('Error fetching address:', error);
-                        });
+                    if (userSelectedAddress) {
+                        displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
+                    } else {
+                        reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
+                    }
                 }
             }
 
@@ -61,7 +59,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateLocation(formattedAddress) {
         displayLocation(formattedAddress, tempCoordinates);
-    
+        localStorage.setItem('user_selected_address', formattedAddress); // Save the user-selected address
+
         // Update the server with the new location
         const newLocationData = {
             location: tempCoordinates
@@ -83,10 +82,8 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(error => {
             console.error('Error updating location on server:', error);
-            // Handle the error here
         });
     }
-    
 
     function reverseGeocode(lat, lng) {
         return new Promise((resolve, reject) => {
@@ -103,6 +100,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
         });
+    }
+
+    function reverseGeocodeAndDisplay(lat, lng, location) {
+        reverseGeocode(lat, lng)
+            .then(address => {
+                displayLocation(address, location);
+            })
+            .catch(error => {
+                console.error('Error fetching address:', error);
+            });
     }
 
     function redirectToLogin(message) {
