@@ -275,19 +275,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function reverseGeocodeAndDisplay(lat, lng, location) {
-        reverseGeocode(lat, lng)
-            .then(results => {
-                // Customize the formatted address as per your needs
-                const city = getAddressComponent(results, 'locality'); // Extract the city
-                const country = getAddressComponent(results, 'country'); // Extract the country
-                const customAddress = `${city}, ${country}`; // Create a custom address
+        if (tempCoordinates && tempFormattedAddress) {
+            displayLocation(tempFormattedAddress, location);
+        } else {
+            reverseGeocode(lat, lng)
+                .then(results => {
+                    // Customize the formatted address as per your needs
+                    const city = getAddressComponent(results, 'locality'); // Extract the city
+                    const country = getAddressComponent(results, 'country'); // Extract the country
+                    const customAddress = `${city}, ${country}`; // Create a custom address
     
-                displayLocation(customAddress, location);
-            })
-            .catch(error => {
-                console.error('Error fetching address:', error);
-            });
+                    displayLocation(customAddress, location);
+                })
+                .catch(error => {
+                    console.error('Error fetching address:', error);
+                });
+        }
     }
+    
     
     // Helper function to extract an address component from Geocoder results
     function getAddressComponent(results, componentType) {
