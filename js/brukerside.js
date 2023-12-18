@@ -172,7 +172,6 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem('jwt_token');
-
     if (!token) {
         redirectToLogin("Vennligst logg inn for å se din profil.");
         return;
@@ -183,13 +182,12 @@ document.addEventListener("DOMContentLoaded", function () {
         "Authorization": `Bearer ${token}`
     });
 
-    let userSelectedAddress = localStorage.getItem('user_selected_address'); // Store user-selected address
+    let userSelectedAddress = localStorage.getItem('user_selected_address');
 
     fetchUserProfile();
     initAutocomplete();
 
-    let tempCoordinates;
-    let tempFormattedAddress;
+    // Other relevant code...
 
     function fetchUserProfile() {
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
@@ -202,12 +200,14 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
+            localStorage.setItem('userLocation', data.location);
 
             if (data.location) {
                 const coords = parseCoordinates(data.location);
                 if (coords) {
                     if (userSelectedAddress) {
-                        displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
+                        displayLocation(userSelectedAddress, data.location);
+                        initMap(coords.latitude, coords.longitude);
                     } else {
                         reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
                     }
@@ -228,6 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
             redirectToLogin(error.message);
         });
     }
+
 
     function updateLocation(formattedAddress) {
         displayLocation(formattedAddress, tempCoordinates);
