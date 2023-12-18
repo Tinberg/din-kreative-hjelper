@@ -327,39 +327,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 componentRestrictions: { country: 'NO' } // Restrict to Norway
             }
         );
-    
         autocomplete.addListener('place_changed', function() {
             const place = autocomplete.getPlace();
             if (!place.geometry) {
                 console.log("No details available for input: '" + place.name + "'");
                 return;
             }
-    
-            const addressComponents = place.address_components;
-    
-            // Initialize variables to hold the address components
-            let streetNumber, streetName, city, country;
-    
-            // Extract relevant address components
-            for (const component of addressComponents) {
-                if (component.types.includes('street_number')) {
-                    streetNumber = component.long_name;
-                } else if (component.types.includes('route')) {
-                    streetName = component.long_name;
-                } else if (component.types.includes('locality')) {
-                    city = component.long_name;
-                } else if (component.types.includes('country')) {
-                    country = component.long_name;
-                }
+        
+            // Check the types of the place result
+            const types = place.types;
+        
+            // Filter based on desired types, e.g., 'locality' for cities
+            if (types.includes('locality') || types.includes('country')) {
+                // Handle the selected place, e.g., display it or use it as needed
+                const formattedAddress = place.formatted_address;
+                tempCoordinates = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
+                tempFormattedAddress = formattedAddress;
+            } else {
+                // Handle other types or provide user feedback as needed
+                console.log("Selected place doesn't match desired criteria");
             }
-    
-            // Create a formatted address based on the extracted components
-            const formattedAddress = [streetNumber, streetName, city, country].filter(Boolean).join(', ');
-    
-            tempCoordinates = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
-            tempFormattedAddress = formattedAddress;
         });
-    }
     
 });
 
