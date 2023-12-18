@@ -11,37 +11,55 @@ document.addEventListener("DOMContentLoaded", function () {
         "Authorization": `Bearer ${token}`
     });
 
-    fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
-        }
-        return response.json();
-    })
-    .then(data => {
-        document.getElementById('username').textContent = data.username;
-        document.getElementById('email').textContent = data.email;
-
-        if (data.location) {
-            displayLocation(currentCoordinates);
-        }
-
-        const updateButton = document.getElementById('updateLocationButton');
-        if (updateButton) {
-            updateButton.addEventListener('click', function () {
-                const newLocation = document.getElementById('newLocation').value;
-                updateLocation(newLocation);
-            });
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        redirectToLogin(error.message);
-    });
-
+    fetchUserProfile();
     initAutocomplete();
 
     let currentCoordinates;
+
+    function fetchUserProfile() {
+        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('username').textContent = data.username;
+            document.getElementById('email').textContent = data.email;
+
+            // Fetch and display stored location
+            fetchStoredLocation();
+
+            const updateButton = document.getElementById('updateLocationButton');
+            if (updateButton) {
+                updateButton.addEventListener('click', function () {
+                    const newLocation = document.getElementById('newLocation').value;
+                    updateLocation(newLocation);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            redirectToLogin(error.message);
+        });
+    }
+
+    function fetchStoredLocation() {
+        const savedLocation = localStorage.getItem("userLocation");
+        if (savedLocation) {
+            const coords = parseCoordinates(savedLocation);
+            if (coords) {
+                reverseGeocode(coords.latitude, coords.longitude)
+                    .then(address => {
+                        displayLocation(address, savedLocation);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching address:', error);
+                    });
+            }
+        }
+    }
 
     function updateLocation(formattedAddress) {
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
@@ -64,6 +82,23 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(error => {
             console.error('Error:', error);
+        });
+    }
+
+    function reverseGeocode(lat, lng) {
+        return new Promise((resolve, reject) => {
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'location': { lat, lng } }, function (results, status) {
+                if (status === 'OK') {
+                    if (results[0]) {
+                        resolve(results[0].formatted_address);
+                    } else {
+                        reject('No results found');
+                    }
+                } else {
+                    reject('Geocoder failed due to: ' + status);
+                }
+            });
         });
     }
 
@@ -134,13 +169,4 @@ document.addEventListener("DOMContentLoaded", function () {
             updateLocation(place.formatted_address || place.name);
         });
     }
-
-    // Load the saved location if available
-    const savedLocation = localStorage.getItem("userLocation");
-    if (savedLocation) {
-        displayLocation("Loading...", savedLocation);
-    }
-
-    // Add any other functions or event listeners you need
-    // ...
 });
