@@ -69,7 +69,7 @@ function updateLocationInProfile(location) {
         };
 
         // Make a request to update the location in the user's profile
-        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-user-location', {
+        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
             method: 'POST',
             headers: headers,
             body: JSON.stringify(updateLocationData)
