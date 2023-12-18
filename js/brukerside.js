@@ -208,24 +208,23 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         return response.json();
       })
-      .then((data) => {
-        document.getElementById("username").textContent = data.username;
-        document.getElementById("email").textContent = data.email;
+      .then(data => {
+        // ... existing code ...
 
         if (data.location) {
-          const coords = parseCoordinates(data.location);
-          if (coords) {
-            userSelectedAddress = localStorage.getItem("user_selected_address"); // Re-fetch in case it was set elsewhere
-            if (userSelectedAddress) {
-              displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
-            } else {
-              reverseGeocodeAndDisplay(coords.latitude, coords.longitude);
+            const coords = parseCoordinates(data.location);
+            if (coords) {
+                userSelectedAddress = localStorage.getItem("user_selected_address");
+                if (userSelectedAddress) {
+                    displayLocation(userSelectedAddress, data.location);
+                } else {
+                    // Fallback to reverse geocoding or prompt user for address
+                    reverseGeocodeAndDisplay(coords.latitude, coords.longitude);
+                }
             }
-          }
         }
-      })
-
-      .catch((error) => {
+    })
+    .catch(error => {
         console.error("Error:", error);
         redirectToLogin(error.message);
       });
