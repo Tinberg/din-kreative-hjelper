@@ -193,41 +193,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function fetchUserProfile() {
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('username').textContent = data.username;
-            document.getElementById('email').textContent = data.email;
-
-            if (data.location) {
-                const coords = parseCoordinates(data.location);
-                if (coords) {
-                    if (userSelectedAddress) {
-                        displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
-                    } else {
-                        displayLocation(data.location, data.location);
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('username').textContent = data.username;
+                document.getElementById('email').textContent = data.email;
+    
+                if (data.location) {
+                    const coords = parseCoordinates(data.location);
+                    if (coords) {
+                        if (userSelectedAddress) {
+                            displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
+                        } else {
+                            // Check if data.location is empty or undefined, and display the message if no specific address is available
+                            if (!data.location.trim()) {
+                                document.getElementById("userLocation").textContent = "Ingen spesifikk adresse er oppgitt. Vennligst bruk kartet for å finne personens omtrentlige beliggenhet.";
+                            } else {
+                                displayLocation(data.location, data.location);
+                            }
+                        }
                     }
                 }
-            }
-
-            const updateButton = document.getElementById('updateLocationButton');
-            if (updateButton) {
-                updateButton.addEventListener('click', function () {
-                    if (tempCoordinates && tempFormattedAddress) {
-                        updateLocation(tempFormattedAddress);
-                    }
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            redirectToLogin(error.message);
-        });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                redirectToLogin(error.message);
+            });
     }
+    
 
     function updateLocation(formattedAddress) {
         displayLocation(formattedAddress, tempCoordinates);
