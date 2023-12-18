@@ -206,10 +206,12 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
-
-            // Fetch and display stored location
-            fetchStoredLocation();
-
+    
+            if (data.locationAddress) {  // Assuming the location is sent as 'locationAddress'
+                localStorage.setItem("userLocation", data.locationAddress);
+                displayLocation(data.locationAddress);
+            }
+    
             const updateButton = document.getElementById('updateLocationButton');
             if (updateButton) {
                 updateButton.addEventListener('click', function () {
@@ -246,9 +248,11 @@ document.addEventListener("DOMContentLoaded", function () {
     //Updates the user's location on the server.
 
     function updateLocation(formattedAddress) {
-        currentCoordinates = tempCoordinates; // Update with the selected location
-        localStorage.setItem("userLocation", currentCoordinates);
-        displayLocation(formattedAddress, currentCoordinates);
+        localStorage.setItem("userLocation", formattedAddress);
+        displayLocation(formattedAddress);
+    
+        // Send the updated location (as an address) to your server
+        // Adjust this to fit your server's API endpoint and data format
     }
 
     //Converts geographic coordinates into a human-readable address using Google Maps Geocoding API
