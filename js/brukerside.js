@@ -30,18 +30,18 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
-    
-            if (data.selected_address) {
-                // Use the user-selected address from the server
-                displayLocation(data.selected_address, data.location);
-            } else if (data.location) {
-                // Fallback to reverse geocoding if no selected address
+
+            if (data.location) {
                 const coords = parseCoordinates(data.location);
                 if (coords) {
-                    reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
+                    if (userSelectedAddress) {
+                        displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
+                    } else {
+                        reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
+                    }
                 }
             }
-    
+
             const updateButton = document.getElementById('updateLocationButton');
             if (updateButton) {
                 updateButton.addEventListener('click', function () {
@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
             redirectToLogin(error.message);
         });
     }
-    
 
     function updateLocation(formattedAddress) {
         displayLocation(formattedAddress, tempCoordinates);
@@ -67,14 +66,14 @@ document.addEventListener("DOMContentLoaded", function () {
             location: tempCoordinates
         };
     
-        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/save-address', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ address: formattedAddress })
-    })
+        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(newLocationData)
+        })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to update location on server');
