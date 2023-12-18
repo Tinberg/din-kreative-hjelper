@@ -292,31 +292,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function displayLocation(address, coordinates) {
-        // Extract the city from the address
-        const city = extractCityFromAddress(address);
-    
-        // Display the city as the user's location
-        document.getElementById("userLocation").textContent = city;
-    
+        document.getElementById("userLocation").textContent = address;
         const coords = parseCoordinates(coordinates);
         if (coords) {
             initMap(coords.latitude, coords.longitude);
         }
     }
-    
-    function extractCityFromAddress(address) {
-        // Split the address into parts using commas as separators
-        const addressParts = address.split(', ');
-    
-        // The city is usually the first part of the address
-        if (addressParts.length > 0) {
-            return addressParts[0];
-        }
-    
-        // If there's no city, return the full address
-        return address;
-    }
-    
 
     function parseCoordinates(coordString) {
         const parts = coordString.split(', ');
