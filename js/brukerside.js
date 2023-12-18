@@ -262,23 +262,6 @@ document.addEventListener("DOMContentLoaded", function () {
             geocoder.geocode({ 'location': { lat, lng } }, function (results, status) {
                 if (status === 'OK') {
                     if (results[0]) {
-                        resolve(results[0].formatted_address);
-                    } else {
-                        reject('No results found');
-                    }
-                } else {
-                    reject('Geocoder failed due to: ' + status);
-                }
-            });
-        });
-    }
-
-    function reverseGeocode(lat, lng) {
-        return new Promise((resolve, reject) => {
-            const geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ 'location': { lat, lng } }, function (results, status) {
-                if (status === 'OK') {
-                    if (results[0]) {
                         // Initialize variables for city and country
                         let city = '';
                         let country = '';
@@ -309,6 +292,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     
+
+    function reverseGeocodeAndDisplay(lat, lng, location) {
+        reverseGeocode(lat, lng)
+            .then(address => {
+                displayLocation(address, location);
+            })
+            .catch(error => {
+                console.error('Error fetching address:', error);
+            });
+    }
 
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
