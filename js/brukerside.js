@@ -22,8 +22,9 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('username').textContent = data.username;
         document.getElementById('email').textContent = data.email;
 
-        // Immediately display the saved location instead of "Loading..."
-        displaySavedLocation();
+        if (data.location) {
+            displayLocation("Loading...", data.location);
+        }
 
         const updateButton = document.getElementById('updateLocationButton');
         if (updateButton) {
@@ -43,14 +44,13 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentCoordinates;
 
     function updateLocation(formattedAddress) {
-        const locationData = formattedAddress + '|' + currentCoordinates;
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             },
-            body: JSON.stringify({ location: locationData })
+            body: JSON.stringify({ location: currentCoordinates })
         })
         .then(response => {
             if (!response.ok) {
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
         })
         .then(data => {
-            localStorage.setItem("userLocation", locationData);
+            localStorage.setItem("userLocation", currentCoordinates);
             displayLocation(formattedAddress, currentCoordinates);
         })
         .catch(error => {
@@ -125,24 +125,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const lat = place.geometry.location.lat();
             const lng = place.geometry.location.lng();
+            if (isNaN(lat) || isNaN(lng)) {
+                console.error("Invalid place geometry");
+                return;
+            }
+
             currentCoordinates = lat + ', ' + lng;
             updateLocation(place.formatted_address || place.name);
         });
     }
 
-    // Function to display saved location
-    function displaySavedLocation() {
-        const savedLocation = localStorage.getItem("userLocation");
-        if (savedLocation) {
-            const [address, coordinates] = savedLocation.split('|');
-            displayLocation(address, coordinates);
-        } else {
-            document.getElementById("userLocation").textContent = 'No location set';
-        }
+    // Load the saved location if available
+    const savedLocation = localStorage.getItem("userLocation");
+    if (savedLocation) {
+        displayLocation("Loading...", savedLocation);
     }
 
-    // Call displaySavedLocation to show the saved location on page load
-    displaySavedLocation();
-
-    // ... any other functions or event listeners ...
+    // Add any other functions or event listeners you need
+    // ...
 });
