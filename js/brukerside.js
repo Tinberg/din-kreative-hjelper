@@ -207,25 +207,22 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
     
-            if (data.locationAddress) {  // Assuming the location is sent as 'locationAddress'
+            // Assuming the server response includes the location address
+            if (data.locationAddress) {
                 localStorage.setItem("userLocation", data.locationAddress);
                 displayLocation(data.locationAddress);
+            } else {
+                console.log('No location data found in user profile');
             }
-    
-            const updateButton = document.getElementById('updateLocationButton');
-            if (updateButton) {
-                updateButton.addEventListener('click', function () {
-                    if (tempCoordinates && tempFormattedAddress) {
-                        updateLocation(tempFormattedAddress);
-                    }
-                });
-            }
+            
+            // ... rest of the function ...
         })
         .catch(error => {
             console.error('Error:', error);
             redirectToLogin(error.message);
         });
     }
+    
 
     //Retrieves the stored location from localStorage and if available,
 
@@ -248,11 +245,9 @@ document.addEventListener("DOMContentLoaded", function () {
     //Updates the user's location on the server.
 
     function updateLocation(formattedAddress) {
-        localStorage.setItem("userLocation", formattedAddress);
-        displayLocation(formattedAddress);
-    
-        // Send the updated location (as an address) to your server
-        // Adjust this to fit your server's API endpoint and data format
+        currentCoordinates = tempCoordinates; // Update with the selected location
+        localStorage.setItem("userLocation", currentCoordinates);
+        displayLocation(formattedAddress, currentCoordinates);
     }
 
     //Converts geographic coordinates into a human-readable address using Google Maps Geocoding API
