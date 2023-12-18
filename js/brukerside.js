@@ -206,14 +206,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
-    
-            // Assuming the server response includes the location address
-            if (data.locationAddress) {
-                localStorage.setItem("userLocation", data.locationAddress);
-                displayLocation(data.locationAddress);
-            } else {
-                console.log('No location data found in user profile');
-            }
 
             // Fetch and display stored location
             fetchStoredLocation();
