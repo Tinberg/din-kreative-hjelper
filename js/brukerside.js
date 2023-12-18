@@ -321,22 +321,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById('newLocation'), { types: ['geocode'] });
-
+            document.getElementById('newLocation'),
+            {
+                types: ['address'], // Restrict to address-type results
+                componentRestrictions: { country: 'NO' } // Restrict to Norway
+            }
+        );
+    
         autocomplete.addListener('place_changed', function() {
             const place = autocomplete.getPlace();
             if (!place.geometry) {
                 console.log("No details available for input: '" + place.name + "'");
                 return;
             }
-
-            const lat = place.geometry.location.lat();
-            const lng = place.geometry.location.lng();
-
-            tempCoordinates = lat + ', ' + lng;
-            tempFormattedAddress = place.formatted_address || place.name;
+    
+            const addressComponents = place.address_components;
+    
+            // Initialize variables to hold the address components
+            let streetNumber, streetName, city, country;
+    
+            // Extract relevant address components
+            for (const component of addressComponents) {
+                if (component.types.includes('street_number')) {
+                    streetNumber = component.long_name;
+                } else if (component.types.includes('route')) {
+                    streetName = component.long_name;
+                } else if (component.types.includes('locality')) {
+                    city = component.long_name;
+                } else if (component.types.includes('country')) {
+                    country = component.long_name;
+                }
+            }
+    
+            // Create a formatted address based on the extracted components
+            const formattedAddress = [streetNumber, streetName, city, country].filter(Boolean).join(', ');
+    
+            tempCoordinates = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
+            tempFormattedAddress = formattedAddress;
         });
     }
+    
 });
 
 
