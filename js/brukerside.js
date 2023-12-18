@@ -321,34 +321,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById('newLocation'),
-            {
-                types: ['address'], // Restrict to address-type results
-                componentRestrictions: { country: 'NO' } // Restrict to Norway
-            }
-        );
+            document.getElementById('newLocation'), { types: ['geocode'] });
+
         autocomplete.addListener('place_changed', function() {
             const place = autocomplete.getPlace();
             if (!place.geometry) {
                 console.log("No details available for input: '" + place.name + "'");
                 return;
             }
-        
-            // Check the types of the place result
-            const types = place.types;
-        
-            // Filter based on desired types, e.g., 'locality' for cities
-            if (types.includes('locality') || types.includes('country')) {
-                // Handle the selected place, e.g., display it or use it as needed
-                const formattedAddress = place.formatted_address;
-                tempCoordinates = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
-                tempFormattedAddress = formattedAddress;
-            } else {
-                // Handle other types or provide user feedback as needed
-                console.log("Selected place doesn't match desired criteria");
-            }
+
+            const lat = place.geometry.location.lat();
+            const lng = place.geometry.location.lng();
+
+            tempCoordinates = lat + ', ' + lng;
+            tempFormattedAddress = place.formatted_address || place.name;
         });
-    
+    }
 });
 
 
