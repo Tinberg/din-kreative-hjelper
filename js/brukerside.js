@@ -290,6 +290,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function displayLocation(address, coordinates) {
+        const userLocationElement = document.getElementById("userLocation");
+        userLocationElement.innerHTML = ""; // Clear the content
+    
         // Split the address into parts
         const addressParts = address.split(', ');
     
@@ -318,11 +321,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     
         // Display the address parts on the page
-        document.getElementById("userStreetAddress").textContent = streetAddress;
-        document.getElementById("userStreetNumber").textContent = streetNumber;
-        document.getElementById("userCity").textContent = city;
-        document.getElementById("userPostalCode").textContent = postalCode;
-        document.getElementById("userCountry").textContent = country;
+        if (streetAddress) {
+            userLocationElement.innerHTML += `<div>Street Address: ${streetAddress}</div>`;
+        }
+        if (streetNumber) {
+            userLocationElement.innerHTML += `<div>Street Number: ${streetNumber}</div>`;
+        }
+        if (city) {
+            userLocationElement.innerHTML += `<div>City: ${city}</div>`;
+        }
+        if (postalCode) {
+            userLocationElement.innerHTML += `<div>Postal Code: ${postalCode}</div>`;
+        }
+        if (country) {
+            userLocationElement.innerHTML += `<div>Country: ${country}</div>`;
+        }
     
         // Continue with map initialization as needed
         const coords = parseCoordinates(coordinates);
