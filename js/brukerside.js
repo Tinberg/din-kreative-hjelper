@@ -304,21 +304,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function displayLocation(address, coordinates) {
         document.getElementById("userLocation").textContent = address;
-        const coords = parseCoordinates(coordinates);
+    
+        let coords;
+        if (typeof coordinates === 'string') {
+            coords = parseCoordinates(coordinates);
+        } else if (typeof coordinates === 'object' && coordinates.latitude && coordinates.longitude) {
+            coords = coordinates;
+        }
+    
         if (coords) {
             initMap(coords.latitude, coords.longitude);
         }
     }
-
+    
     function parseCoordinates(coordString) {
-        const parts = coordString.split(', ');
-        if (parts.length === 2) {
-            const latitude = parseFloat(parts[0]);
-            const longitude = parseFloat(parts[1]);
-            return (!isNaN(latitude) && !isNaN(longitude)) ? { latitude, longitude } : null;
+        if (typeof coordString === 'string') {
+            const parts = coordString.split(', ');
+            if (parts.length === 2) {
+                const latitude = parseFloat(parts[0]);
+                const longitude = parseFloat(parts[1]);
+                return (!isNaN(latitude) && !isNaN(longitude)) ? { latitude, longitude } : null;
+            }
         }
         return null;
     }
+    
 
     function initMap(latitude, longitude) {
         const userLocation = { lat: latitude, lng: longitude };
