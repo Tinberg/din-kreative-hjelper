@@ -169,7 +169,6 @@
 
 
 
-
 document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem('jwt_token');
 
@@ -203,16 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
 
-            if (data.location) {
-                const coords = parseCoordinates(data.location);
-                if (coords) {
-                    if (userSelectedAddress) {
-                        displayLocation(userSelectedAddress, data.location); // Display user-selected address if available
-                    } else {
-                        reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
-                    }
-                }
-            }
+            reverseGeocodeAndDisplay(data);
 
             const updateButton = document.getElementById('updateLocationButton');
             if (updateButton) {
@@ -274,39 +264,29 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function reverseGeocodeAndDisplay(lat, lng) {
-        reverseGeocode(lat, lng)
-            .then(address => {
-                let city, country;
-    
-                // Iterate through the address components and extract city and country
-                address.forEach(component => {
-                    if (component.types.includes('locality')) {
-                        city = component.long_name;
-                    } else if (component.types.includes('country')) {
-                        country = component.long_name;
-                    }
-                });
-    
-                // Create the formatted address based on the extracted city and country
-                const formattedAddress = [city, country].filter(Boolean).join(', ');
-    
-                displayLocation(formattedAddress, { lat, lng });
-            })
-            .catch(error => {
-                console.error('Error fetching address:', error);
-            });
+    function reverseGeocodeAndDisplay(data) {
+        let lat, lng;
+
+        if (data.location) {
+            const coords = parseCoordinates(data.location);
+            if (coords) {
+                lat = coords.latitude;
+                lng = coords.longitude;
+            }
+        }
+
+        const formattedAddress = data.location || "Oslo, Norge";
+
+        displayLocation(formattedAddress, { lat, lng });
     }
-    
-    
 
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
         window.location.href = '/html/logginn.html';
     }
 
-    function displayLocation(address, coordinates) {
-        document.getElementById("userLocation").textContent = address;
+    function displayLocation(formattedAddress, coordinates) {
+        document.getElementById("userLocation").textContent = formattedAddress;
         const coords = parseCoordinates(coordinates);
         if (coords) {
             initMap(coords.latitude, coords.longitude);
@@ -354,4 +334,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-
