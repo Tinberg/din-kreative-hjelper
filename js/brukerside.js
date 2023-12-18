@@ -118,17 +118,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         }
     }
-    function formatAddressFromResults(address) {
-        // Assuming 'address' is the full address string from reverse geocoding results
-        // You need to parse this string to extract the city and country
-        // This is a placeholder implementation; adjust it based on how your address string is structured
+    function formatAddressFromResults(fullAddress) {
+        // Assuming 'fullAddress' is a string containing the full address
+        // You need to parse this string to extract the postal code, city, and country
+        // This implementation is a placeholder; adjust it based on your address format
     
-        // Example: "123 Main St, Springfield, IL, USA" -> "Springfield, USA"
-        let parts = address.split(', ');
-        let city = parts.slice(-3, -2)[0]; // second to last element for the city
-        let country = parts.slice(-1)[0]; // last element for the country
+        // Example: "Torget 5, 3181 Horten, Norway" -> "3181, Horten, Norway"
+        let addressParts = fullAddress.split(', ');
+        let postalCode = addressParts[0].split(' ')[1]; // Assuming postal code follows the street name
+        let city = addressParts[1].trim(); // City
+        let country = addressParts[2].trim(); // Country
     
-        return `${city}, ${country}`;
+        return `${postalCode}, ${city}, ${country}`;
     }
     
     
