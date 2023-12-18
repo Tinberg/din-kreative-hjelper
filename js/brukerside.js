@@ -207,11 +207,17 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
     
-            // Check if location data is available and handle it
+            // Check if the server returned a location and handle it
             if (data.location) {
-                // Assuming data.location is in the format "latitude, longitude"
                 localStorage.setItem("userLocation", data.location);
-                displayLocation("Your location", data.location);
+                const coords = parseCoordinates(data.location);
+                if (coords) {
+                    displayLocation("Din lagrede posisjon", data.location);
+                } else {
+                    console.error('Invalid location format from server');
+                }
+            } else {
+                console.log('No location data found in user profile');
             }
     
             const updateButton = document.getElementById('updateLocationButton');
