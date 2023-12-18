@@ -209,26 +209,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             document.getElementById('username').textContent = data.username;
             document.getElementById('email').textContent = data.email;
-    
-            // Check if the user already has a location set in the profile
-            if (!data.location) {
-                // If not, then use the location from localStorage if it exists
-                const userLocation = getLocationFromLocalStorage();
-                if (userLocation) {
-                    // Convert coordinates to a human-readable address and update map
-                    const coords = parseCoordinates(userLocation);
-                    if (coords) {
-                        reverseGeocode(coords.latitude, coords.longitude)
-                            .then(address => {
-                                displayLocation(address, userLocation);
-                            })
-                            .catch(error => {
-                                console.error('Error fetching address:', error);
-                            });
-                    }
-                }
-            } else {
-                // If the user has a location in the profile, use that location
+
+            if (data.location) {
+                // Convert coordinates to a human-readable address and update map
                 const coords = parseCoordinates(data.location);
                 if (coords) {
                     reverseGeocode(coords.latitude, coords.longitude)
@@ -240,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
                 }
             }
-    
+
             const updateButton = document.getElementById('updateLocationButton');
             if (updateButton) {
                 updateButton.addEventListener('click', function () {
@@ -255,7 +238,6 @@ document.addEventListener("DOMContentLoaded", function () {
             redirectToLogin(error.message);
         });
     }
-    
 
     function updateLocation(formattedAddress) {
         localStorage.setItem("userLocation", tempCoordinates);
@@ -310,12 +292,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function displayLocation(address, coordinates) {
-        document.getElementById("userLocation").textContent = address;
+        // Extract the city from the address
+        const city = extractCityFromAddress(address);
+    
+        // Display the city as the user's location
+        document.getElementById("userLocation").textContent = city;
+    
         const coords = parseCoordinates(coordinates);
         if (coords) {
             initMap(coords.latitude, coords.longitude);
         }
     }
+    
+    function extractCityFromAddress(address) {
+        // Split the address into parts using commas as separators
+        const addressParts = address.split(', ');
+    
+        // The city is usually the first part of the address
+        if (addressParts.length > 0) {
+            return addressParts[0];
+        }
+    
+        // If there's no city, return the full address
+        return address;
+    }
+    
 
     function parseCoordinates(coordString) {
         const parts = coordString.split(', ');
