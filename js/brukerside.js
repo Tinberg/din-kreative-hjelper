@@ -200,17 +200,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('username').textContent = data.username;
                 document.getElementById('email').textContent = data.email;
     
-                if (data.location) {
-                    const coords = parseCoordinates(data.location);
-                    if (coords) {
-                        if (userSelectedAddress) {
-                            // Display the userSelectedAddress if available
-                            displayLocation(userSelectedAddress, data.location);
-                        } else {
-                            // Display the data.location (previously used reverseGeocodeAndDisplay)
-                            displayLocation(data.location, data.location);
-                        }
-                    }
+                // Check if userSelectedAddress is present in local storage
+                if (userSelectedAddress) {
+                    // Display the userSelectedAddress if available
+                    displayLocation(userSelectedAddress, data.location);
+                } else if (data.registeredLocation) {
+                    // Display the user's registered location if available
+                    displayLocation(data.registeredLocation, data.location);
+                } else {
+                    // If neither userSelectedAddress nor registeredLocation is available, display coordinates
+                    reverseGeocodeAndDisplay(coords.latitude, coords.longitude, data.location);
                 }
     
                 // Update the user profile with the userSelectedAddress if available
@@ -233,6 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 redirectToLogin(error.message);
             });
     }
+    
     
     function updateProfile(profileData) {
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-profile', {
