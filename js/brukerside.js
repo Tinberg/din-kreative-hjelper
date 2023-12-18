@@ -255,13 +255,13 @@ document.addEventListener("DOMContentLoaded", function () {
             geocoder.geocode({ 'location': { lat, lng } }, function (results, status) {
                 if (status === 'OK') {
                     if (results[0]) {
-                        // Initialize variables for city and country
+                        console.log(results[0]); // Log the result for inspection
+    
                         let city = '';
                         let country = '';
     
-                        // Iterate over the address components to find city and country
                         results[0].address_components.forEach(component => {
-                            if (component.types.includes('locality')) {
+                            if (component.types.includes('locality') || component.types.includes('administrative_area_level_1')) {
                                 city = component.long_name;
                             }
                             if (component.types.includes('country')) {
@@ -269,7 +269,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         });
     
-                        // Resolve with city and country
                         if (city && country) {
                             resolve(`${city}, ${country}`);
                         } else {
@@ -284,6 +283,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+    
     
 
     function reverseGeocodeAndDisplay(lat, lng) {
