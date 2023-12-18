@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('email').textContent = data.email;
 
         if (data.location) {
-            displayLocation("Loading...", data.location);
+            displayLocation(currentCoordinates);
         }
 
         const updateButton = document.getElementById('updateLocationButton');
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Load the saved location if available
     const savedLocation = localStorage.getItem("userLocation");
     if (savedLocation) {
-        displayLocation(savedLocation);
+        displayLocation("Loading...", savedLocation);
     }
 
     // Add any other functions or event listeners you need
