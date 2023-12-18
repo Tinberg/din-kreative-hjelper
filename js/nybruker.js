@@ -3,10 +3,10 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector(".create-user-form form");
     const messageContainer = document.getElementById("successMessageContainer");
+    const locationInput = document.getElementById('location');
 
     function initAutocomplete() {
-        const locationInput = document.getElementById('location');
-        const autocomplete = new google.maps.places.Autocomplete(locationInput, {types: ['geocode']});
+        const autocomplete = new google.maps.places.Autocomplete(locationInput, { types: ['geocode'] });
 
         autocomplete.addListener('place_changed', function() {
             const place = autocomplete.getPlace();
@@ -20,6 +20,13 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.setItem("userLocation", coords);
         });
     }
+
+    // Prevent form submission with Enter key on the autocomplete field
+    locationInput.addEventListener('keydown', function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+        }
+    });
 
     initAutocomplete();
 
