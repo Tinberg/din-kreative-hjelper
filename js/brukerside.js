@@ -142,34 +142,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById('newLocation'), { types: ['(cities)', 'geocode'] });
-    
+            document.getElementById('newLocation'), { types: ['geocode'] });
+
         autocomplete.addListener('place_changed', function() {
             const place = autocomplete.getPlace();
             if (!place.geometry) {
                 console.log("No details available for input: '" + place.name + "'");
                 return;
             }
-    
+
             const lat = place.geometry.location.lat();
             const lng = place.geometry.location.lng();
-    
+
             tempCoordinates = lat + ', ' + lng;
-            tempFormattedAddress = place.name + ', ' + place.address_components[place.address_components.length - 1].long_name;
+            tempFormattedAddress = place.formatted_address || place.name;
         });
     }
-    
-    function fetchUserProfile() {
-        // ...
-    
-        // Check if a selected city and country are stored in localStorage
-        const selectedCityCountry = localStorage.getItem('selectedCityCountry');
-        if (selectedCityCountry) {
-            const cityCountryData = JSON.parse(selectedCityCountry);
-            tempFormattedAddress = cityCountryData.cityCountry;
-        }
-    
-        // ...
-    }
-    
 });
