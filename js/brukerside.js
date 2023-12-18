@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "Authorization": `Bearer ${token}`
     });
 
-    // Fetch user profile data from the server
     fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile', { headers })
     .then(response => {
         if (!response.ok) {
@@ -20,14 +19,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json();
     })
     .then(data => {
-        // Display username and email
         document.getElementById('username').textContent = data.username;
         document.getElementById('email').textContent = data.email;
 
-        // Handle and display location
         if (data.location) {
-            localStorage.setItem("userLocation", data.location);
-            displayLocation(data.location);
+            displayLocation("Loading...", data.location);
         }
 
         const updateButton = document.getElementById('updateLocationButton');
@@ -43,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
         redirectToLogin(error.message);
     });
 
-    // Initialize Google Maps Autocomplete
     initAutocomplete();
 
     let currentCoordinates;
@@ -65,47 +60,47 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(data => {
             localStorage.setItem("userLocation", currentCoordinates);
-            displayLocation(formattedAddress);
-    
-            // Parse the currentCoordinates to get latitude and longitude
-            const coords = currentCoordinates.split(', ');
-            if (coords.length === 2) {
-                const latitude = parseFloat(coords[0]);
-                const longitude = parseFloat(coords[1]);
-                initMap(latitude, longitude); // Update the map
-            }
+            displayLocation(formattedAddress, currentCoordinates);
         })
         .catch(error => {
             console.error('Error:', error);
         });
     }
-    
 
     function redirectToLogin(message) {
         localStorage.setItem('redirectMessage', message);
         window.location.href = '/html/logginn.html';
     }
 
-    function displayLocation(locationString) {
-        const locationElement = document.getElementById("userLocation");
-        locationElement.textContent = locationString;
+    function displayLocation(address, coordinates) {
+        document.getElementById("userLocation").textContent = address;
+        const coords = parseCoordinates(coordinates);
 
-        // Parse the locationString to get latitude and longitude
-        const locationParts = locationString.split(', ');
-        if (locationParts.length === 2) {
-            const latitude = parseFloat(locationParts[0]);
-            const longitude = parseFloat(locationParts[1]);
-            
-            convertCoordsToAddress(latitude, longitude, function(address) {
-                document.getElementById("userLocation").textContent = address;
-            });
-            initMap(latitude, longitude);
+        if (coords) {
+            initMap(coords.latitude, coords.longitude);
         } else {
             console.error('Invalid location format');
         }
     }
 
+    function parseCoordinates(coordString) {
+        const parts = coordString.split(', ');
+        if (parts.length === 2) {
+            const latitude = parseFloat(parts[0]);
+            const longitude = parseFloat(parts[1]);
+            if (!isNaN(latitude) && !isNaN(longitude)) {
+                return { latitude, longitude };
+            }
+        }
+        return null;
+    }
+
     function initMap(latitude, longitude) {
+        if (isNaN(latitude) || isNaN(longitude)) {
+            console.error("Invalid coordinates for map initialization");
+            return;
+        }
+
         const userLocation = { lat: latitude, lng: longitude };
         const map = new google.maps.Map(document.getElementById('map'), {
             zoom: 12,
@@ -116,7 +111,6 @@ document.addEventListener("DOMContentLoaded", function () {
             map: map
         });
     }
-    
 
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(
@@ -129,21 +123,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            currentCoordinates = place.geometry.location.lat() + ', ' + place.geometry.location.lng();
-            updateLocation(place.formatted_address);
+            const lat = place.geometry.location.lat();
+            const lng = place.geometry.location.lng();
+            if (isNaN(lat) || isNaN(lng)) {
+                console.error("Invalid place geometry");
+                return;
+            }
+
+            currentCoordinates = lat + ', ' + lng;
+            updateLocation(place.formatted_address || place.name);
         });
     }
 
-    function convertCoordsToAddress(lat, lng, callback) {
-        const geocoder = new google.maps.Geocoder();
-        const latlng = new google.maps.LatLng(lat, lng);
-        geocoder.geocode({ 'location': latlng }, function(results, status) {
-            if (status === 'OK' && results[0]) {
-                callback(results[0].formatted_address);
-            } else {
-                console.error('Geocoder failed due to: ' + status);
-                callback("Unknown Address");
-            }
-        });
+    // Load the saved location if available
+    const savedLocation = localStorage.getItem("userLocation");
+    if (savedLocation) {
+        displayLocation("Loading...", savedLocation);
     }
+
+    // Add any other functions or event listeners you need
+    // ...
 });
