@@ -290,8 +290,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to geocode and update map
     function geocodeAndUpdateMap(address) {
         const geocoder = new google.maps.Geocoder();
-        const errorMessageElement = document.querySelector('.error-message'); // Select the error message element
-    
         geocoder.geocode({'address': address}, function(results, status) {
             if (status === 'OK') {
                 map.setCenter(results[0].geometry.location);
@@ -302,13 +300,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     map: map,
                     position: results[0].geometry.location
                 });
-    
-                // Clear any previous error messages
-                errorMessageElement.textContent = '';
             } else {
-                // This is the else block where you handle the error
-                // Update the error message element with a user-friendly text
-                errorMessageElement.textContent = 'Den oppgitte adressen er ugyldig. Vennligst kontroller og forsøk på nytt.';
+                alert('Geocode was not successful for the following reason: ' + status);
             }
         });
     }
