@@ -292,6 +292,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const geocoder = new google.maps.Geocoder();
         const positionMessageContainer = document.querySelector('.position-message');
 
+        address = address.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+
         geocoder.geocode({'address': address}, function(results, status) {
             if (status === 'OK') {
                 map.setCenter(results[0].geometry.location);
@@ -304,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 if (displayMessage) {
-                    positionMessageContainer.innerHTML = `<p class="success-message">Sjekk om posisjonen stemmer med kartet.</p>`;
+                    positionMessageContainer.innerHTML = `<p class="success-message">Vennligst bekreft at den angitte posisjonen samsvarer med kartet</p>`;
                     clearMessageAfterDelay(positionMessageContainer);
                 }
             } else {
