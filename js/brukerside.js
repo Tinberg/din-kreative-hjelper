@@ -280,6 +280,24 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('redirectMessage', message);
         window.location.href = '/html/logginn.html';
     }
+    //profile picture upload
+    document.getElementById('profilePicture').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('profile_picture', file);
+        // Append other user data if necessary
+    
+        fetch('https://yourwebsite.com/wp-json/myapp/v1/update-profile-picture', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+    });
 
     initMap();
     loadUserProfile();
