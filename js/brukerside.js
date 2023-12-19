@@ -289,51 +289,51 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location.href = "/html/logginn.html";
   }
 
-  //profile picture upload
-  document
-    .getElementById("profilePicture")
-    .addEventListener("change", function (event) {
-      const file = event.target.files[0];
-      if (!file) {
-        alert("Please select a file.");
-        return;
-      }
-      const formData = new FormData();
-      formData.append("profile_picture", file);
+  // Trigger file input when the custom button is clicked
+  document.getElementById('uploadTrigger').addEventListener('click', function() {
+    document.getElementById('profilePicture').click();
+});
 
-      fetch(
-        "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-profile-picture",
-        {
-          method: "POST",
-          body: formData,
-          headers: {
-            Authorization: "Bearer " + token,
-          },
+// Handle file selection and upload profile img
+document.getElementById('profilePicture').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (!file) {
+        document.getElementById('uploadStatus').textContent = "Ingen fil valgt";
+        return;
+    }
+
+    document.getElementById('uploadStatus').textContent = file.name; // Update file name text
+
+    const formData = new FormData();
+    formData.append('profile_picture', file);
+
+    fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-profile-picture', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Authorization': 'Bearer ' + token
         }
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok.");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            const profileImage = document.getElementById("profile_picture");
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const profileImage = document.getElementById('profile_picture');
             profileImage.src = e.target.result;
-            profileImage.alt = "Profile picture";
-          };
-          reader.readAsDataURL(file);
-        })
-        .catch((error) => {
-          console.error(
-            "There has been a problem with your fetch operation:",
-            error
-          );
-          alert("Failed to upload the image. Please try again.");
-        });
+            profileImage.alt = 'Profile picture';
+        };
+        reader.readAsDataURL(file);
+    })
+    .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+        alert("Failed to upload the image. Please try again.");
     });
+});
 
   initMap();
   loadUserProfile();
