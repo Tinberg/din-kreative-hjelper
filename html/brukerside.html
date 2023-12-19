@@ -19,6 +19,18 @@
     <main>
       <div id="profile">
         <h1>User Profile</h1>
+        <div class="profile-picture-container">
+          <img class="profile-img" id="profile_picture" src="" alt="" />
+          <input
+            class="di-none"
+            type="file"
+            id="profilePicture"
+            accept="image/*"
+          />
+          <button id="uploadTrigger" class="upload-button">
+            Bytt profilbilde
+          </button>
+        </div>
         <p>Brukernavn: <span id="username"></span></p>
         <p>Epost: <span id="email"></span></p>
         <p>Din posisjon: <span id="userLocation"></span></p>
