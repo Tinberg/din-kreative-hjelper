@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 messageContainer.innerHTML = `<p class="success-message">Bruker er opprettet. Vennligst logg inn.</p>`;
                 
                 // Redirect to the user page after successful registration
-                window.location.href = '/userpage.html'; // Replace this with your user page URL
+                window.location.href = '/html/brukerside.html'; // Replace this with your user page URL
             } else {
                 let errorMessage = "En feil oppstod. Vennligst prøv igjen eller kontakt support hvis problemet vedvarer.";
                 if (data.code === "user_exists") {
