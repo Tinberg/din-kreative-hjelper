@@ -280,40 +280,6 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('redirectMessage', message);
         window.location.href = '/html/logginn.html';
     }
-    function uploadProfileImage(imageFile) {
-        let formData = new FormData();
-        formData.append('profile_picture', imageFile);
-
-        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/upload-profile-picture', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + token,
-            },
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to upload profile image');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Profile image uploaded successfully:', data);
-            // Update profile picture on page
-            document.getElementById('profilePicture').src = URL.createObjectURL(imageFile);
-        })
-        .catch(error => {
-            console.error('Error uploading profile image:', error);
-        });
-    }
-
-    // Event listener for image upload input
-    document.getElementById('profilePictureInput').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            uploadProfileImage(file);
-        }
-    });
 
     initMap();
     loadUserProfile();
