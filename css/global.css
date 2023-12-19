@@ -38,8 +38,10 @@
   .profile-img {
     border-radius: 50%;
     /* background-color: rgb(197, 192, 192); */
-    height: 100px;
-    width: 100px;
+    height: 150px;
+    width: 150px;
+    object-fit: cover; 
+    border: 2px solid #ddd; /*Bytt????+*/
 }
   
   
