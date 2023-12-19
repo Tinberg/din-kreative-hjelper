@@ -288,10 +288,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to geocode and update map
-    function geocodeAndUpdateMap(address) {
+    function geocodeAndUpdateMap(address, displayMessage = false) {
         const geocoder = new google.maps.Geocoder();
-        const positionMessageContainer = document.querySelector('.position-message'); // Select the container element
-    
+        const positionMessageContainer = document.querySelector('.position-message');
+
         geocoder.geocode({'address': address}, function(results, status) {
             if (status === 'OK') {
                 map.setCenter(results[0].geometry.location);
@@ -302,18 +302,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     map: map,
                     position: results[0].geometry.location
                 });
-    
-                positionMessageContainer.innerHTML = `<p class="success-message">Sjekk om posisjonen stemmer med kartet.</p>`;
+
+                if (displayMessage) {
+                    positionMessageContainer.innerHTML = `<p class="success-message">Sjekk om posisjonen stemmer med kartet.</p>`;
+                    clearMessageAfterDelay(positionMessageContainer);
+                }
             } else {
-                positionMessageContainer.innerHTML = `<p class="error-message">Den oppgitte adressen er ugyldig. Vennligst kontroller og forsøk på nytt.</p>`;
+                if (displayMessage) {
+                    positionMessageContainer.innerHTML = `<p class="error-message">Den oppgitte adressen er ugyldig. Vennligst kontroller og forsøk på nytt.</p>`;
+                    clearMessageAfterDelay(positionMessageContainer);
+                }
             }
-            // Clear the message after 15 seconds
-            setTimeout(function() {
-                positionMessageContainer.innerHTML = '';
-            }, 15000);
         });
     }
-    
+
+    // Function to clear the message after 15 seconds
+    function clearMessageAfterDelay(container) {
+        setTimeout(function() {
+            container.innerHTML = '';
+        }, 15000);
+    }
 
     // Load user profile and update map
     function loadUserProfile() {
@@ -365,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Success:', data);
             profile.location = newLocation;
             document.getElementById('userLocation').textContent = newLocation;
-            geocodeAndUpdateMap(newLocation); // Also update the map and show message
+            geocodeAndUpdateMap(newLocation, true); // Update map and show message
         })
         .catch(error => {
             console.error('Error:', error);
