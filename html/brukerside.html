@@ -6,6 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="/css/global.css" />
     <link rel="stylesheet" href="/css/brukere.css" />
+    <link rel="stylesheet" href="/css/brukerside.css" />
     <script
       async
       defer
@@ -19,6 +20,16 @@
     <main>
       <div id="profile">
         <h1>User Profile</h1>
+        <div class="profile-picture-container">
+          <img
+          class="profile-img"
+            id="profilePicture"
+            src="path/to/default/profile/icon.png"
+            alt="Profile Picture"
+          />
+          <p>Bytt profilbilde</p>
+          <input type="file" id="profilePictureInput" accept="image/*" />
+        </div>
         <p>Brukernavn: <span id="username"></span></p>
         <p>Epost: <span id="email"></span></p>
         <p>Din posisjon: <span id="userLocation"></span></p>

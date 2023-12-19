@@ -34,6 +34,12 @@
   html, body{
     scroll-behavior: smooth;
   }
+  /*styles for tjeneste.html and brukerside.html*/
+  .profile-img {
+    border-radius: 50%;
+    background-color: gray;
+}
+  
   
  
 
