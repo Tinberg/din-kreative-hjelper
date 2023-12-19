@@ -290,8 +290,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to geocode and update map
     function geocodeAndUpdateMap(address) {
         const geocoder = new google.maps.Geocoder();
-        const positionMessage = document.querySelector('.position-message'); // Select the error message element
-       
+        const errorMessageElement = document.querySelector('.error-message'); // Select the error message element
     
         geocoder.geocode({'address': address}, function(results, status) {
             if (status === 'OK') {
@@ -304,19 +303,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     position: results[0].geometry.location
                 });
     
-                // Clear any previous error messages and display success message
+                // Clear any previous error messages
                 errorMessageElement.textContent = '';
-                successMessageElement.textContent = 'Sjekk om posisjonen stemmer med kartet.';
-                positionMessage.style.color = `green`;
             } else {
-                // Clear any previous success messages and display error message
-                successMessageElement.textContent = '';
+                // This is the else block where you handle the error
+                // Update the error message element with a user-friendly text
                 errorMessageElement.textContent = 'Den oppgitte adressen er ugyldig. Vennligst kontroller og forsøk på nytt.';
-                positionMessage.style.color = `red`;
             }
         });
     }
-    
 
     // Load user profile and update map
     function loadUserProfile() {
