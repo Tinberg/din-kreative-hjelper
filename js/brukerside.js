@@ -289,48 +289,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location.href = "/html/logginn.html";
   }
 
-// Trigger file input when the custom button is clicked
-document.getElementById('uploadTrigger').addEventListener('click', function() {
-    document.getElementById('profilePicture').click();
-});
 
-// Handle file selection and upload profile img
-document.getElementById('profilePicture').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (!file) {
-        return; // If no file is selected, do nothing
-    }
-
-    const formData = new FormData();
-    formData.append('profile_picture', file);
-
-    fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-profile-picture', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Authorization': 'Bearer ' + token
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok.');
-        }
-        return response.json();
-    })
-    .then(data => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const profileImage = document.getElementById('profile_picture');
-            profileImage.src = e.target.result;
-            profileImage.alt = 'Profile picture';
-        };
-        reader.readAsDataURL(file);
-    })
-    .catch(error => {
-        console.error('There has been a problem with your fetch operation:', error);
-        alert("Failed to upload the image. Please try again.");
-    });
-});
 
   initMap();
   loadUserProfile();
