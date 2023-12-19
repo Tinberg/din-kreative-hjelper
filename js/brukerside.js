@@ -307,8 +307,13 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 positionMessageContainer.innerHTML = `<p class="error-message">Den oppgitte adressen er ugyldig. Vennligst kontroller og forsøk på nytt.</p>`;
             }
+            // Clear the message after 15 seconds
+            setTimeout(function() {
+                positionMessageContainer.innerHTML = '';
+            }, 15000);
         });
     }
+    
 
     // Load user profile and update map
     function loadUserProfile() {
