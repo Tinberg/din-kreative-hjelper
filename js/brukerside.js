@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('profile_picture', file);
         // Append other user data if necessary
     
-        fetch('https://yourwebsite.com/wp-json/myapp/v1/update-profile-picture', {
+        fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-profile-picture', {
             method: 'POST',
             body: formData,
             headers: {
