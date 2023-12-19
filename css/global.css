@@ -38,6 +38,8 @@
   .profile-img {
     border-radius: 50%;
     background-color: gray;
+    height: 200px;
+    width: 200px;
 }
   
   
