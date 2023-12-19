@@ -290,6 +290,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to geocode and update map
     function geocodeAndUpdateMap(address) {
         const geocoder = new google.maps.Geocoder();
+        const positionMessage = document.querySelector('.position-message'); // Select the message element
+    
         geocoder.geocode({'address': address}, function(results, status) {
             if (status === 'OK') {
                 map.setCenter(results[0].geometry.location);
@@ -300,8 +302,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     map: map,
                     position: results[0].geometry.location
                 });
+    
+                positionMessage.textContent = 'Sjekk om posisjonen stemmer med kartet.';
+                positionMessage.style.color = 'green';
             } else {
-                alert('Geocode was not successful for the following reason: ' + status);
+                positionMessage.textContent = 'Den oppgitte adressen er ugyldig. Vennligst kontroller og forsøk på nytt.';
+                positionMessage.style.color = 'red';
             }
         });
     }
@@ -356,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Success:', data);
             profile.location = newLocation;
             document.getElementById('userLocation').textContent = newLocation;
-            geocodeAndUpdateMap(newLocation);
+            geocodeAndUpdateMap(newLocation); // Also update the map and show message
         })
         .catch(error => {
             console.error('Error:', error);
