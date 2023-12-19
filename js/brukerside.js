@@ -288,7 +288,8 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("redirectMessage", message);
     window.location.href = "/html/logginn.html";
   }
-
+  initMap();
+  loadUserProfile();
 // Trigger file input when the custom button is clicked
 document.getElementById('uploadTrigger').addEventListener('click', function() {
     document.getElementById('profilePicture').click();
@@ -332,6 +333,5 @@ document.getElementById('profilePicture').addEventListener('change', function(ev
     });
 });
 
-  initMap();
-  loadUserProfile();
+  
 });
