@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 marker = new google.maps.Marker({
                     map: map,
-                    position: results[0]..geometry.location
+                    position: results[0].geometry.location
                 });
     
                 // Display success message
