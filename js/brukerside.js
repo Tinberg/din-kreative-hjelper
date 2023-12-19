@@ -238,7 +238,9 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("email").textContent = profile.email;
         document.getElementById("userLocation").textContent = profile.location;
         geocodeAndUpdateMap(profile.location);
-       
+        if (data.profile_picture) {
+          document.getElementById("profile_picture").src = data.profile_picture;
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
