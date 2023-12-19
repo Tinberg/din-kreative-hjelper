@@ -12,7 +12,6 @@
       defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByQXsRYGrQB39OCHvKt_WMdNkp1WUtgtg&libraries=places&callback=initAutocomplete&language=no"
     ></script>
-
     <script src="/js/brukerside.js" defer></script>
   </head>
   <body>
@@ -35,7 +34,7 @@
         <p>Brukernavn: <span id="username"></span></p>
         <p>Epost: <span id="email"></span></p>
         <p>Din posisjon: <span id="userLocation"></span></p>
-        <div id="map" style="height: 400px; width: 100%"></div>
+        <div class="map" id="map"></div>
         <div>
           <label>Angi gateadresse, sted eller by:</label>
           <input type="text" id="newLocation" placeholder="Legg til posisjon" />
