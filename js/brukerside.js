@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 if (displayMessage) {
-                    positionMessageContainer.innerHTML = `<p class="success-message">Vennligst bekreft at den angitte posisjonen samsvarer med kartet</p>`;
+                    positionMessageContainer.innerHTML = `<p class="success-message">Vennligst kontroller at den angitte posisjonen samsvarer med kartet</p>`;
                     clearMessageAfterDelay(positionMessageContainer);
                 }
             } else {
