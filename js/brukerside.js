@@ -288,8 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const file = event.target.files[0];
         const formData = new FormData();
         formData.append('profile_picture', file);
-        // Append other user data if necessary
-    
+
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-profile-picture', {
             method: 'POST',
             body: formData,
@@ -298,7 +297,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => {
+            console.log(data);
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile_picture').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        })
         .catch(error => console.error(error));
     });
 
