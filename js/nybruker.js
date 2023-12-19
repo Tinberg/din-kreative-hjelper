@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const messageContainer = document.getElementById("successMessageContainer");
     const locationInput = document.getElementById('location');
 
-    //Initializes the Google Maps Places Autocomplete functionality on the location input field.
+    // Initializes the Google Maps Places Autocomplete functionality on the location input field.
     function initAutocomplete() {
         const autocomplete = new google.maps.places.Autocomplete(locationInput, { types: ['geocode'] });
 
@@ -30,8 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     initAutocomplete();
     
-    //Handles the submission of the user registration form.
-    //It collects user data from the form, sends it to a server endpoint
+    // Handles the submission of the user registration form.
+    // It collects user data from the form, sends it to a server endpoint.
     form.addEventListener("submit", function (event) {
         event.preventDefault();
 
@@ -59,17 +59,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (data.user_id) {
                 messageContainer.innerHTML = `<p class="success-message">Bruker er opprettet. Vennligst logg inn.</p>`;
                 
-                // Create a new button element
-                const loginButton = document.createElement("button");
-                loginButton.textContent = "Til innlogging";
-                loginButton.addEventListener("click", function() {
-                    window.location.href = '/html/logginn.html';
-                });
-
-                // Append the button to the message container
-                messageContainer.appendChild(loginButton);
-
-                form.reset();
+                // Redirect to the user page after successful registration
+                window.location.href = '/userpage.html'; // Replace this with your user page URL
             } else {
                 let errorMessage = "En feil oppstod. Vennligst prøv igjen eller kontakt support hvis problemet vedvarer.";
                 if (data.code === "user_exists") {
