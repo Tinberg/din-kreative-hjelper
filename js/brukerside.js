@@ -169,9 +169,110 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     let map;
+//     let marker;
+//     const profile = {
+//         username: '',
+//         email: '',
+//         location: '' // Format: 'Street Address, City, Postcode, Country'
+//     };
+
+//     // Initialize Google Map
+//     function initMap() {
+//         map = new google.maps.Map(document.getElementById('map'), {
+//             zoom: 8,
+//             center: {lat: -34.397, lng: 150.644} // Default center
+//         });
+//     }
+
+//     // Function to geocode and update map
+//     function geocodeAndUpdateMap(address) {
+//         const geocoder = new google.maps.Geocoder();
+//         geocoder.geocode({'address': address}, function(results, status) {
+//             if (status === 'OK') {
+//                 map.setCenter(results[0].geometry.location);
+//                 if (marker) {
+//                     marker.setMap(null);
+//                 }
+//                 marker = new google.maps.Marker({
+//                     map: map,
+//                     position: results[0].geometry.location
+//                 });
+//             } else {
+//                 alert('Geocode was not successful for the following reason: ' + status);
+//             }
+//         });
+//     }
+
+//     // Load user profile and update map
+//     function loadUserProfile() {
+//         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/', {
+//             method: 'GET',
+//             headers: {
+//                 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') // Replace with actual token retrieval method
+//             }
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             profile.username = data.username;
+//             profile.email = data.email;
+//             profile.location = data.location;
+//             document.getElementById('username').textContent = profile.username;
+//             document.getElementById('email').textContent = profile.email;
+//             document.getElementById('userLocation').textContent = profile.location;
+//             geocodeAndUpdateMap(profile.location);
+//         })
+//         .catch(error => console.error('Error:', error));
+//     }
+
+//     // Update location
+//     document.getElementById('updateLocationButton').addEventListener('click', function() {
+//         const newLocation = document.getElementById('newLocation').value;
+//         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')
+//             },
+//             body: JSON.stringify({location: newLocation})
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log('Success:', data);
+//             profile.location = newLocation;
+//             document.getElementById('userLocation').textContent = newLocation;
+//             geocodeAndUpdateMap(newLocation);
+//         })
+//         .catch(error => console.error('Error:', error));
+//     });
+
+//     initMap();
+//     loadUserProfile();
+// });
+
 document.addEventListener('DOMContentLoaded', function() {
     let map;
     let marker;
+    const token = localStorage.getItem('jwt_token');
+    
+    if (!token) {
+        redirectToLogin("Vennligst logg inn for å se din profil.");
+        return;
+    }
+
     const profile = {
         username: '',
         email: '',
@@ -210,10 +311,15 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/', {
             method: 'GET',
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('jwt_token') // Replace with actual token retrieval method
+                'Authorization': 'Bearer ' + token
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
+            }
+            return response.json();
+        })
         .then(data => {
             profile.username = data.username;
             profile.email = data.email;
@@ -223,7 +329,10 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('userLocation').textContent = profile.location;
             geocodeAndUpdateMap(profile.location);
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            redirectToLogin(error.message);
+        });
     }
 
     // Update location
@@ -233,21 +342,33 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('jwt_token')
+                'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify({location: newLocation})
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update location on server');
+            }
+            return response.json();
+        })
         .then(data => {
             console.log('Success:', data);
             profile.location = newLocation;
             document.getElementById('userLocation').textContent = newLocation;
             geocodeAndUpdateMap(newLocation);
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            redirectToLogin('Feil ved oppdatering av posisjon');
+        });
     });
+
+    function redirectToLogin(message) {
+        localStorage.setItem('redirectMessage', message);
+        window.location.href = '/html/logginn.html';
+    }
 
     initMap();
     loadUserProfile();
 });
-
