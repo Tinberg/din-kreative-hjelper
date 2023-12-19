@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function geocodeAndUpdateMap(address) {
         const geocoder = new google.maps.Geocoder();
         const positionMessage = document.querySelector('.position-message'); // Select the message element
-    
+
         geocoder.geocode({'address': address}, function(results, status) {
             if (status === 'OK') {
                 map.setCenter(results[0].geometry.location);
@@ -302,12 +302,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     map: map,
                     position: results[0].geometry.location
                 });
-    
+
                 positionMessage.textContent = 'Sjekk om posisjonen stemmer med kartet.';
-                positionMessage.style.color = 'green';
+                positionMessage.classList.add('success-message');
+                positionMessage.classList.remove('error-message');
             } else {
                 positionMessage.textContent = 'Den oppgitte adressen er ugyldig. Vennligst kontroller og forsøk på nytt.';
-                positionMessage.style.color = 'red';
+                positionMessage.classList.add('error-message');
+                positionMessage.classList.remove('success-message');
             }
         });
     }
