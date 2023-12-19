@@ -266,6 +266,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     let map;
     let marker;
+    let messageTimeout;
     const token = localStorage.getItem('jwt_token');
     
     if (!token) {
@@ -318,7 +319,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to clear the message after 15 seconds
     function clearMessageAfterDelay(container) {
-        setTimeout(function() {
+        // Clear any existing timeout
+        clearTimeout(messageTimeout);
+
+        // Set a new timeout
+        messageTimeout = setTimeout(function() {
             container.innerHTML = '';
         }, 15000);
     }
