@@ -290,8 +290,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to geocode and update map
     function geocodeAndUpdateMap(address) {
         const geocoder = new google.maps.Geocoder();
-        const positionMessage = document.querySelector('.position-message'); // Select the message element
-
+        const positionMessageContainer = document.querySelector('.position-message'); // Select the container element
+    
         geocoder.geocode({'address': address}, function(results, status) {
             if (status === 'OK') {
                 map.setCenter(results[0].geometry.location);
@@ -302,14 +302,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     map: map,
                     position: results[0].geometry.location
                 });
-
-                positionMessage.textContent = 'Sjekk om posisjonen stemmer med kartet.';
-                positionMessage.classList.add('success-message');
-                positionMessage.classList.remove('error-message');
+    
+                positionMessageContainer.innerHTML = `<p class="success-message">Sjekk om posisjonen stemmer med kartet.</p>`;
             } else {
-                positionMessage.textContent = 'Den oppgitte adressen er ugyldig. Vennligst kontroller og forsøk på nytt.';
-                positionMessage.classList.add('error-message');
-                positionMessage.classList.remove('success-message');
+                positionMessageContainer.innerHTML = `<p class="error-message">Den oppgitte adressen er ugyldig. Vennligst kontroller og forsøk på nytt.</p>`;
             }
         });
     }
