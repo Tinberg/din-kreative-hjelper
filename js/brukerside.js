@@ -292,9 +292,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const geocoder = new google.maps.Geocoder();
         const positionMessageContainer = document.querySelector('.position-message');
 
-        address = address.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-
-
         geocoder.geocode({'address': address}, function(results, status) {
             if (status === 'OK') {
                 map.setCenter(results[0].geometry.location);
@@ -326,6 +323,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 15000);
     }
 
+    // Function to transform text to title case
+    function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function(txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
     // Load user profile and update map
     function loadUserProfile() {
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/', {
@@ -343,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             profile.username = data.username;
             profile.email = data.email;
-            profile.location = data.location;
+            profile.location = toTitleCase(data.location); // Apply title casing
             document.getElementById('username').textContent = profile.username;
             document.getElementById('email').textContent = profile.email;
             document.getElementById('userLocation').textContent = profile.location;
@@ -358,13 +362,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update location
     document.getElementById('updateLocationButton').addEventListener('click', function() {
         const newLocation = document.getElementById('newLocation').value;
+        const titleCasedLocation = toTitleCase(newLocation); // Apply title casing
         fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify({location: newLocation})
+            body: JSON.stringify({location: titleCasedLocation})
         })
         .then(response => {
             if (!response.ok) {
@@ -374,9 +379,9 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             console.log('Success:', data);
-            profile.location = newLocation;
-            document.getElementById('userLocation').textContent = newLocation;
-            geocodeAndUpdateMap(newLocation, true); // Update map and show message
+            profile.location = titleCasedLocation;
+            document.getElementById('userLocation').textContent = titleCasedLocation;
+            geocodeAndUpdateMap(titleCasedLocation, true); // Update map and show message
         })
         .catch(error => {
             console.error('Error:', error);
