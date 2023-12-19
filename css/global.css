@@ -37,9 +37,9 @@
   /*styles for tjeneste.html and brukerside.html*/
   .profile-img {
     border-radius: 50%;
-    background-color: gray;
-    height: 200px;
-    width: 200px;
+    background-color: rgb(197, 192, 192);
+    height: 100px;
+    width: 100px;
 }
   
   
