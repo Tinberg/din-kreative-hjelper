@@ -289,8 +289,8 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location.href = "/html/logginn.html";
   }
 
-  // Trigger file input when the custom button is clicked
-  document.getElementById('uploadTrigger').addEventListener('click', function() {
+// Trigger file input when the custom button is clicked
+document.getElementById('uploadTrigger').addEventListener('click', function() {
     document.getElementById('profilePicture').click();
 });
 
@@ -298,11 +298,8 @@ document.addEventListener("DOMContentLoaded", function () {
 document.getElementById('profilePicture').addEventListener('change', function(event) {
     const file = event.target.files[0];
     if (!file) {
-        document.getElementById('uploadStatus').textContent = "Ingen fil valgt";
-        return;
+        return; // If no file is selected, do nothing
     }
-
-    document.getElementById('uploadStatus').textContent = file.name; // Update file name text
 
     const formData = new FormData();
     formData.append('profile_picture', file);
