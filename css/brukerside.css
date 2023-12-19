@@ -3,16 +3,19 @@
     text-align: center;
     margin: 20px;
 }
+
 .upload-button {
     background-color: #4CAF50; /* Green background */
     color: white; /* White text */
     border-radius: 4px;
     cursor: pointer;/*Make a utility class for this*/
+    padding: 10px 20px;
+    border-radius: 5px;
 }
+
 .upload-button:hover {
     background-color: #45a049; /* change color on this */
 }
-
 /*Googlemap*/
 .map {
 height: 400px;
