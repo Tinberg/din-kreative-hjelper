@@ -1,4 +1,4 @@
-// //Brukerside this code contains fetching username, email, location and profile picture.
+// //--------- Fetching username, email, location and profile picture.(update location and upload profile picture) ---------//
 // document.addEventListener("DOMContentLoaded", function () {
 //   let map;
 //   let marker;
@@ -14,7 +14,9 @@
 //     username: "",
 //     email: "",
 //     location: "",
-//   };
+//     userPicture: "" 
+// };
+
 
 //   // Initialize Google Map
 //   function initMap() {
@@ -74,38 +76,46 @@
 
 //   // Load user profile and update map
 //   function loadUserProfile() {
-//     fetch(
-//       "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/",
-//       {
-//         method: "GET",
+//     fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/', {
+//         method: 'GET',
 //         headers: {
-//           Authorization: "Bearer " + token,
+//             'Authorization': 'Bearer ' + token,
 //         },
-//       }
-//     )
-//       .then((response) => {
+//     })
+//     .then(response => {
 //         if (!response.ok) {
-//           throw new Error("Autentisering feilet, vennligst logg inn på nytt.");
+//             throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
 //         }
 //         return response.json();
-//       })
-//       .then((data) => {
+//     })
+//     .then(data => {
+//         // Update the profile object
 //         profile.username = data.username;
 //         profile.email = data.email;
 //         profile.location = toTitleCase(data.location); // Apply title casing
-//         document.getElementById("username").textContent = profile.username;
-//         document.getElementById("email").textContent = profile.email;
-//         document.getElementById("userLocation").textContent = profile.location;
-//         geocodeAndUpdateMap(profile.location);
-//         if (data.profile_picture) {
-//           document.getElementById("profile_picture").src = data.profile_picture;
+//         profile.userPicture = data.profile_picture; // Update profile picture
+
+//         // Update the UI
+//         document.getElementById('username').textContent = profile.username;
+//         document.getElementById('email').textContent = profile.email;
+//         document.getElementById('userLocation').textContent = profile.location;
+        
+//         // Update the profile picture in the UI
+//         const profileImgElement = document.getElementById('profile_picture');
+//         if (profile.userPicture) {
+//             profileImgElement.src = profile.userPicture;
+//             profileImgElement.alt = 'User profile picture';
+//         } else {
+//             profileImgElement.src = '/images/no-profile.png'; 
+//             profileImgElement.alt = 'No profile picture';
 //         }
-//       })
-//       .catch((error) => {
-//         console.error("Error:", error);
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
 //         redirectToLogin(error.message);
-//       });
-//   }
+//     });
+// }
+
 
 //   // Update location
 //   document
@@ -195,7 +205,7 @@
 //   loadUserProfile();
 // });
 
-
+// //--------- Form for post service ---------//
 
 
 
