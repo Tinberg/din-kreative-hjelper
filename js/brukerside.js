@@ -215,18 +215,18 @@ document.addEventListener("DOMContentLoaded", function () {
   let marker;
   let messageTimeout;
   const token = localStorage.getItem("jwt_token");
-
-  if (!token) {
-    redirectToLogin("Vennligst logg inn for å se din profil.");
-    return;
-  }
-
   const profile = {
     username: "",
     email: "",
     location: "",
     userPicture: "" 
 };
+
+  if (!token) {
+    redirectToLogin("Vennligst logg inn for å se din profil.");
+    return;
+  }
+
 
 
   // Initialize Google Map
@@ -381,6 +381,7 @@ document.getElementById('profilePicture').addEventListener('change', function(ev
         return; // If no file is selected, do nothing
     }
 
+
     const formData = new FormData();
     formData.append('profile_picture', file);
 
@@ -411,9 +412,51 @@ document.getElementById('profilePicture').addEventListener('change', function(ev
         alert("Failed to upload the image. Please try again.");
     });
 });
-
+document.getElementById('serviceForm').addEventListener('submit', postService);
   initMap();
   loadUserProfile();
+  loadUserServices();
 });
 
 //--------- Form for post service ---------//
+
+function postService(event) {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  formData.append('username', profile.username);
+  formData.append('location', profile.location);
+
+  fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/post-service', {
+      method: 'POST',
+      body: formData,
+      headers: {
+          'Authorization': 'Bearer ' + token
+      }
+  })
+  .then(response => response.json())
+  .then(data => {
+      loadUserServices(); // Reload to show new service
+  })
+  .catch(error => console.error('Error posting service:', error));
+}
+
+function loadUserServices() {
+  fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/get-user-services', {
+      headers: { 'Authorization': 'Bearer ' + token }
+  })
+  .then(response => response.json())
+  .then(services => {
+      const servicesContainer = document.getElementById('userServicesContainer');
+      servicesContainer.innerHTML = '';
+      services.forEach(service => {
+          const serviceElement = document.createElement('div');
+          serviceElement.innerHTML = `
+              <h3>${service.title}</h3>
+              <img src="${service.imageUrl}" alt="${service.title}">
+              <p>${service.description}</p>
+          `;
+          servicesContainer.appendChild(serviceElement);
+      });
+  })
+  .catch(error => console.error('Error fetching services:', error));
+}
