@@ -208,9 +208,10 @@
 // //--------- Form for post service ---------//
 
 
-
+let token;
 //--------- Fetching username, email, location and profile picture.(update location and upload profile picture) ---------//
 document.addEventListener("DOMContentLoaded", function () {
+  token = localStorage.getItem("jwt_token");
   let map;
   let marker;
   let messageTimeout;
