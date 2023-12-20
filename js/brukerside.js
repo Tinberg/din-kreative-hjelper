@@ -210,25 +210,33 @@
 
 
 //--------- Fetching username, email, location and profile picture.(update location and upload profile picture) ---------//
-let token; 
+let token; // Declare token at the top level
+
 document.addEventListener("DOMContentLoaded", function () {
-  let map;
-  let marker;
-  let messageTimeout;
-  const token = localStorage.getItem("jwt_token");
-  const profile = {
-    username: "",
-    email: "",
-    location: "",
-    userPicture: "" 
-};
+    token = localStorage.getItem("jwt_token");
+    const profile = {
+        username: "",
+        email: "",
+        location: "",
+        userPicture: "" 
+    };
 
-  if (!token) {
-    redirectToLogin("Vennligst logg inn for å se din profil.");
-    return;
-  }
+    if (!token) {
+        redirectToLogin("Vennligst logg inn for å se din profil.");
+        return;
+    }
 
+    initMap();
+    loadUserProfile();
+    loadUserServices();
 
+    document.getElementById('updateLocationButton').addEventListener("click", updateLocation);
+    document.getElementById('uploadTrigger').addEventListener('click', function() {
+        document.getElementById('profilePicture').click();
+    });
+    document.getElementById('profilePicture').addEventListener('change', uploadProfilePicture);
+    document.getElementById('serviceForm').addEventListener('submit', postService);
+});
 
   // Initialize Google Map
   function initMap() {
@@ -288,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   // Load user profile and update map
-  function loadUserProfile(token, profile) {
+  function loadUserProfile() {
     fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/', {
         method: 'GET',
         headers: {
@@ -414,17 +422,15 @@ document.getElementById('profilePicture').addEventListener('change', function(ev
         alert("Failed to upload the image. Please try again.");
     });
 });
-  //function to 
-  document.getElementById('serviceForm').addEventListener('submit', function(event) {
-    postService(event, profile, token); 
+document.getElementById('serviceForm').addEventListener('submit', postService);
 initMap();
 loadUserProfile(token, profile); // Pass token and profile as arguments
 loadUserServices(token);
-});
+
 
 //--------- Form for post service ---------//
 
-function postService(event, profile, token) {
+function postService(event) {
   event.preventDefault();
   const formData = new FormData(event.target);
   formData.append('username', profile.username);
@@ -444,11 +450,7 @@ function postService(event, profile, token) {
   .catch(error => console.error('Error posting service:', error));
 }
 
-function loadUserServices(token) {
-  if (!token) {
-    console.error('Token not found');
-    return;
-}
+function loadUserServices() {
   fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/get-user-services', {
       headers: { 'Authorization': 'Bearer ' + token }
   })
