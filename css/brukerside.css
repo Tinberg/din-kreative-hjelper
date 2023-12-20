@@ -20,6 +20,9 @@ height: 400px;
 width: 100%;
 }
 /*userPostsContainer*/
+.post {
+    margin: 20px 0;
+}
 .post img {
     height: 200px;
 }
