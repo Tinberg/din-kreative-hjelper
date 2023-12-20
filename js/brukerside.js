@@ -305,6 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const profileImgElement = document.getElementById('profile_picture');
         if (profile.userPicture) {
             profileImgElement.src = profile.userPicture;
+            profileImgElement.alt = 'User profile picture';
         } else {
             profileImgElement.src = '/images/no-profile.png'; 
             profileImgElement.alt = 'No profile picture';
