@@ -34,7 +34,9 @@
   html, body{
     scroll-behavior: smooth;
   }
-
+  img {
+    object-fit: cover;
+  }
   .di-none {
     display: none;
   }
@@ -44,7 +46,6 @@
     /* background-color: rgb(197, 192, 192); */
     height: 150px;
     width: 150px;
-    object-fit: cover; 
     border: 2px solid #ddd; /*Bytt????+*/
 }
   
