@@ -455,6 +455,7 @@ function loadAndDisplayUserPosts() {
   })
   .then(response => response.json())
   .then(posts => {
+    console.log('Posts:', posts);
       const postsContainer = document.getElementById('userPostsContainer');
       postsContainer.innerHTML = ''; // Clear existing posts
 
