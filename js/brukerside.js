@@ -440,9 +440,36 @@ document.getElementById('profilePicture').addEventListener('change', function(ev
 
   initMap();
   loadUserProfile();
+  loadAndDisplayUserPosts(); 
 });
 
 //--------- Form for post service ---------//
 
+function loadAndDisplayUserPosts() {
+  fetch('https://yourdomain.com/wp-json/myapp/v1/user-posts/', {
+      method: 'GET',
+      headers: {
+          'Authorization': 'Bearer ' + token,
+      },
+  })
+  .then(response => response.json())
+  .then(posts => {
+      const postsContainer = document.getElementById('userPostsContainer');
+      postsContainer.innerHTML = ''; // Clear existing posts
 
+      posts.forEach(post => {
+          const postElement = `
+              <div class="post">
+                  <h3>${post.title}</h3>
+                  <img src="${post.image_url}" alt="${post.title}">
+                  <p>${post.description}</p>
+              </div>
+          `;
+          postsContainer.innerHTML += postElement;
+      });
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+}
 
