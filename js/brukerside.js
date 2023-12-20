@@ -447,6 +447,7 @@ document.getElementById('profilePicture').addEventListener('change', function(ev
 //--------- Form for post service ---------//
 
 function loadAndDisplayUserPosts() {
+  if (!token) return;
   fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-posts/', {
       method: 'GET',
       headers: {
