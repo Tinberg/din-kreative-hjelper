@@ -456,12 +456,12 @@ function loadAndDisplayUserPosts() {
   .then(response => response.json())
   .then(posts => {
       const postsContainer = document.getElementById('userPostsContainer');
-      postsContainer.innerHTML = ''; // Clear existing posts
+      postsContainer.innerHTML = ''; 
 
       posts.forEach(post => {
           const postElement = `
               <div class="post">
-                  <h3>${post.title}</h3>
+                  <h2>${post.title}</h2>
                   <img src="${post.image_url}" alt="${post.title}">
                   <p>${post.description}</p>
               </div>
