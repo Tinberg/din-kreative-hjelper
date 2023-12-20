@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let map;
   let marker;
   let messageTimeout;
-  const token = localStorage.getItem("jwt_token");
+  token = localStorage.getItem("jwt_token");
 
   if (!token) {
     redirectToLogin("Vennligst logg inn for å se din profil.");
@@ -455,7 +455,6 @@ function loadAndDisplayUserPosts() {
   })
   .then(response => response.json())
   .then(posts => {
-    console.log('Posts:', posts);
       const postsContainer = document.getElementById('userPostsContainer');
       postsContainer.innerHTML = ''; // Clear existing posts
 
