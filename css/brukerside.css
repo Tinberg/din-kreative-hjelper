@@ -1,6 +1,7 @@
+section {
+    margin-bottom: 75px;
+}
 /*profile-picture-container*/
-
-
 .upload-button {
     background-color: #4CAF50; /* Green background */
     color: white; /* White text */
@@ -13,13 +14,12 @@
 .upload-button:hover {
     background-color: #45a049; /* change color on this */
 }
-/*Googlemap*/
+/*GoogleMap*/
 .map {
 height: 400px;
 width: 100%;
 }
-
+/*userPostsContainer*/
 .post img {
     height: 200px;
-    
 }
