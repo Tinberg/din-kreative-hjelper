@@ -210,6 +210,7 @@
 
 
 //--------- Fetching username, email, location and profile picture.(update location and upload profile picture) ---------//
+let token;
 document.addEventListener("DOMContentLoaded", function () {
   let map;
   let marker;
