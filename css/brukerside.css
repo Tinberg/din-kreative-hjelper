@@ -22,6 +22,7 @@ width: 100%;
 /*userPostsContainer*/
 .post {
     margin: 20px 0;
+    border: 2px solid gray;
 }
 .post img {
     height: 200px;
