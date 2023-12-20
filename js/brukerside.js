@@ -199,7 +199,7 @@
 
 
 
-//Brukerside this code contains fetching username, email, location and profile picture.
+//--------- Fetching username, email, location and profile picture.(update location and upload profile picture) ---------//
 document.addEventListener("DOMContentLoaded", function () {
   let map;
   let marker;
@@ -405,3 +405,5 @@ document.getElementById('profilePicture').addEventListener('change', function(ev
   initMap();
   loadUserProfile();
 });
+
+//--------- Form for post service ---------//
