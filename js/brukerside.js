@@ -208,10 +208,9 @@
 // //--------- Form for post service ---------//
 
 
-let token;
+
 //--------- Fetching username, email, location and profile picture.(update location and upload profile picture) ---------//
 document.addEventListener("DOMContentLoaded", function () {
-  token = localStorage.getItem("jwt_token");
   let map;
   let marker;
   let messageTimeout;
@@ -447,7 +446,7 @@ document.getElementById('profilePicture').addEventListener('change', function(ev
 //--------- Form for post service ---------//
 
 function loadAndDisplayUserPosts() {
-  fetch('https://yourdomain.com/wp-json/myapp/v1/user-posts/', {
+  fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-posts/', {
       method: 'GET',
       headers: {
           'Authorization': 'Bearer ' + token,
