@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function loadAndDisplayAllPosts() {
-    fetch('https://yourdomain.com/wp-json/myapp/v1/all-posts/', {
+    fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/all-posts/', {
         method: 'GET',
         // No need for authorization if public
     })
