@@ -210,7 +210,7 @@
 
 
 //--------- Fetching username, email, location and profile picture.(update location and upload profile picture) ---------//
-let token;
+let token; 
 document.addEventListener("DOMContentLoaded", function () {
   let map;
   let marker;
@@ -286,8 +286,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+
   // Load user profile and update map
-  function loadUserProfile() {
+  function loadUserProfile(token, profile) {
     fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/', {
         method: 'GET',
         headers: {
@@ -413,15 +414,17 @@ document.getElementById('profilePicture').addEventListener('change', function(ev
         alert("Failed to upload the image. Please try again.");
     });
 });
-document.getElementById('serviceForm').addEventListener('submit', postService);
-  initMap();
-  loadUserProfile();
-  loadUserServices();
+  //function to 
+  document.getElementById('serviceForm').addEventListener('submit', function(event) {
+    postService(event, profile, token); 
+initMap();
+loadUserProfile(token, profile); // Pass token and profile as arguments
+loadUserServices(token);
 });
 
 //--------- Form for post service ---------//
 
-function postService(event) {
+function postService(event, profile, token) {
   event.preventDefault();
   const formData = new FormData(event.target);
   formData.append('username', profile.username);
@@ -441,7 +444,11 @@ function postService(event) {
   .catch(error => console.error('Error posting service:', error));
 }
 
-function loadUserServices() {
+function loadUserServices(token) {
+  if (!token) {
+    console.error('Token not found');
+    return;
+}
   fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/get-user-services', {
       headers: { 'Authorization': 'Bearer ' + token }
   })
