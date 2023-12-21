@@ -579,7 +579,7 @@ function updateEmbeddedMap(address) {
       embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&q=${formattedAddress}`;
       embeddedMap.style.display = 'block'; // Make sure the map is visible
       // Optionally clear any previous error messages
-      showMessage(messageElementId, "Posisjon oppdatert! Vennligst bekreft at din nåværende posisjon samsvarer med kartet, og at all informasjon, inkludert adresse, by eller sted, er riktig og oppdatert", true);
+      
   } else {
       console.log("Invalid or empty address provided:", address);
       // Clear the map and display a message
@@ -723,6 +723,7 @@ function updateEmbeddedMap(address) {
         profile.location = titleCasedLocation;
         document.getElementById("userLocation").textContent = titleCasedLocation;
         updateEmbeddedMap(titleCasedLocation); // This will handle showing the map or the error message
+        showMessage("positionMessage", "Posisjon oppdatert! Vennligst bekreft at din nåværende posisjon samsvarer med kartet, og at all informasjon, inkludert adresse, by eller sted, er riktig og oppdatert"+ success.message, true);
     })
     .catch(error => {
         console.error("Error:", error);
