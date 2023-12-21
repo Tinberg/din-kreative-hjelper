@@ -318,7 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error:", error);
         showMessage(
           "createPostMessage",
-          "Det oppsto en feil under innsending av innlegget.",
+          "Det oppstod en feil ved innsending av innlegget. Vennligst prøv igjen. Hvis problemet vedvarer, vennligst kontakt post@meah.design. ",
           false
         );
       });
@@ -399,13 +399,13 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById("userLocation").textContent =
             titleCasedLocation;
           updateEmbeddedMap(titleCasedLocation);
-          showMessage("positionMessage", "Posisjon oppdatert!", true);
+          showMessage("positionMessage", "Posisjon oppdatert! Vennligst bekreft at din nåværende posisjon samsvarer med kartet, og at all informasjon, inkludert adresse, by eller sted, er riktig og oppdatert", true);
         })
         .catch((error) => {
           console.error("Error:", error);
           showMessage(
             "positionMessage",
-            "Feil ved oppdatering av posisjon.",
+            "Feil ved oppdatering av posisjon, prøv igjen",
             false
           );
         });
@@ -461,7 +461,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "There has been a problem with your fetch operation:",
             error
           );
-          alert("Failed to upload the image. Please try again.");
+          alert("Bildet kunne ikke lastes opp. Vennligst prøv igjen.");
         });
     });
 
