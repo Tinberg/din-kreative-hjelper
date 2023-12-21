@@ -318,7 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error:", error);
         showMessage(
           "createPostMessage",
-          "Det oppstod en feil ved innsending av innlegget. Vennligst prøv igjen. Hvis problemet vedvarer, vennligst kontakt post@meah.design. ",
+          "Vennligst sørg for at alle felt er fullstendig utfylt før du publiserer innlegget. Prøv igjen. Hvis problemet vedvarer, kontakt oss på post@meah.design.",
           false
         );
       });
