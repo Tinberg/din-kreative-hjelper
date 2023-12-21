@@ -15,10 +15,11 @@ section {
     background-color: #45a049; /* change color on this */
 }
 /*GoogleMap*/
-.map {
-height: 400px;
-width: 100%;
-}
+.custom-map {
+    width: 600px;
+    height: 450px;
+    border: 0;
+  }
 /*userPostsContainer*/
 .post {
     margin: 20px 0;

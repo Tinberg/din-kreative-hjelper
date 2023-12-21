@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/global.css" />
     <link rel="stylesheet" href="/css/brukere.css" />
     <link rel="stylesheet" href="/css/brukerside.css" />
-   
+
     <script src="/js/brukerside.js" defer></script>
   </head>
   <body>
@@ -16,9 +16,21 @@
       <section id="profile">
         <h1>Min Bruker</h1>
         <div class="profile-picture-container">
-          <img class="profile-img" id="profile_picture" src="" alt="Profile picture" />
-          <input class="di-none" type="file" id="profilePicture" accept="image/*" />
-          <button id="uploadTrigger" class="upload-button">Bytt profilbilde</button>
+          <img
+            class="profile-img"
+            id="profile_picture"
+            src=""
+            alt="Profile picture"
+          />
+          <input
+            class="di-none"
+            type="file"
+            id="profilePicture"
+            accept="image/*"
+          />
+          <button id="uploadTrigger" class="upload-button">
+            Bytt profilbilde
+          </button>
         </div>
         <p>Brukernavn: <span id="username"></span></p>
         <p>Epost: <span id="email"></span></p>
@@ -26,14 +38,12 @@
         <!-- Embedded Map -->
         <iframe
           id="embeddedMap"
-          width="600"
-          height="450"
-          frameborder="0"
-          style="border:0"
+          class="custom-map"
           allowfullscreen=""
           aria-hidden="false"
           tabindex="0"
-          src="https://www.google.com/maps/embed/v1/view?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&center=-34.397,150.644&zoom=8">
+          src="https://www.google.com/maps/embed/v1/view?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&center=-34.397,150.644&zoom=8"
+        >
         </iframe>
         <div>
           <label for="newLocation">Angi gateadresse, sted eller by:</label>
@@ -47,13 +57,14 @@
         <form id="postSubmissionForm">
           <label for="title">Title:</label>
           <input type="text" id="title" name="title" required /><br />
-    
+
           <label for="description">Description:</label>
-          <textarea id="description" name="description" required></textarea><br />
-    
+          <textarea id="description" name="description" required></textarea
+          ><br />
+
           <label for="image">Image:</label>
           <input type="file" id="image" name="image" accept="image/*" /><br />
-    
+
           <button type="submit">Submit Post</button>
           <p id="createPostMessage"></p>
         </form>
@@ -64,7 +75,7 @@
         <div id="userPostsContainer"></div>
       </section>
     </main>
-    
+
     <footer></footer>
   </body>
 </html>
