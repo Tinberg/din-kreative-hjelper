@@ -718,10 +718,14 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Success:", data);
         profile.location = titleCasedLocation;
         document.getElementById("userLocation").textContent = titleCasedLocation;
-        updateEmbeddedMap(titleCasedLocation); // Update the map
 
-        // Show the success message only after user changes the address
-        showMessage("positionMessage", "Posisjon oppdatert! Vennligst bekreft at din nåværende posisjon samsvarer med kartet, og at all informasjon, inkludert adresse, by eller sted, er riktig og oppdatert", true);
+        // Call updateEmbeddedMap and only show success message if address is valid
+        if (isValidAddress(titleCasedLocation)) { // Implement this function based on your criteria for a valid address
+            updateEmbeddedMap(titleCasedLocation); // Update the map
+            showMessage("positionMessage", "Posisjon oppdatert! Vennligst bekreft at din nåværende posisjon samsvarer med kartet, og at all informasjon, inkludert adresse, by eller sted, er riktig og oppdatert", true);
+        } else {
+            throw new Error("Invalid address provided");
+        }
     })
     .catch(error => {
         console.error("Error:", error);
