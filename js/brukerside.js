@@ -253,13 +253,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to update the embedded map
   function updateEmbeddedMap(address) {
-    if (address) { // Check if address is truthy (non-empty, non-null, etc.)
-        const embeddedMap = document.getElementById("embeddedMap");
+    const embeddedMap = document.getElementById("embeddedMap");
+    
+
+    if (address) { // Check if address is non-empty and valid
         const formattedAddress = encodeURIComponent(address);
-        embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&q=${formattedAddress}`;
+        embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${formattedAddress}`;
+        embeddedMap.style.display = 'block';  // Ensure the map is visible
     } else {
-        console.log("Invalid or empty address provided:", address);
-        // Optionally handle the invalid address case, maybe clear the map or show a default view
+        // Hide the map and display a message
+        embeddedMap.style.display = `<p class="invalid-address-message">Provided address is not valid. Please enter a valid address.</p>`;  // Hide the map
+       
     }
 }
 
