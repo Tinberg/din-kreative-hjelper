@@ -259,10 +259,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Function to clear the message after a delay
-  function clearMessageAfterDelay(container, delay = 15000) {
-    setTimeout(() => {
-      container.innerHTML = "";
-    }, delay);
+  let messageTimeout;  
+
+  function clearMessageAfterDelay(element, delay = 15000) {
+      clearTimeout(messageTimeout);
+  
+      messageTimeout = setTimeout(() => {
+          element.innerHTML = "";
+      }, delay);
   }
 
   // Function to transform text to title case
