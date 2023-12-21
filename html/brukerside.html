@@ -36,15 +36,17 @@
         <p>Epost: <span id="email"></span></p>
         <p>Din posisjon: <span id="userLocation"></span></p>
         <!-- Embedded Map -->
-        <iframe
-          id="embeddedMap"
-          class="custom-map"
-          allowfullscreen=""
-          aria-hidden="false"
-          tabindex="0"
-          src="https://www.google.com/maps/embed/v1/view?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&center=-34.397,150.644&zoom=8"
-        >
-        </iframe>
+        <div>
+          <iframe
+            id="embeddedMap"
+            class="custom-map"
+            allowfullscreen=""
+            aria-hidden="false"
+            tabindex="0"
+            src="https://www.google.com/maps/embed/v1/view?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&center=-34.397,150.644&zoom=8"
+          >
+          </iframe>
+        </div>
         <div>
           <label for="newLocation">Angi gateadresse, sted eller by:</label>
           <input type="text" id="newLocation" placeholder="Legg til posisjon" />

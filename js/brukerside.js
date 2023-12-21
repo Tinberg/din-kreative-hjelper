@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Function to update the embedded map
   function updateEmbeddedMap(address) {
     const embeddedMap = document.getElementById("embeddedMap");
-    
+    const mapContainer = embeddedMap.parentNode; // Get the parent container of the iframe
 
     if (address) { // Check if address is non-empty and valid
         const formattedAddress = encodeURIComponent(address);
@@ -262,10 +262,11 @@ document.addEventListener("DOMContentLoaded", function () {
         embeddedMap.style.display = 'block';  // Ensure the map is visible
     } else {
         // Hide the map and display a message
-        embeddedMap.style.display = `<p class="invalid-address-message">Provided address is not valid. Please enter a valid address.</p>`;  // Hide the map
-       
+        embeddedMap.style.display = 'none';  // Hide the map
+        mapContainer.innerHTML = `<p class="invalid-address-message">Provided address is not valid. Please enter a valid address.</p>`;  // Update the container with a message
     }
 }
+
 
   // Function to clear the message after a delay
   let messageTimeout;  
