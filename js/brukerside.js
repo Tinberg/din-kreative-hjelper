@@ -16,8 +16,6 @@ document.addEventListener("DOMContentLoaded", function() {
         userPicture: ""
     };
 
-    const positionMessageContainer = document.querySelector(".position-message");
-
     // Function to update the embedded map
     function updateEmbeddedMap(address) {
         const embeddedMap = document.getElementById("embeddedMap");
@@ -132,10 +130,10 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.json();
         })
         .then(data => {
+            console.log("Success:", data);
             profile.location = titleCasedLocation;
             document.getElementById("userLocation").textContent = titleCasedLocation;
             updateEmbeddedMap(titleCasedLocation);
-            displayMessage("Profilbilde oppdatert!");
         })
         .catch(error => {
             console.error("Error:", error);
