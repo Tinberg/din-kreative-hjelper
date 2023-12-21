@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function updateEmbeddedMap(address) {
         const embeddedMap = document.getElementById("embeddedMap");
         const formattedAddress = encodeURIComponent(address);
-        embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${formattedAddress}`;
+        embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&q=${formattedAddress}`;
     }
 
     // Function to clear the message after a delay
