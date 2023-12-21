@@ -458,7 +458,7 @@ document.getElementById('profilePicture').addEventListener('change', function(ev
     });
 });
 
-  initMap();
+  
   loadUserProfile();
   loadAndDisplayUserPosts(); 
 });
