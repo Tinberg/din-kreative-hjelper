@@ -579,7 +579,7 @@ function updateEmbeddedMap(address) {
       embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&q=${formattedAddress}`;
       embeddedMap.style.display = 'block'; // Make sure the map is visible
       // Optionally clear any previous error messages
-      showMessage(messageElementId, "Kartet lastes...", true);
+     
   } else {
       console.log("Invalid or empty address provided:", address);
       // Clear the map and display a message
