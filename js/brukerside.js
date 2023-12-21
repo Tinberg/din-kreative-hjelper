@@ -569,23 +569,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Function to update the embedded map
-function updateEmbeddedMap(address) {
-  const embeddedMap = document.getElementById("embeddedMap");
-  const messageElementId = "positionMessage"; // ID of the element where you want to show the message
+  function updateEmbeddedMap(address) {
+    const embeddedMap = document.getElementById("embeddedMap");
 
-  if (address) {
-      // Check if address is truthy (non-empty, non-null, etc.)
-      const formattedAddress = encodeURIComponent(address);
-      embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&q=${formattedAddress}`;
-      embeddedMap.style.display = 'block'; // Make sure the map is visible
-      // Optionally clear any previous error messages
-      
-  } else {
-      console.log("Invalid or empty address provided:", address);
-      // Clear the map and display a message
-      embeddedMap.style.display = 'none'; // Hide the map
-      showMessage(messageElementId, "Ugyldig eller tom adresse angitt. Vennligst oppgi en gyldig adresse.", false);
-  }
+    if (address) {
+        // Check if address is non-empty and valid
+        const formattedAddress = encodeURIComponent(address);
+        embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&q=${formattedAddress}`;
+        embeddedMap.style.display = 'block'; // Make sure the map is visible
+    } else {
+        // If the address is invalid, hide the map
+        embeddedMap.style.display = 'none';
+    }
 }
 
   // Function to clear the message after a delay
@@ -704,6 +699,7 @@ function updateEmbeddedMap(address) {
   document.getElementById("updateLocationButton").addEventListener("click", function () {
     const newLocation = document.getElementById("newLocation").value;
     const titleCasedLocation = toTitleCase(newLocation);
+
     fetch("https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location", {
         method: "POST",
         headers: {
@@ -722,13 +718,15 @@ function updateEmbeddedMap(address) {
         console.log("Success:", data);
         profile.location = titleCasedLocation;
         document.getElementById("userLocation").textContent = titleCasedLocation;
-        updateEmbeddedMap(titleCasedLocation); // This will handle showing the map or the error message
-        showMessage("positionMessage", "Posisjon oppdatert! Vennligst bekreft at din nåværende posisjon samsvarer med kartet, og at all informasjon, inkludert adresse, by eller sted, er riktig og oppdatert"+ success.message, true);
+        updateEmbeddedMap(titleCasedLocation); // Update the map
+
+        // Show the success message only after user changes the address
+        showMessage("positionMessage", "Posisjon oppdatert! Vennligst bekreft at din nåværende posisjon samsvarer med kartet, og at all informasjon, inkludert adresse, by eller sted, er riktig og oppdatert", true);
     })
     .catch(error => {
         console.error("Error:", error);
         showMessage("positionMessage", "Feil ved oppdatering av posisjon, prøv igjen: " + error.message, false);
-        updateEmbeddedMap(""); // Pass an empty string to show the error message for the map
+        updateEmbeddedMap(""); // Hide the map as the address is invalid
     });
 });
 
