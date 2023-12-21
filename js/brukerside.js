@@ -253,10 +253,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to update the embedded map
   function updateEmbeddedMap(address) {
-    const embeddedMap = document.getElementById("embeddedMap");
-    const formattedAddress = encodeURIComponent(address);
-    embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&q=${formattedAddress}`;
-  }
+    if (address) { // Check if address is truthy (non-empty, non-null, etc.)
+        const embeddedMap = document.getElementById("embeddedMap");
+        const formattedAddress = encodeURIComponent(address);
+        embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&q=${formattedAddress}`;
+    } else {
+        console.log("Invalid or empty address provided:", address);
+        // Optionally handle the invalid address case, maybe clear the map or show a default view
+    }
+}
 
   // Function to clear the message after a delay
   let messageTimeout;  
