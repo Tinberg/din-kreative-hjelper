@@ -1,9 +1,10 @@
+// let token;
 // //--------- Fetching username, email, location and profile picture.(update location and upload profile picture) ---------//
 // document.addEventListener("DOMContentLoaded", function () {
 //   let map;
 //   let marker;
 //   let messageTimeout;
-//   const token = localStorage.getItem("jwt_token");
+//   token = localStorage.getItem("jwt_token");
 
 //   if (!token) {
 //     redirectToLogin("Vennligst logg inn for å se din profil.");
@@ -73,7 +74,33 @@
 //       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 //     });
 //   }
+//   // Function to handle the submission of the new form
+//   function handleNewFormSubmission(event) {
+//     event.preventDefault(); // Prevent the default form submission behavior
 
+//     const formData = new FormData();
+//     formData.append('title', document.getElementById('title').value);
+//     formData.append('description', document.getElementById('description').value);
+//     formData.append('image', document.getElementById('image').files[0]);
+
+//     fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/submit-post', {
+//         method: 'POST',
+//         body: formData,
+//         headers: {
+//             'Authorization': 'Bearer ' + token
+//         }
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log('Success:', data);
+//         // Update the UI here if needed
+//     })
+//     .catch((error) => {
+//         console.error('Error:', error);
+//     });
+// }
+
+// document.getElementById('postSubmissionForm').addEventListener('submit', handleNewFormSubmission);
 //   // Load user profile and update map
 //   function loadUserProfile() {
 //     fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/', {
@@ -203,18 +230,47 @@
 
 //   initMap();
 //   loadUserProfile();
+//   loadAndDisplayUserPosts(); 
 // });
 
 // //--------- Form for post service ---------//
+
+// function loadAndDisplayUserPosts() {
+//   if (!token) return;
+//   fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-posts/', {
+//       method: 'GET',
+//       headers: {
+//           'Authorization': 'Bearer ' + token,
+//       },
+//   })
+//   .then(response => response.json())
+//   .then(posts => {
+//       const postsContainer = document.getElementById('userPostsContainer');
+//       postsContainer.innerHTML = ''; 
+
+//       posts.forEach(post => {
+//           const postElement = `
+//               <div class="post">
+//                   <h3>${post.title}</h3>
+//                   <img src="${post.image_url}" alt="${post.title}">
+//                   <p>${post.description}</p>
+//               </div>
+//           `;
+//           postsContainer.innerHTML += postElement;
+//       });
+//   })
+//   .catch(error => {
+//       console.error('Error:', error);
+//   });
+// }
+
+
 
 
 let token;
 //--------- Fetching username, email, location and profile picture.(update location and upload profile picture) ---------//
 document.addEventListener("DOMContentLoaded", function () {
-  let map;
-  let marker;
-  let messageTimeout;
-  token = localStorage.getItem("jwt_token");
+  let token = localStorage.getItem("jwt_token");
 
   if (!token) {
     redirectToLogin("Vennligst logg inn for å se din profil.");
@@ -226,45 +282,13 @@ document.addEventListener("DOMContentLoaded", function () {
     email: "",
     location: "",
     userPicture: "" 
-};
+  };
 
-
-  // Initialize Google Map
-  function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 8,
-      center: { lat: -34.397, lng: 150.644 }, // Default center
-    });
-  }
-
-  // Function to geocode and update map
-  function geocodeAndUpdateMap(address, displayMessage = false) {
-    const geocoder = new google.maps.Geocoder();
-    const positionMessageContainer =
-      document.querySelector(".position-message");
-
-    geocoder.geocode({ address: address }, function (results, status) {
-      if (status === "OK") {
-        map.setCenter(results[0].geometry.location);
-        if (marker) {
-          marker.setMap(null);
-        }
-        marker = new google.maps.Marker({
-          map: map,
-          position: results[0].geometry.location,
-        });
-
-        if (displayMessage) {
-          positionMessageContainer.innerHTML = `<p class="success-message">Vennligst kontroller at den angitte posisjonen samsvarer med kartet</p>`;
-          clearMessageAfterDelay(positionMessageContainer);
-        }
-      } else {
-        if (displayMessage) {
-          positionMessageContainer.innerHTML = `<p class="error-message">Den oppgitte adressen er ugyldig. Vennligst kontroller og forsøk på nytt.</p>`;
-          clearMessageAfterDelay(positionMessageContainer);
-        }
-      }
-    });
+  // Function to update the embedded map
+  function updateEmbeddedMap(address) {
+    const embeddedMap = document.getElementById("embeddedMap");
+    const formattedAddress = encodeURIComponent(address);
+    embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&q=${formattedAddress}`;
   }
 
   // Function to clear the message after 15 seconds
@@ -310,86 +334,82 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 }
 
-document.getElementById('postSubmissionForm').addEventListener('submit', handleNewFormSubmission);
-  // Load user profile and update map
-  function loadUserProfile() {
-    fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/', {
-        method: 'GET',
-        headers: {
-            'Authorization': 'Bearer ' + token,
-        },
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Update the profile object
-        profile.username = data.username;
-        profile.email = data.email;
-        profile.location = toTitleCase(data.location); // Apply title casing
-        profile.userPicture = data.profile_picture; // Update profile picture
+function loadUserProfile() {
+  fetch('https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/user-profile/', {
+      method: 'GET',
+      headers: {
+          'Authorization': 'Bearer ' + token,
+      },
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Autentisering feilet, vennligst logg inn på nytt.');
+      }
+      return response.json();
+  })
+  .then(data => {
+      // Update the profile object
+      profile.username = data.username;
+      profile.email = data.email;
+      profile.location = toTitleCase(data.location); // Apply title casing
+      profile.userPicture = data.profile_picture; // Update profile picture
 
-        // Update the UI
-        document.getElementById('username').textContent = profile.username;
-        document.getElementById('email').textContent = profile.email;
-        document.getElementById('userLocation').textContent = profile.location;
-        
-        // Update the profile picture in the UI
-        const profileImgElement = document.getElementById('profile_picture');
-        if (profile.userPicture) {
-            profileImgElement.src = profile.userPicture;
-            profileImgElement.alt = 'User profile picture';
-        } else {
-            profileImgElement.src = '/images/no-profile.png'; 
-            profileImgElement.alt = 'No profile picture';
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        redirectToLogin(error.message);
-    });
+      // Update the UI
+      document.getElementById('username').textContent = profile.username;
+      document.getElementById('email').textContent = profile.email;
+      document.getElementById('userLocation').textContent = profile.location;
+      
+      // Update the profile picture in the UI
+      const profileImgElement = document.getElementById('profile_picture');
+      if (profile.userPicture) {
+          profileImgElement.src = profile.userPicture;
+          profileImgElement.alt = 'User profile picture';
+      } else {
+          profileImgElement.src = '/images/no-profile.png'; 
+          profileImgElement.alt = 'No profile picture';
+      }
+
+      // Update the map
+      updateEmbeddedMap(profile.location);
+  })
+  .catch(error => {
+      console.error('Error:', error);
+      redirectToLogin(error.message);
+  });
 }
 
 
-  // Update location
-  document
-    .getElementById("updateLocationButton")
-    .addEventListener("click", function () {
-      const newLocation = document.getElementById("newLocation").value;
-      const titleCasedLocation = toTitleCase(newLocation); // Apply title casing
-      fetch(
-        "https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-          body: JSON.stringify({ location: titleCasedLocation }),
-        }
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to update location on server");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Success:", data);
-          profile.location = titleCasedLocation;
-          document.getElementById("userLocation").textContent =
-            titleCasedLocation;
-          geocodeAndUpdateMap(titleCasedLocation, true); // Update map and show message
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          redirectToLogin("Feil ved oppdatering av posisjon");
-        });
-    });
 
+  // Update location
+  // Update location
+  document.getElementById("updateLocationButton").addEventListener("click", function () {
+    const newLocation = document.getElementById("newLocation").value;
+    const titleCasedLocation = toTitleCase(newLocation); // Apply title casing
+    fetch("https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token,
+      },
+      body: JSON.stringify({ location: titleCasedLocation }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Failed to update location on server");
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log("Success:", data);
+      profile.location = titleCasedLocation;
+      document.getElementById("userLocation").textContent = titleCasedLocation;
+      updateEmbeddedMap(titleCasedLocation); // Update embedded map with new location
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      redirectToLogin("Feil ved oppdatering av posisjon");
+    });
+  });
   function redirectToLogin(message) {
     localStorage.setItem("redirectMessage", message);
     window.location.href = "/html/logginn.html";
