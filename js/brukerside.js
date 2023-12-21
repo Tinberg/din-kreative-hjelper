@@ -253,15 +253,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to update the embedded map
   function updateEmbeddedMap(address) {
-    if (address) { // Check if address is truthy (non-empty, non-null, etc.)
-        const embeddedMap = document.getElementById("embeddedMap");
+    const embeddedMap = document.getElementById("embeddedMap");
+    const mapContainer = embeddedMap.parentNode; // Get the parent container of the iframe
+
+    if (address) { // Check if address is non-empty and valid
         const formattedAddress = encodeURIComponent(address);
         embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&q=${formattedAddress}`;
+        embeddedMap.style.display = 'block';  // Ensure the map is visible
     } else {
-        console.log("Invalid or empty address provided:", address);
-        // Optionally handle the invalid address case, maybe clear the map or show a default view
+        // Hide the map and display a message
+        embeddedMap.style.display = 'none';  // Hide the map
+        mapContainer.innerHTML = `<p class="invalid-address-message">Provided address is not valid. Please enter a valid address.</p>`;  // Update the container with a message
     }
 }
+
 
   // Function to clear the message after a delay
   let messageTimeout;  
