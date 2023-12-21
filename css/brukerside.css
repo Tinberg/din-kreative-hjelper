@@ -16,7 +16,7 @@ section {
 }
 /*GoogleMap*/
 .custom-map {
-    width: 600px;
+    width: 100%;
     height: 450px;
     border: 0;
   }
