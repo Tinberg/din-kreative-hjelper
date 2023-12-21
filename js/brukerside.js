@@ -224,8 +224,9 @@
 
 let token;
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
     token = localStorage.getItem("jwt_token");
+    console.log("Token:", token); // Log the token to understand if it's being fetched correctly
 
     if (!token) {
         redirectToLogin("Vennligst logg inn for å se din profil.");
@@ -239,33 +240,39 @@ document.addEventListener("DOMContentLoaded", function () {
         userPicture: ""
     };
 
-    // Message containers
-    const positionMessageContainer = document.querySelector(".position-message");
-    const createPostMessageContainer = document.getElementById("createPostMessage");
-    const myPostsMessageContainer = document.getElementById("myPosts");
+       // Define the message containers
+       const positionMessageContainer = document.querySelector(".position-message");
+       const createPostMessageContainer = document.getElementById('createPostMessage');
+       const myPostsMessageContainer = document.getElementById('myPosts');
 
+    // Function to update the embedded map
     function updateEmbeddedMap(address) {
         const embeddedMap = document.getElementById("embeddedMap");
         const formattedAddress = encodeURIComponent(address);
-        embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyASJpumfzHiVTp3ATgQA7AXrS-E1-zdRzo&q=${formattedAddress}`;
+        embeddedMap.src = `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${formattedAddress}`;
     }
 
-    function displayMessage(container, message, isError = false) {
-        container.innerHTML = `<p class="${isError ? 'error-message' : 'success-message'}">${message}</p>`;
-        clearMessageAfterDelay(container);
-    }
-
+    // Function to clear the message after a delay
     function clearMessageAfterDelay(container, delay = 15000) {
         setTimeout(() => {
             container.innerHTML = "";
         }, delay);
     }
 
+    // Function to transform text to title case
     function toTitleCase(str) {
-        return str.replace(/\w\S*/g, function (txt) {
+        return str.replace(/\w\S*/g, function(txt) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
     }
+
+     // Function to display messages with optional error styling
+     function displayMessage(container, message, isError = false) {
+      container.textContent = message;
+      container.className = isError ? 'error-message' : 'success-message';
+      clearMessageAfterDelay(container);
+  }
+
 
     document.getElementById('postSubmissionForm').addEventListener('submit', handleNewFormSubmission);
 
@@ -443,6 +450,7 @@ function loadAndDisplayUserPosts() {
 }
 
 function redirectToLogin(message) {
-    localStorage.setItem("redirectMessage", message);
-    window.location.href = "/html/logginn.html";
+  localStorage.setItem("redirectMessage", message);
+  console.log("Redirecting to login due to:", message); // Log why redirection is happening
+  window.location.href = "/html/logginn.html";
 }
