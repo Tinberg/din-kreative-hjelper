@@ -237,6 +237,21 @@ document.addEventListener("DOMContentLoaded", function() {
       userPicture: ""
   };
 
+  // Function to show messages
+function showMessage(elementId, message, isSuccess) {
+  const messageElement = document.getElementById(elementId);
+  messageElement.textContent = message;
+  if (isSuccess) {
+      messageElement.classList.remove('error-message');
+      messageElement.classList.add('success-message');
+  } else {
+      messageElement.classList.remove('success-message');
+      messageElement.classList.add('error-message');
+  }
+  clearMessageAfterDelay(messageElement);
+}
+
+
   // Function to update the embedded map
   function updateEmbeddedMap(address) {
       const embeddedMap = document.getElementById("embeddedMap");
@@ -282,12 +297,12 @@ document.addEventListener("DOMContentLoaded", function() {
       })
       .then(data => {
           console.log('Success:', data);
-          alert("Innlegg lagt til!");
+          showMessage("createPostMessage", "Innlegg lagt til!", true);
           // Optionally reset the form or update the UI here
       })
       .catch(error => {
           console.error('Error:', error);
-          alert("Det oppsto en feil under innsending av innlegget.");
+          showMessage("createPostMessage", "Det oppsto en feil under innsending av innlegget.", false);
       });
   }
 
@@ -332,40 +347,36 @@ document.addEventListener("DOMContentLoaded", function() {
       });
   }
 
- // Function to update location
-document.getElementById("updateLocationButton").addEventListener("click", function() {
-  const newLocation = document.getElementById("newLocation").value;
-  const titleCasedLocation = toTitleCase(newLocation);
-
-  fetch("https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + token,
-      },
-      body: JSON.stringify({ location: titleCasedLocation })
-  })
-  .then(response => {
-      if (!response.ok) {
-          throw new Error("Failed to update location on server");
-      }
-      return response.json();
-  })
-  .then(data => {
-      console.log("Success:", data);
-      profile.location = titleCasedLocation;
-      document.getElementById("userLocation").textContent = titleCasedLocation;
-      updateEmbeddedMap(titleCasedLocation);
-      // Display the success message in Norwegian
-      displaySuccessMessage("positionMessage", "Posisjon oppdatert, Alltid sjekk om posisjonen stemmer med kartet, og om det er skrevet riktig!");
-  })
-  .catch(error => {
-      console.error("Error:", error);
-      // Here you can also update the message to indicate an error in Norwegian
-      displayErrorMessage("positionMessage", "Feil ved oppdatering av posisjon. Vennligst prøv igjen.");
+  // Function to update location
+  document.getElementById("updateLocationButton").addEventListener("click", function() {
+      const newLocation = document.getElementById("newLocation").value;
+      const titleCasedLocation = toTitleCase(newLocation);
+      fetch("https://din-kreative-hjelper.cmsbackendsolutions.com/wp-json/myapp/v1/update-location", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + token,
+          },
+          body: JSON.stringify({ location: titleCasedLocation })
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error("Failed to update location on server");
+          }
+          return response.json();
+      })
+      .then(data => {
+          console.log("Success:", data);
+          profile.location = titleCasedLocation;
+          document.getElementById("userLocation").textContent = titleCasedLocation;
+          updateEmbeddedMap(titleCasedLocation);
+          showMessage("positionMessage", "Posisjon oppdatert!", true);
+      })
+      .catch(error => {
+          console.error("Error:", error);
+          showMessage("positionMessage", "Feil ved oppdatering av posisjon.", false);
+      });
   });
-});
-
 
   function redirectToLogin(message) {
       localStorage.setItem("redirectMessage", message);
@@ -424,22 +435,31 @@ document.getElementById("updateLocationButton").addEventListener("click", functi
       })
       .then(response => response.json())
       .then(posts => {
-          const postsContainer = document.getElementById('userPostsContainer');
-          postsContainer.innerHTML = '';
+        const postsContainer = document.getElementById('userPostsContainer');
+        postsContainer.innerHTML = '';
 
-          posts.forEach(post => {
-              const postElement = `
-                  <div class="post">
-                      <h3>${post.title}</h3>
-                      <img src="${post.image_url}" alt="${post.title}">
-                      <p>${post.description}</p>
-                  </div>
-              `;
-              postsContainer.innerHTML += postElement;
-          });
-      })
+        if (posts.length === 0) {
+            showMessage("myPosts", "Ingen innlegg funnet.", false);
+            return; // Exit the function early since there are no posts to display
+        }
+
+        posts.forEach(post => {
+            const postElement = `
+                <div class="post">
+                    <h3>${post.title}</h3>
+                    <img src="${post.image_url}" alt="${post.title}">
+                    <p>${post.description}</p>
+                </div>
+            `;
+            postsContainer.innerHTML += postElement;
+        });
+
+        // This message will only show if posts are successfully loaded and displayed
+        showMessage("myPosts", "Innlegg lastet!", true);
+    })
       .catch(error => {
           console.error('Error:', error);
+          showMessage("myPosts", "Kunne ikke laste innlegg: " + error.message, false);
       });
   }
 
