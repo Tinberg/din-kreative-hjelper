@@ -588,6 +588,7 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((response) => response.json())
       .then((posts) => {
+        console.log(posts);
         const postsContainer = document.getElementById("userPostsContainer");
         postsContainer.innerHTML = "";
 
