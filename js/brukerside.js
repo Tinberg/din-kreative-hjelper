@@ -601,7 +601,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="post">
                     <h3>${post.title}</h3>
                     <img src="${post.image_url}" alt="${post.title}">
-                    <p class="category">Kategori: ${post.main_category}, Underkategori: ${post.subcategory}</p>
+                    <p class="category">Kategori: ${post.main_category || 'Ikke spesifisert'}, Underkategori: ${post.subcategory || 'Ikke spesifisert'}</p>
                     <p>${post.description}</p>
                 </div>
             `;
