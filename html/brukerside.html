@@ -64,7 +64,27 @@
 
           <label for="image">Image:</label>
           <input type="file" id="image" name="image" accept="image/*" /><br />
+          <!-- Category Selection -->
+          <div class="form-group">
+            <label for="category">Hovedkategori:</label>
+            <select id="category" name="category" required>
+              <option value="">Velg en kategori...</option>
+              <option value="Søm">Søm</option>
+              <option value="Strikking">Strikking</option>
+              <option value="Hekling">Hekling</option>
+              <option value="Brodering">Brodering</option>
+              <option value="Veving">Veving</option>
+            </select>
+          </div>
 
+          <!-- Subcategory Selection (initially empty) -->
+          <div class="form-group">
+            <label for="subcategory">Underkategori:</label>
+            <select id="subcategory" name="subcategory" required>
+              <option value="">Velg en underkategori...</option>
+              <!-- Options will be dynamically loaded based on the main category -->
+            </select>
+          </div>
           <button type="submit">Submit Post</button>
           <p id="createPostMessage"></p>
         </form>
