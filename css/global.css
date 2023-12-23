@@ -48,6 +48,13 @@
     width: 150px;
     border: 2px solid #ddd; /*Bytt????+*/
 }
+
+/*Post img for tjenester.html and brukerside.html*/
+
+.post img {
+  height: 200px;
+  border-radius: 5px;
+}
   
   
  
