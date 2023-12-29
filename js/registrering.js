@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const loginButton = document.createElement("button");
                 loginButton.textContent = "Til innlogging";
                 loginButton.addEventListener("click", function() {
-                    window.location.href = '/html/logginn.html';
+                    window.location.href = '/html/logg-inn.html';
                 });
 
                

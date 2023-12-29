@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(data => {
                 localStorage.setItem('jwt_token', data.token);
-                window.location.href = '/html/brukerside.html';
+                window.location.href = '/html/min-profil.html';
             })
             .catch(error => {
                 console.error("Error:", error);

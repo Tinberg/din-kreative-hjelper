@@ -522,7 +522,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function redirectToLogin(message) {
     localStorage.setItem("redirectMessage", message);
-    window.location.href = "/html/logginn.html";
+    window.location.href = "/html/logg-inn.html";
   }
 
   // Handle file selection and upload profile img
