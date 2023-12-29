@@ -59,7 +59,13 @@
   
   
  
-
+/* === logginn, nybruker pg brukerside === */
+.error-message {
+  color: var(--error-message-color);
+}
+.success-message {
+  color: var(--success-message-color);
+}
 
 
 
