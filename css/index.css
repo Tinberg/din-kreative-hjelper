@@ -15,9 +15,19 @@
 .hero-background-container p {
   max-width: 400px;
 }
-
 .cta-container a {
   margin: 0 25px;
+}
+
+.cta-white:hover {
+    background-color: #f8f8f8; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+.cta-color:hover {
+    background-color: #B57370; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
 }
 
 .cta-layout {
@@ -25,6 +35,8 @@
   border-radius: 5px;
   display: inline-block;
   width: 175px;
+  transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 .cta-layout-color {
   background-color: var(--cta-button-bg-color);
@@ -46,9 +58,16 @@
 .categories {
     flex-wrap: wrap;
 }
-.categories li {
+
+.categories li div {
    margin: 15px 50px;
    padding: 20px 25px;
+}
+.category-button {
+    transition: transform 0.2s ease-in-out;
+}
+.category-button:hover {
+    transform: scale(1.1);
 }
 .strikking {
     background-color: var(--strikking-bg-color);
@@ -69,6 +88,31 @@
     height: 90px;
     width: 90px;
     margin-bottom: 8px;
+}
+
+/*Submenu*/
+.submenu {
+    display: block;
+    max-height: 0; 
+    overflow: hidden; 
+    opacity: 0; 
+    transform: translateY(-20px); 
+    transition: all 0.5s ease-in-out; /
+}
+.submenu li {
+    margin: 10px 0;
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+.submenu li:hover {
+    background-color: var(--section-banner-bg-color);
+    border-radius: 5px;
+    
+}
+.reveal {
+    display: block;
+    max-height: 500px; 
+    opacity: 1; 
+    transform: translateY(0px);
 }
 
 /*Section3 Banner*/
