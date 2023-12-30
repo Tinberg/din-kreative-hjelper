@@ -2,63 +2,145 @@
 
 /* Root Variables */
 :root {
-    /* Color */
-    --success-message-color: green;
-    --error-message-color: red;
-  
-    /* Font Family and Weight */
-    
-    /* Font Size */
-    --footer-font-size: 0.9rem; /*16.2px*/
-    --base-font-size: 1rem; /* 18px */
-    --arrow-font-size: 3rem; /* 54px */
-    --h1-font-size: 1.5rem; /* 27px */
-    --h2-font-size: 1.33rem; /* 23.94px */
-    --h3-font-size: 1.05rem; /* 19.8px */
-  }
-  
-  /* Global Resets */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    border-style: none;
-    list-style-type: none;
-    text-decoration: none;
-  }
-  html {
-    font-size: 18px;
-    
-  }
- 
-  html, body{
-    scroll-behavior: smooth;
-  }
-  img {
-    object-fit: cover;
-  }
-  .di-none {
-    display: none;
-  }
-  /*styles for tjeneste.html and brukerside.html*/
-  .profile-img {
-    border-radius: 50%;
-    /* background-color: rgb(197, 192, 192); */
-    height: 150px;
-    width: 150px;
-    border: 2px solid #ddd; /*Bytt????+*/
+  /* Background colors */
+  --body-background-color: #FBFBFB;
+  --header-footer-bg-color: #cb807d;
+  --cta-button-bg-color: #cb807d;
+  --section-banner-bg-color: #FAF0E6;
+  --light-blue-bg-color: #E1F1F7;
+  /*Background color categories*/
+  --strikking-bg-color: #EAD6EA;
+  --søm-bg-color:#D6E1EA;
+  --hekling-bg-color: #D6EAD3;
+  --brodering-bg-color: #EAD9D6;
+  --veving-bg-color: #EAE8D6;
+
+  /* Color messages */
+  --success-message-color: green;
+  --error-message-color: red;
+
+  /* Font color */
+  --black-font-color: #252525;
+  --white-font-color: white;
+  /* Font Size */
+  --footer-font-size: 0.9rem; /*16.2px*/
+  --base-font-size: 1rem; /* 18px */
+  --arrow-font-size: 3rem; /* 54px */
+  --h1-font-size: 2.35rem; /* 42px */
+  --h2-font-size: 1.33rem; /* 23.94px */
+  --h3-font-size: 1.05rem; /* 19.8px */
+}
+
+/* Global Resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-style: none;
+  list-style-type: none;
+  text-decoration: none;
+}
+html {
+  font-size: 18px;
+  font-family: 'Questrial', sans-serif;
+  line-height: 1.3;
+  background-color: #D9B6A3; /*E0A899  F7F7F7   D9B6A3   A8BDA2  D0E0C8  B8C0AC*/
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+}
+body {
+  color: var(--black-font-color);
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  background-color: var(--body-background-color);
+}
+a {
+  text-decoration: none;
+  color: var(--black-font-color);
+}
+img {
+  object-fit: cover;
+}
+h1 {
+  font-size: var(--h1-font-size);
+}
+
+/* === Helper styles === */
+
+/* Width & Margin  */
+.w-100 {
+  width: 100%;
+}
+.section-margin {
+  margin: 100px 0;
+}
+.margin-75 {
+  margin: 75px 0;
+}
+/* Flexbox  */
+.flex {
+  display: flex;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+.center {
+  justify-content: center;
+  align-items: center;
+}
+.space-between {
+  justify-content: space-between;
+}
+.space-around {
+  justify-content: space-around;
+}
+
+/*Text align*/
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+
+/* Display*/
+.block {
+  display: block;
+}
+.di-none {
+  display: none;
+}
+
+/* Border*/
+.border {
+  border: 1px solid black;
+}
+.border-r {
+  border-radius: 5px;
+}
+/* === page specific styles === */
+
+/*styles for tjeneste.html and brukerside.html*/
+.profile-img {
+  border-radius: 50%;
+  /* background-color: rgb(197, 192, 192); */
+  height: 150px;
+  width: 150px;
+  border: 2px solid #ddd; /*Bytt????+*/
 }
 
 /*Post img for tjenester.html and brukerside.html*/
-
 .post img {
   height: 200px;
   width: 200px;
   border-radius: 5px;
 }
-  
-  
- 
+
 /* === logginn, nybruker pg brukerside === */
 .error-message {
   color: var(--error-message-color);
@@ -67,6 +149,33 @@
   color: var(--success-message-color);
 }
 
+/* === Header === */
+
+.newsletter {
+  background-color: var(--header-footer-bg-color);
+  height: 50px;
+}
+.name-logo {
+  margin-top: 25px;
+}
+.logo {
+  width: 50px;
+  height: 50px;
+  margin-top: 10px;
+}
+
+nav li {
+  margin: 25px;
+}
 
 
+/* === Footer === */
 
+footer {
+  background-color: var(--header-footer-bg-color);
+  color: var(--white-font-color);
+  padding: 200px;
+}
+footer a {
+  color: var(--white-font-color);
+}

@@ -1,0 +1,107 @@
+/*Section1 Hero*/
+.hero-background-container {
+  background-image: url(/images/hero.jpg);
+  height: 666px;
+  background-size: cover;
+  background-position: center;
+}
+.hero-background-container h1 {
+  margin-top: -50px;
+}
+.hero-background-container div,
+.hero-background-container p {
+  margin-top: 75px;
+}
+.hero-background-container p {
+  max-width: 400px;
+}
+
+.cta-container a {
+  margin: 0 25px;
+}
+
+.cta-layout {
+  padding: 10px 25px;
+  border-radius: 5px;
+  display: inline-block;
+  width: 175px;
+}
+.cta-layout-color {
+  background-color: var(--cta-button-bg-color);
+  color: var(--white-font-color);
+}
+/*Section2 Finn din Kretive Hjelper!*/
+.section-2-paragraph {
+    max-width: 600px;
+    
+}
+.search-container {
+    position: relative;
+}
+.search-input {
+    width: 600px;
+    height: 30px;
+    margin-right: 15px;
+}
+.categories li {
+   margin: 0 50px;
+   padding: 20px 25px;
+}
+.strikking {
+    background-color: var(--strikking-bg-color);
+}
+.søm {
+    background-color: var(--søm-bg-color);
+}
+.hekling {
+    background-color: var(--hekling-bg-color);
+}
+.brodering {
+    background-color: var(--brodering-bg-color);
+}
+.veving {
+    background-color: var(--veving-bg-color);
+}
+.categories img {
+    height: 90px;
+    width: 90px;
+    margin-bottom: 8px;
+}
+
+/*Section3 Banner*/
+.section-banner {
+    height: 150px;
+    background-color: var(--section-banner-bg-color);
+    align-items: center;
+}
+.meah-link {
+    font-size: 2.5rem;
+    color: #8B0000;
+  
+}
+
+/*Section4 Effektivt, Trygt og Pålitelig*/
+.sikre-paragraph {
+    margin-top: 10px;
+}
+.eff-trygt-pål-background {
+    background-color: var(--light-blue-bg-color);
+    margin: 0 25px;
+    padding: 25px;
+    
+}
+.effektivt-trygt-pålitelig img {
+height: 100px ;
+width: 100px;
+align-self: center;
+margin-bottom:75px;
+}
+/*Section5 Registrer deg!*/
+
+.section-5-background {
+    background-image: url(/images/section5-background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 250px;
+}
+

@@ -3,18 +3,172 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="/css/global.css">
+    <title>Din Kreative Hjelper|Finn din håndverker nå!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Questrial&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/0933736d52.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/index.css" />
   </head>
   <body>
     <header>
-      <nav>
-        <li><a href="/html/registrering.html">Ny bruker</a></li>
+      <div class="newsletter"></div>
+      <div class="name-logo center flex-column">
+        <p>Din Kreative Hjelper</p>
+        <img class="logo" src="/images/logo.png" />
+      </div>
+      <nav class="flex center">
+        <li><a href="/html/annonser.html">Utforsk</a></li>
+        <li><a href="/html/kontakt-oss.html">Kontakt</a></li>
+        <li><a href="/html/om-oss.html">Om oss</a></li>
         <li><a href="/html/logg-inn.html">Logg inn</a></li>
-        <li><a href="/html/annonser.html">Alle tjenester</a></li>
       </nav>
     </header>
-    <main></main>
-    <footer></footer>
+    <main>
+      <!--Section1 Hero-->
+      <section>
+        <div class="hero-background-container flex-column center text-center">
+          <h1>Finn Din Håndverker Nå!</h1>
+          <p>
+            Foren kreativitet og bærekraft. Finn eller tilby lokale
+            håndtverkstjenester for en mer miljøbevisst hverdag med Din Kreative
+            Hjelper
+          </p>
+          <div class="cta-container">
+            <a
+              class="cta-layout cta-layout-color border"
+              href="/html/registrering.html"
+              >Registrer deg</a
+            ><a class="cta-layout border" href="/html/annonser.html">Utforsk</a>
+          </div>
+        </div>
+      </section>
+      <!--Section2 Finn din Kretive hjelper!-->
+      <section class="flex-column center text-center section-margin">
+        <h2>Finn din Kreative Hjelper!</h2>
+        <p class="section-2-paragraph margin-75">
+          Oppdag en verden av muligheter med våre varierte tjenester. Finn
+          akkurat det du leter etter, enten det er kreativ støtte, praktisk
+          hjelp eller noe midt imellom. Utforsk og finn den rette løsningen for
+          dine behov.
+        </p>
+        <form id="searchForm" class="search-container center flex">
+          <input
+            class="search-input text-center border border-r"
+            type="text"
+            id="searchAll"
+            placeholder="Søk etter tjeneste og finn det du trenger"
+          />
+          <button type="submit">
+            <i
+              class="fa-solid fa-circle-arrow-right fa-2x"
+              style="color: #191919"
+            ></i>
+          </button>
+        </form>
+        <ul class="categories margin-75 flex center">
+          <li class="strikking border-r">
+            <a class="flex-column"
+              ><img src="/images/strikking.png" />Strikking</a
+            >
+          </li>
+          <li class="søm border-r">
+            <a class="flex-column"><img src="/images/søm.png" />Søm</a>
+          </li>
+          <li class="hekling border-r">
+            <a class="flex-column"><img src="/images/hekling.png" />Hekling</a>
+          </li>
+          <li class="brodering border-r">
+            <a class="flex-column"
+              ><img src="/images/brodering.png" />Brodering</a
+            >
+          </li>
+          <li class="veving border-r">
+            <a class="flex-column"><img src="/images/veving.png" />Veving</a>
+          </li>
+        </ul>
+      </section>
+      <!--Section3 Banner-->
+      <section class="section-banner margin-75 flex space-around">
+        <a href="http://www.meah.design"
+          ><div class="meah-link text-center">
+            <p>MEAH</p>
+            <p>Norway</p>
+          </div></a
+        >
+        <a href="http://www.meah.design"
+          ><div class="meah-link text-center">
+            <p>MEAH</p>
+            <p>Norway</p>
+          </div></a
+        >
+        <a href="http://www.meah.design"
+          ><div class="meah-link text-center">
+            <p>MEAH</p>
+            <p>Norway</p>
+          </div></a
+        >
+      </section>
+      <!--Section4 Effektivt, Trygt og Pålitelig-->
+      <section class="section-margin">
+        <div class="flex-column center section-margin">
+          <h2>Effektivt, Trygt & Pålitelig</h2>
+          <p class="sikre-paragraph">Sikre Dine Trygghet</p>
+        </div>
+        <ul class="effektivt-trygt-pålitelig flex space-around text-center">
+          <li class="eff-trygt-pål-background flex-column border-r">
+            <img src="/images/rating.png" />Stjernesystemet vårt lar deg enkelt
+            vurdere brukeropplevelser fra én til fem stjerner. Dine
+            tilbakemeldinger bidrar til å forbedre og opprettholde et pålitelig
+            fellesskap.
+          </li>
+          <li class="eff-trygt-pål-background flex-column border-r">
+            <img src="/images/legg-ut.png" />Legg ut jobber effektivt og la alle
+            søke basert på posisjon eller tjeneste. En rask og enkel måte å
+            koble jobbtilbud med de rette kandidatene.
+          </li>
+          <li class="eff-trygt-pål-background flex-column border-r">
+            <img src="/images/finn-jobb.png" />Finn jobber raskt og se enkelt
+            hvem som legger ut jobber i nærheten, basert på din posisjon eller
+            ønsket tjeneste. Effektivt og tilgjengelig for alle.
+          </li>
+        </ul>
+      </section>
+      <!--Section5 Registrer Deg!-->
+      <section
+        class="section-5-background margin-75 flex-column center text-center"
+      >
+        <h2>Registrer Deg Og Start Din Reise</h2>
+        <p class="section-margin">
+          Uansett om du er en bedrift eller privatperson, gjør vår plattform det
+          enkelt å legge ut dine tjenester. Kom raskt i gang og nå ut til kunder
+          som søker det du tilbyr. Ta steget i dag for å utvide din virksomhet
+          eller personlige merkevare med brukervennlige verktøy og en klar vei
+          fremover.
+        </p>
+        <a class="cta-layout cta-layout-color" href="/html/registrering.html"
+          >Kom i gang nå!</a
+        >
+      </section>
+    </main>
+    <footer>
+      <p>Utforsk</p>
+      <div>
+        <p>Nyttige lenker:</p>
+        <div class="nyttige-lenker flex-column">
+        <a href="/html/annonser.html">Utforsk</a>
+        <a href="/html/kontakt-oss.html">Kontakt</a>
+        <a href="/html/om-oss.html">Om oss</a>
+        <a href="/html/logg-inn.html">Logg inn</a>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
