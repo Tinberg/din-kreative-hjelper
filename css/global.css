@@ -8,6 +8,7 @@
   --cta-button-bg-color: #cb807d;
   --section-banner-bg-color: #FAF0E6;
   --light-blue-bg-color: #E1F1F7;
+
   /*Background color categories*/
   --strikking-bg-color: #EAD6EA;
   --søm-bg-color:#D6E1EA;
@@ -22,6 +23,7 @@
   /* Font color */
   --black-font-color: #252525;
   --white-font-color: white;
+
   /* Font Size */
   --footer-font-size: 0.9rem; /*16.2px*/
   --base-font-size: 1rem; /* 18px */
@@ -174,8 +176,26 @@ nav li {
 footer {
   background-color: var(--header-footer-bg-color);
   color: var(--white-font-color);
-  padding: 200px;
+  padding: 50px 30px 15px;
+  font-size: var(--footer-font-size);
 }
 footer a {
   color: var(--white-font-color);
+  font-size: var(--footer-font-size);
+  margin: 1px 0;
+}
+.footer-paragraph {
+  margin-bottom: 75px;
+}
+.sosiale-medier {
+  text-align: right;
+}
+.copyright-footer {
+  margin-top: 75px;
+}
+
+.nyttige-lenker,
+.header-footer,
+.footer-paragraph {
+  font-size: var(--base-font-size);
 }

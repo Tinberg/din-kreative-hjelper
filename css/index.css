@@ -43,8 +43,11 @@
     height: 30px;
     margin-right: 15px;
 }
+.categories {
+    flex-wrap: wrap;
+}
 .categories li {
-   margin: 0 50px;
+   margin: 15px 50px;
    padding: 20px 25px;
 }
 .strikking {
