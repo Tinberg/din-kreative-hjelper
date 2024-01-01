@@ -7,7 +7,9 @@
   --header-footer-bg-color: #cb807d;
   --cta-button-bg-color: #cb807d;
   --section-banner-bg-color: #FAF0E6;
+  --subcategory-hover-bg-color:#FAF0E6;
   --light-blue-bg-color: #E1F1F7;
+  --section-bg-color:white;
 
   /*Background color categories*/
   --strikking-bg-color: #EAD6EA;
@@ -23,6 +25,7 @@
   /* Font color */
   --black-font-color: #252525;
   --white-font-color: white;
+  --nav-color: #cb807d;
 
   /* Font Size */
   --footer-font-size: 0.9rem; /*16.2px*/
@@ -174,6 +177,9 @@ h1 {
 
 nav li {
   margin: 25px;
+}
+nav li a:hover {
+  color: var(--nav-color);
 }
 
 

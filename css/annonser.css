@@ -1,0 +1,153 @@
+/*Section1 hero*/
+.hero-background {
+    background-image: url(/images/annonser1.jpg);
+    height: 350px;
+    background-position: center;
+    background-size: cover;
+    justify-content:center;
+}
+.hero-background h1,
+.hero-background p {
+    margin-left: 175px;
+}
+/*Section2 aside navigation*/
+.sidebar{
+width: 17%;
+min-width: 150px;
+border-right: 1px solid var(--header-footer-bg-color);
+}
+.category-section {
+    margin-left: 50px;
+}
+.category {
+    margin: 25px 0;
+}
+.category-heading {
+    margin-left: -15px;
+}
+.category-title {
+    padding: 5px 0 5px 15px;
+    margin-left: -15px;
+    font-size: var(--h3-font-size);
+}
+.subcategory-list li button,
+.category-title {
+    width: 150px;
+}
+.category-title,
+.subcategory-list li button{
+    margin-left: -15px;
+}
+.subcategory-list li button{
+    padding: 2px 0 2px 15px;
+    margin-top: 5px;
+    text-align: left;
+}
+.title-strikking:hover,
+.title-søm:hover,
+.title-hekling:hover,
+.title-brodering:hover,
+.title-veving:hover,
+.title-steder:hover {
+    background-color: var(--cta-button-bg-color);
+    color: var(--white-font-color);
+}
+.title-strikking {
+    background-color: var(--strikking-bg-color);
+}
+.title-søm {
+    background-color: var(--søm-bg-color);
+}
+.title-hekling {
+    background-color: var(--hekling-bg-color);
+}
+.title-brodering {
+    background-color: var(--brodering-bg-color);
+}
+.title-veving {
+    background-color: var(--veving-bg-color);
+}
+.title-steder {
+    background-color: var(--light-blue-bg-color);
+}
+.category button {
+   margin-top: 7px;
+   margin-bottom: 7px;
+}
+.subcategory-list li button:hover {
+    background-color: var(--subcategory-hover-bg-color);
+}
+/*Section 2 and 3 */
+.category-section,
+.content-area {
+    margin-top: 100px;
+}
+.location{
+    margin-top: 125px;
+}
+
+/*Section3 Content area*/
+.content-area {
+    width: 83%;
+    padding: 0 100px;
+}
+.header-content-area {
+    margin-bottom: 50px;
+}
+.post {
+    display: flex;
+    background-color: var(--section-bg-color);
+    margin-bottom: 25px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+}
+.post img {
+    width: 60%; 
+    height: 300px; 
+    object-fit: cover;
+}
+.post-content{
+    padding: 25px;
+}
+.post-title {
+    margin-top: 30px;
+}
+.post-description {
+    margin: 25px 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Number of lines you want to display */
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
+.category-strikking {
+    background-color: var(--strikking-bg-color);
+}
+.category-søm {
+    background-color: var(--søm-bg-color);
+}
+.category-hekling {
+    background-color: var(--hekling-bg-color);
+}
+.category-brodering {
+    background-color: var(--brodering-bg-color);
+}
+.category-veving {
+    background-color: var(--veving-bg-color);
+}
+.category-steder {
+    background-color: var(--light-blue-bg-color);
+}
+
+.category-sub {
+    background-color:#F0EFF0;
+    margin-left: 10px;
+}
+.category-sub,
+.category-main {
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+
+

@@ -314,12 +314,13 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   const categoryMapping = {
-    "Søm": ["Reperasjon", "Tilpassing", "Nytt & håndlaget"],
-    "Strikking": ["Reperasjon", "Tilpassing", "Nytt & håndlaget"],
-    "Hekling": ["Reperasjon", "Tilpassing", "Nytt & håndlaget"],
-    "Brodering": ["Reperasjon", "Nytt & håndlaget"],
-    "Veving": ["Reperasjon", "Nytt & håndlaget"]
+    "Søm": ["Reparasjon", "Tilpassing", "Ferdig laget", "Bestill noe eget"],
+    "Strikking": ["Reparasjon", "Tilpassing", "Ferdig laget", "Bestill noe eget"],
+    "Hekling": ["Reparasjon", "Tilpassing", "Ferdig laget", "Bestill noe eget"],
+    "Brodering": ["Reparasjon", "Ferdig laget", "Bestill noe eget"],
+    "Veving": ["Reparasjon", "Ferdig laget", "Bestill noe eget"]
   };
+  
 
   // Function to show messages
   function showMessage(elementId, message, isSuccess) {

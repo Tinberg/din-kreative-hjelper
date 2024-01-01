@@ -11,6 +11,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/annonser.css" />
     <script src="/js/annonser.js" defer></script>
   </head>
   <body>
@@ -33,7 +34,248 @@
       </nav>
     </header>
     <main>
-      <div id="allPostsContainer"></div>
+      <!--Section1 Hero-->
+      <section>
+        <div class="hero-background flex-column">
+          <h1>Utforsk vårt utvalg</h1>
+          <p>Bli inspirert og utforsk</p>
+        </div>
+      </section>
+      <!-- Flex Container for Sidebar and Content -->
+      <div class="flex-container flex">
+        <!--Navigation aside-->
+        <aside class="sidebar">
+          <!--Section2 Categories-->
+          <section class="category-section" aria-labelledby="categories-heading">
+            <h2 id="categories-heading">Kategorier</h2>
+            <div class="category">
+              <button class="category-title title-strikking border-r text-left" type="button" data-category="strikking">
+                Strikking
+            </button>
+              <ul class="subcategory-list">
+                <li>
+                  <button class="border-r" type="button" data-category="strikking-reparasjon">
+                    Reparasjon
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="strikking-tilpassning">
+                    Tilpassing
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="strikking-ferdiglaget">
+                    Ferdig laget
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="strikking-bestill">
+                    Bestill noe eget
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div class="category">
+              <button class="category-title title-søm border-r  text-left" type="button" data-category="søm">
+                Søm
+            </button>
+              <ul class="subcategory-list">
+                <li>
+                  <button class="border-r" type="button" data-category="søm-reparasjon">
+                    Reparasjon
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="søm-tilpassning">
+                    Tilpassing
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="søm-ferdiglaget">
+                    Ferdig laget
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="søm-bestill">
+                    Bestill noe eget
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div class="category">
+              <button class="category-title title-hekling border-r  text-left" type="button" data-category="hekling">
+                Hekling
+            </button>
+              <ul class="subcategory-list">
+                <li>
+                  <button class="border-r" type="button" data-category="hekling-reparasjon">
+                    Reparasjon
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="hekling-tilpassning">
+                    Tilpassing
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="hekling-ferdiglaget">
+                    Ferdig laget
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="hekling-bestill">
+                    Bestill noe eget
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div class="category">
+              <button class="category-title title-brodering border-r  text-left" type="button" data-category="brodering">
+                Brodering
+            </button>
+              <ul class="subcategory-list">
+                <li>
+                  <button class="border-r" type="button" data-category="brodering-reparasjon">
+                    Reparasjon
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="brodering-ferdiglaget">
+                    Ferdig laget
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="brodering-bestill">
+                    Bestill noe eget
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div class="category">
+              <button class="category-title title-veving border-r  text-left" type="button" data-category="veving">
+                Veving
+            </button>
+              <ul class="subcategory-list">
+                <li>
+                  <button class="border-r" type="button" data-category="veving-reparasjon">
+                    Reparasjon
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="veving-ferdiglaget">
+                    Ferdig laget
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="veving-bestill">
+                    Bestill noe eget
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <!--Location-->
+            <div class=" location category">
+              <p class=" location-title category-title title-steder border-r">Steder</p>
+              <ul class="subcategory-list">
+                <li>
+                  <button class="border-r" type="button" data-category="steder-akershus">
+                    Akershus
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-oslo">
+                   Oslo
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-vestland">
+                    Vestland
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-rogaland">
+                    Rogaland
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-trøndelag">
+                   Trøndelag
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-innlandet">
+                    Innlandet
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-agder">
+                    Agder
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-østfold">
+                   Østfold
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-møreogromsdal">
+                    Møre og Romsdal
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-buskerud">
+                    Buskerud
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-vestfold">
+                   Vestfold
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-telemark">
+                    Telemark
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-nordland">
+                    Nordland
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-troms">
+                   Troms
+                  </button>
+                </li>
+                <li>
+                  <button class="border-r" type="button" data-category="steder-finnmark">
+                    Finnmark
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </section>
+          
+        </aside>
+      
+        <!-- Section4 All products-->
+        <section class="content-area">
+          <div class=" header-content-area flex space-between">
+          <h2>Alle Poster</h2>  <div class="sort-by-container flex center">
+            <label for="sortby">Sorter etter:</label>
+            <select id="sortby" name="sortby">
+                <option value="a-z">Alfabetisk A-Z</option>
+                <option value="z-a">Alfabetisk Z-A</option>
+                <option value="newest">Nyest</option>
+                <option value="oldest">Eldst</option>
+            </select>
+        </div>
+          </div>
+          <div id="allPostsContainer">
+            <!--Dynamically added posts goes here-->
+          </div>
+        </section>
+      </div>
     </main>
     <footer>
       <div class="flex center">
