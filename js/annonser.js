@@ -122,16 +122,25 @@ function loadAndDisplayAllPosts(mainCategory = '', subcategory = '') {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+     // "Show All" button click event
+     const showAllButton = document.querySelector('.show-all'); 
+     if (showAllButton) {
+         showAllButton.addEventListener('click', function () {
+             document.querySelectorAll('.category-title, .subcategory-list .border-r').forEach(btn => {
+                 btn.classList.remove('active');
+             });
+ 
+             loadAndDisplayAllPosts(); 
+         });
+     }
     // Main category click event
     document.querySelectorAll('.category-title').forEach(button => {
         button.addEventListener('click', function () {
-            // Reset subcategories when a main category is clicked
             document.querySelectorAll('.subcategory-list .border-r').forEach(btn => {
-                btn.classList.remove('active'); // Ensure subcategory buttons are no longer marked as active
+                btn.classList.remove('active'); 
             });
-            // Toggle active class for main categories
             document.querySelectorAll('.category-title').forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active'); // Use add instead of toggle to ensure a category is always selected
+            this.classList.add('active'); 
             applyFilters();
         });
     });
@@ -139,25 +148,19 @@ document.addEventListener("DOMContentLoaded", function () {
     // Subcategory click event
     document.querySelectorAll('.subcategory-list .border-r').forEach(button => {
         button.addEventListener('click', function () {
-            // Determine the parent main category element
             const parentCategoryElement = this.closest('.category');
             if (parentCategoryElement) {
-                // Get the main category button within the parent element
                 const mainCategoryButton = parentCategoryElement.querySelector('.category-title');
 
-                // Check if the main category button exists
                 if (mainCategoryButton) {
                     const mainCategory = mainCategoryButton.dataset.category;
 
-                    // Activate the main category
                     document.querySelectorAll('.category-title').forEach(btn => btn.classList.remove('active'));
                     mainCategoryButton.classList.add('active');
 
-                    // Remove active class from all subcategories and activate the clicked one
                     document.querySelectorAll('.subcategory-list .border-r').forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active'); // Mark this subcategory as active
+                    this.classList.add('active'); 
 
-                    // Apply filters based on the new selection
                     applyFilters();
                 }
             }

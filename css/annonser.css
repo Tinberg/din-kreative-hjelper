@@ -1,14 +1,14 @@
 /*Section1 hero*/
 .hero-background {
-    background-image: url(/images/annonser1.jpg);
+    background-image: url(/images/alle-header.jpg);
     height: 350px;
-    background-position: center;
+    background-position: left;
     background-size: cover;
     justify-content:center;
 }
 .hero-background h1,
 .hero-background p {
-    margin-left: 175px;
+    margin-left: 300px;
 }
 /*Section2 aside navigation*/
 .sidebar{
@@ -30,6 +30,11 @@ border-right: 1px solid var(--header-footer-bg-color);
     margin-left: -15px;
     font-size: var(--h3-font-size);
 }
+.show-all {
+    background-color: var(--light-blue-bg-color);
+   margin: 50px 0 25px;
+}
+
 .subcategory-list li button,
 .category-title {
     width: 150px;
@@ -48,7 +53,8 @@ border-right: 1px solid var(--header-footer-bg-color);
 .title-hekling:hover,
 .title-brodering:hover,
 .title-veving:hover,
-.title-steder:hover {
+.title-steder:hover,
+.show-all:hover {
     background-color: var(--cta-button-bg-color);
     color: var(--white-font-color);
 }
