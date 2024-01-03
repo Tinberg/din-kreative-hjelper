@@ -12,7 +12,6 @@
     />
     <link rel="stylesheet" href="/css/global.css" />
     <link rel="stylesheet" href="/css/annonse.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.min.js"></script>
     <script src="/js/annonse.js" defer></script>
   </head>
   <body>
@@ -35,30 +34,44 @@
       </nav>
     </header>
     <main>
-      <div class="post-container w-100" id="postContainer">
-        <h1 id="postTitle">Loading...</h1>
-        <div class="post-image-container border-r">
-          <img class="post-image" id="postImage" src="" alt="Post Image" />
-        </div>
-        <p id="postCategory"></p>
-        <p id="postSubcategory"></p>
-        <p id="postDescription"></p>
-        <div id="userInfo">
-          <p id="userLocation"></p>
-          <iframe
-            width="600"
-            height="450"
-            style="border: 0"
-            loading="lazy"
-            allowfullscreen
-            id="embeddedMap"
-            src=""
-          >
-          </iframe>
+      <article class="post-container w-100" id="postContainer">
+        <!--Section1 Post-->
+        <section class="post-info">
+          <div class="flex-column center margin-75">
+            <h1 id="postTitle">Loading...</h1>
+            <div class="post-image-container border-r">
+              <img class="post-image" id="postImage" src="" alt="Post Image" />
+            </div>
+            <div class="flex">
+              <p id="postCategory"></p>
+              <p id="postSubcategory"></p>
+            </div>
+          </div>
+          <div class="flex center margin-75">
+            <p id="postDescription"></p>
+          </div>
+        </section>
+        <!--Section2 UserInfo-->
+        <section class="user-info flex-column center" id="userInfo">
+          <div class="margin-75">
+            <p id="userLocation"></p>
+            <iframe
+              width="600"
+              height="450"
+              style="border: 0"
+              loading="lazy"
+              allowfullscreen
+              id="embeddedMap"
+              src=""
+            >
+            </iframe>
+          </div>
+          <div class="margin-75 flex-column center">
           <img id="userProfilePicture" src="" alt="User Profile" />
           <p id="username"></p>
-        </div>
-      </div>
+          </div>
+        </section>
+      </article>
     </main>
     <footer>
       <div class="flex center">

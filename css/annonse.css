@@ -1,3 +1,4 @@
+
 .post-image-container {
     width: 500px;
     height: 500px;
@@ -5,9 +6,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #ccc; /* Optional: adds a border */
-    margin: auto; /* Centers the container */
-    
+    border: 1px solid #ccc; 
+    background-color:#F0EFF0;
+    margin: auto; 
 }
 
 
